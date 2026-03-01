@@ -1,0 +1,140 @@
+1. The Design Philosophy: "Midnight Pitch"
+To blend your inspirations, we will apply the following design rules to the build:
+
+The Equinox Influence: Minimalist navigation, immersive full-width imagery, and "ghost" buttons (transparent background with solid borders).
+
+The Adidas Influence: Large, bold typography (sans-serif uppercase) for headers. High contrast white text on black backgrounds. Grid-based layouts for the programs.
+
+The Benfica Influence: Dynamic movement. We will use slight hover animations (scaling images) and a "Latest News" ticker or grid that feels alive.
+
+2. The Refined "Golden" Prompt
+Copy and paste this refined prompt into your Replit AI agent. I have tightened the technical constraints and enhanced the styling instructions to match your desired aesthetic.
+
+Markdown
+# Project: Ginga Soccer Academy (Equinox x Adidas Style)
+
+## Core Tech Stack
+- Framework: React 18 + TypeScript (Vite)
+- Styling: Tailwind CSS
+- Routing: React Router DOM (Use `HashRouter` specifically for GitHub Pages compatibility)
+- State: Zustand
+- Icons: Lucide-React
+- Animations: Framer Motion (for smooth, luxury transitions)
+
+## Design System ("The Midnight Pitch")
+- **Vibe**: High-performance, premium, athletic.
+- **Palette**:
+  - Background: #0a0a0a (Rich Black)
+  - Surface: #171717 (Dark Charcoal for cards/sections)
+  - Primary Accent: #F5B041 (Ginga Gold)
+  - Text: #FFFFFF (White) and #A3A3A3 (Neutral Gray)
+- **Typography**:
+  - Headers: Uppercase, tracking-wide, heavy weight (Adidas style).
+  - Body: Clean, legible sans-serif (Inter or Roboto).
+- **UI Elements**: Sharp corners (no rounded buttons), thin borders, glass-morphism effects on overlays.
+
+## Page Structure & Logic
+
+### 1. Global Layout
+- Sticky Navbar: Black with Gold Logo, links for "Programs", "Schedule", "GingaMax", "Shop", "Login".
+- Footer: Professional grid with partnership logos, location, and quick links.
+
+### 2. Home Page (The "Hook")
+- **Hero**: Full-screen video background (overlay with dark gradient) + "TRAIN LIKE A PRO" tagline.
+- **Features**: 3-column grid highlighting Private Sessions, GingaMax, and Camps.
+- **News**: A Benfica-style masonry grid for "Academy News."
+
+### 3. Programs Page (The "Menu")
+- Render cards for:
+  - Private Sessions ($175+tax)
+  - Group Sessions ($50+tax)
+  - Just Play (Sundays, $50+tax)
+  - Turf Rentals (Pricing: Full $150, 3/4 $100, Mini $70)
+  - Camps (March/Summer/Xmas)
+- *Interaction*: Hovering over a card reveals the "Book Now" button.
+
+### 4. GingaMax Page (Performance)
+- distinct branding header: "POWERED BY MAXIMUS PERFORMANCE".
+- Focus on stats: Speed, Agility, Acceleration.
+
+### 5. Booking Wizard (Restricted Access)
+- **Auth Gate**: User must be logged in to view.
+- **Step 1 (Selection)**: Grid of available services.
+- **Step 2 (Safety)**: Check if service exists.
+- **Step 3 (The Form)**:
+  - *Design*: Instead of a boring link, create a "Digital Dossier" card.
+  - Text: "Official 2026 Academy Registration."
+  - Action: Button to "Download PDF Application."
+  - Subtext: "Please complete and return to info@gingasoccer.ca to finalize placement."
+- **Step 4 (Payment)**: Mock Stripe integration. Button appears only after Step 3 interaction.
+
+## Technical Nuances for GitHub Pages
+- **Base URL**: Configure `vite.config.ts` with `base: "./"`.
+- **Router**: Implementation must use `<HashRouter>` not `<BrowserRouter>` to prevent 404 errors on refresh.
+- **Images**: Use unsplash placeholders with keywords: "soccer training", "stadium", "athlete", "turf".
+
+## Content Data (Hardcoded)
+- Location: 1197 Unit 5 Union Street, Kitchener, Ontario.
+- Camps: March, Summer, December (No August).
+- Policy: "Strict No-Refund Policy - High Performance Commitment."
+3. Execution Roadmap (Replit to GitHub)
+Since you are the developer, here is the specific workflow to ensure this hosts correctly on GitHub.
+
+Phase 1: The Setup (in Replit)
+Create a React + TypeScript + Vite repl.
+
+Install dependencies:
+
+Bash
+npm install react-router-dom zustand lucide-react framer-motion clsx tailwind-merge
+Crucial Config: Open vite.config.ts and ensure the base is relative.
+
+TypeScript
+export default defineConfig({
+  plugins: [react()],
+  base: './', // This is required for GitHub Pages to find your assets
+})
+Phase 2: The Router (The "GitHub Pages" Fix)
+In your src/main.tsx or src/App.tsx, do not use BrowserRouter. It requires server-side configuration that GitHub Pages doesn't support easily for single-page apps. Use HashRouter:
+
+TypeScript
+import { HashRouter } from 'react-router-dom';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </React.StrictMode>,
+)
+Phase 3: The Deployment
+Once the code is written in Replit:
+
+Create a new Repository on GitHub (e.g., ginga-soccer-web).
+
+Connect Replit to your GitHub account using the Version Control tab.
+
+Push the code.
+
+On GitHub, go to Settings > Pages.
+
+Select GitHub Actions as the source, OR use the standard gh-pages branch method (requires a build script).
+
+Recommended Build Script (package.json):
+
+JSON
+"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+}
+(You will need to npm install --save-dev gh-pages for this specific script to work).
+
+4. Equinox-Level "Polish" Suggestions
+To truly impress the client who loves Adidas and Benfica, add these two features:
+
+The "Boot Room" Effect: When the user logs into the Booking Dashboard, don't just show a list. Show a "Player Card" with their name and a mock "Skill Rating" (even if static). It makes them feel like part of the team.
+
+Gold Gradients: Instead of flat gold (#F5B041), use a subtle linear gradient for buttons: bg-gradient-to-r from-yellow-500 to-yellow-600. It adds depth and luxury.
