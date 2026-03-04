@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
@@ -10,8 +10,9 @@ import {
   ArrowRight,
   Dumbbell,
 } from "lucide-react";
+import { useAdminStore } from "@/stores/adminStore";
 
-const programs = [
+const programCards = [
   {
     icon: Clock,
     title: "JUSTPLAY",
@@ -50,80 +51,71 @@ const programs = [
   },
 ];
 
-const risingStars = [
-  {
-    name: "Petra Bandula",
-    position: "Attacker",
-    club: "Ginga Academy",
-    tagline: "Rising star attacker.",
-    rating: 82,
-    stats: { pace: 88, shoot: 76, pass: 72 },
-  },
-  {
-    name: "Viktoria Brodar",
-    position: "Attacker",
-    club: "Ginga Academy",
-    tagline: "Skilled attacker.",
-    rating: 79,
-    stats: { pace: 84, shoot: 78, pass: 74 },
-  },
-  {
-    name: "Diago Delgado",
-    position: "Attacker",
-    club: "Rio Ave FC Porto",
-    tagline: "Rising star attacker.",
-    rating: 85,
-    stats: { pace: 91, shoot: 82, pass: 77 },
-  },
-];
+function RisingStarsCarousel() {
+  const { risingStars } = useAdminStore();
+  const [isPaused, setIsPaused] = useState(false);
 
-const newsItems = [
-  {
-    id: 1,
-    title: "Summer 2026 Camp Registration Now Open",
-    category: "CAMPS",
-    date: "Mar 1, 2026",
-    image:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
-    excerpt:
-      "Secure your spot for the most intensive summer training experience in the region.",
-  },
-  {
-    id: 2,
-    title: "GingaMax Program Launches New Speed Module",
-    category: "PERFORMANCE",
-    date: "Feb 20, 2026",
-    image:
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80",
-    excerpt:
-      "Our partnership with Maximus Performance brings cutting-edge speed training technology.",
-  },
-  {
-    id: 3,
-    title: "Academy Players Selected for Provincial Team",
-    category: "ACHIEVEMENTS",
-    date: "Feb 15, 2026",
-    image:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
-    excerpt:
-      "Three academy players earn spots on the Ontario Provincial Select Team.",
-  },
-  {
-    id: 4,
-    title: "New Turf Facility Upgrade Complete",
-    category: "FACILITY",
-    date: "Feb 10, 2026",
-    image:
-      "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80",
-    excerpt:
-      "State-of-the-art turf installation brings FIFA-quality playing surface to Kitchener.",
-  },
-];
+  const doubled = [...risingStars, ...risingStars];
+
+  return (
+    <div
+      className="overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <motion.div
+        className="flex gap-6"
+        animate={{ x: isPaused ? undefined : ["0%", "-50%"] }}
+        transition={{
+          x: {
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: risingStars.length * 5,
+            ease: "linear",
+          },
+        }}
+        style={{ width: "fit-content" }}
+      >
+        {doubled.map((player, i) => (
+          <div
+            key={`${player.id}-${i}`}
+            className="group relative flex-shrink-0 w-[220px] bg-gradient-to-b from-[#1a1a1a] to-[#111] border border-white/5 overflow-hidden transition-all duration-500 hover:border-amber-500/30"
+            data-testid={`card-player-${i}`}
+          >
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <div className="relative h-40 overflow-hidden">
+              <img
+                src={player.image}
+                alt={player.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-black/40 to-transparent" />
+            </div>
+
+            <div className="p-4 text-center">
+              <span className="inline-block text-[9px] font-bold tracking-[0.2em] text-amber-500 bg-amber-500/10 px-2 py-0.5 mb-2 font-display">
+                #{player.position.toUpperCase()}
+              </span>
+              <h3 className="text-sm font-black text-white uppercase tracking-wide font-display">
+                {player.name}
+              </h3>
+              <p className="text-neutral-500 text-[10px] font-mono mt-1">
+                {player.club}
+              </p>
+            </div>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
 
 export default function Home() {
+  const { news } = useAdminStore();
   const [videoEnded, setVideoEnded] = useState(false);
   const playerRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tag = document.createElement("script");
@@ -278,87 +270,7 @@ export default function Home() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {risingStars.map((player, i) => (
-              <motion.div
-                key={player.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-              >
-                <div
-                  className="group relative bg-gradient-to-b from-[#1a1a1a] to-[#111] border border-white/5 overflow-hidden transition-all duration-500 hover:border-amber-500/30"
-                  data-testid={`card-player-${i}`}
-                >
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  <div className="relative p-6 pb-4">
-                    <div className="absolute top-4 right-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                        <span className="text-black font-black text-lg font-display">
-                          {player.rating}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="w-20 h-20 bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-4 mx-auto">
-                      <UserIcon
-                        size={36}
-                        className="text-neutral-600"
-                        strokeWidth={1}
-                      />
-                    </div>
-
-                    <div className="text-center">
-                      <span className="inline-block text-[9px] font-bold tracking-[0.2em] text-amber-500 bg-amber-500/10 px-3 py-1 mb-3 font-display">
-                        #{player.position.toUpperCase()}
-                      </span>
-                      <h3 className="text-lg font-black text-white uppercase tracking-wide font-display">
-                        {player.name}
-                      </h3>
-                      <p className="text-neutral-500 text-xs font-mono mt-1">
-                        {player.club}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="px-6 pb-2">
-                    <p className="text-neutral-400 text-xs text-center italic">
-                      "{player.tagline}"
-                    </p>
-                  </div>
-
-                  <div className="px-6 pb-6 pt-4">
-                    <div className="grid grid-cols-3 gap-3 border-t border-white/5 pt-4">
-                      {Object.entries(player.stats).map(([key, val]) => (
-                        <div key={key} className="text-center">
-                          <p className="text-[9px] text-neutral-500 font-mono uppercase">
-                            {key}
-                          </p>
-                          <p className="text-white font-bold text-sm">
-                            {val}
-                          </p>
-                          <div className="mt-1 h-0.5 bg-neutral-800 overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${val}%` }}
-                              viewport={{ once: true }}
-                              transition={{
-                                duration: 1,
-                                delay: 0.3 + i * 0.1,
-                              }}
-                              className="h-full bg-gradient-to-r from-amber-500 to-amber-600"
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <RisingStarsCarousel />
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -367,7 +279,7 @@ export default function Home() {
             className="text-center mt-10"
           >
             <Link
-              href="/programs"
+              href="/about"
               className="inline-flex items-center gap-2 text-amber-500 text-xs font-bold tracking-[0.15em] uppercase hover:text-amber-400 transition-colors"
               data-testid="link-view-all-players"
             >
@@ -398,7 +310,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {programs.map((program, i) => (
+            {programCards.map((program, i) => (
               <motion.div
                 key={program.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -461,7 +373,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              href="/programs"
+              href="/media"
               className="hidden md:flex items-center gap-2 text-amber-500 text-xs font-bold tracking-[0.15em] uppercase hover:text-amber-400 transition-colors"
               data-testid="link-view-all-news"
             >
@@ -470,7 +382,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {newsItems.map((item, i) => (
+            {news.slice(0, 4).map((item, i) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -488,9 +400,6 @@ export default function Home() {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="absolute top-4 left-4 text-[10px] font-bold tracking-[0.2em] text-amber-500 bg-black/60 backdrop-blur-sm px-3 py-1 font-display">
-                    {item.category}
-                  </span>
                 </div>
                 <p className="text-neutral-500 text-xs mb-2 font-mono">
                   {item.date}

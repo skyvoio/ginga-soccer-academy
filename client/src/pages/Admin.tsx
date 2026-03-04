@@ -3,35 +3,33 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
-  Calendar,
   UserCheck,
-  Plane,
-  Settings,
+  Star,
+  Image,
+  Newspaper,
   LogOut,
   Download,
   Check,
   X,
   Plus,
-  Edit2,
-  Save,
+  Trash2,
   Users,
   DollarSign,
   Clock,
-  TrendingUp,
   Menu,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminStore } from "@/stores/adminStore";
 import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
-type Tab = "dashboard" | "registrations" | "schedule" | "trips" | "settings";
+type Tab = "dashboard" | "registrations" | "risingstars" | "media" | "news";
 
 const sidebarItems: { key: Tab; label: string; icon: typeof LayoutDashboard }[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "risingstars", label: "Rising Stars", icon: Star },
+  { key: "media", label: "Media", icon: Image },
+  { key: "news", label: "News", icon: Newspaper },
   { key: "registrations", label: "Registrations", icon: UserCheck },
-  { key: "schedule", label: "Schedule", icon: Calendar },
-  { key: "trips", label: "Trips", icon: Plane },
-  { key: "settings", label: "Settings", icon: Settings },
 ];
 
 function exportToCSV(registrations: { id: string; name: string; program: string; status: string; payment: string; date: string }[]) {
@@ -58,19 +56,22 @@ export default function Admin() {
 
   const {
     registrations,
-    sessions,
-    trips,
+    risingStars,
+    media,
+    news,
     toggleRegistrationStatus,
     togglePaymentStatus,
-    updateSession,
-    addTrip,
+    addRisingStar,
+    removeRisingStar,
+    addMedia,
+    removeMedia,
+    addNews,
+    removeNews,
   } = useAdminStore();
 
-  const [editingSession, setEditingSession] = useState<string | null>(null);
-  const [editDay, setEditDay] = useState("");
-  const [editTime, setEditTime] = useState("");
-
-  const [newTrip, setNewTrip] = useState({ destination: "", dates: "", cost: "", description: "" });
+  const [newStar, setNewStar] = useState({ name: "", position: "", club: "", bio: "", image: "" });
+  const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as "Training" | "Matches" | "International Trips", image: "" });
+  const [newPost, setNewPost] = useState({ title: "", date: "", excerpt: "", content: "", image: "" });
 
   if (isLoading) {
     return (
@@ -103,23 +104,6 @@ export default function Admin() {
     );
   }
 
-  const startEditSession = (s: { id: string; day: string; time: string }) => {
-    setEditingSession(s.id);
-    setEditDay(s.day);
-    setEditTime(s.time);
-  };
-
-  const saveSession = (id: string) => {
-    updateSession(id, editDay, editTime);
-    setEditingSession(null);
-  };
-
-  const handleAddTrip = () => {
-    if (!newTrip.destination || !newTrip.dates || !newTrip.cost) return;
-    addTrip(newTrip);
-    setNewTrip({ destination: "", dates: "", cost: "", description: "" });
-  };
-
   const confirmedCount = registrations.filter((r) => r.status === "Confirmed").length;
   const paidCount = registrations.filter((r) => r.payment === "Paid").length;
   const pendingCount = registrations.filter((r) => r.status === "Pending").length;
@@ -128,6 +112,27 @@ export default function Admin() {
     await logout.mutateAsync();
     setLocation("/");
   };
+
+  const handleAddStar = () => {
+    if (!newStar.name || !newStar.position || !newStar.club) return;
+    addRisingStar({ ...newStar, image: newStar.image || "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&q=80" });
+    setNewStar({ name: "", position: "", club: "", bio: "", image: "" });
+  };
+
+  const handleAddMedia = () => {
+    if (!newMediaItem.title || !newMediaItem.image) return;
+    addMedia(newMediaItem);
+    setNewMediaItem({ title: "", category: "Training", image: "" });
+  };
+
+  const handleAddNews = () => {
+    if (!newPost.title || !newPost.content) return;
+    addNews({ ...newPost, date: newPost.date || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }), image: newPost.image || "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" });
+    setNewPost({ title: "", date: "", excerpt: "", content: "", image: "" });
+  };
+
+  const inputClass = "w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors placeholder:text-neutral-600";
+  const labelClass = "text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] block mb-2 font-display";
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex">
@@ -175,33 +180,25 @@ export default function Admin() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-neutral-500 font-mono hidden sm:block">
-              {user?.username}
-            </span>
-            <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-black font-bold text-xs">
-              A
-            </div>
+            <span className="text-xs text-neutral-500 font-mono hidden sm:block">{user?.username}</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-black font-bold text-xs">A</div>
           </div>
         </header>
 
         <main className="p-6 md:p-8">
           {activeTab === "dashboard" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-dashboard-heading">
-                OVERVIEW
-              </h2>
+              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-dashboard-heading">OVERVIEW</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 {[
-                  { label: "Total Registrations", value: registrations.length, icon: Users, color: "amber" },
-                  { label: "Confirmed", value: confirmedCount, icon: Check, color: "green" },
-                  { label: "Pending", value: pendingCount, icon: Clock, color: "yellow" },
-                  { label: "Revenue (Paid)", value: paidCount, icon: DollarSign, color: "emerald" },
+                  { label: "Total Registrations", value: registrations.length, icon: Users },
+                  { label: "Confirmed", value: confirmedCount, icon: Check },
+                  { label: "Pending", value: pendingCount, icon: Clock },
+                  { label: "Revenue (Paid)", value: paidCount, icon: DollarSign },
                 ].map((stat, i) => (
                   <div key={i} className="bg-[#171717] border border-white/5 p-6" data-testid={`card-stat-${i}`}>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase font-display">
-                        {stat.label}
-                      </span>
+                      <span className="text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase font-display">{stat.label}</span>
                       <stat.icon size={16} className="text-amber-500" />
                     </div>
                     <p className="text-3xl font-black text-white">{stat.value}</p>
@@ -209,9 +206,7 @@ export default function Admin() {
                 ))}
               </div>
               <div className="bg-[#171717] border border-white/5 p-6">
-                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">
-                  RECENT ACTIVITY
-                </h3>
+                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">RECENT ACTIVITY</h3>
                 <div className="space-y-3">
                   {registrations.slice(0, 5).map((r) => (
                     <div key={r.id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
@@ -225,9 +220,7 @@ export default function Admin() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${
-                          r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"
-                        }`}>
+                        <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"}`}>
                           {r.status.toUpperCase()}
                         </span>
                         <span className="text-neutral-600 text-xs font-mono">{r.date}</span>
@@ -242,9 +235,7 @@ export default function Admin() {
           {activeTab === "registrations" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-                <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display" data-testid="text-registrations-heading">
-                  REGISTRATIONS
-                </h2>
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display" data-testid="text-registrations-heading">REGISTRATIONS</h2>
                 <button
                   onClick={() => exportToCSV(registrations)}
                   className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
@@ -253,16 +244,13 @@ export default function Admin() {
                   <Download size={14} /> EXPORT TO CSV
                 </button>
               </div>
-
               <div className="bg-[#171717] border border-white/5 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[700px]">
                     <thead>
                       <tr className="border-b border-white/5">
                         {["NAME", "PROGRAM", "STATUS", "PAYMENT", "DATE", "ACTIONS"].map((h) => (
-                          <th key={h} className="text-left px-6 py-4 text-[10px] font-bold tracking-[0.2em] text-neutral-500 font-display">
-                            {h}
-                          </th>
+                          <th key={h} className="text-left px-6 py-4 text-[10px] font-bold tracking-[0.2em] text-neutral-500 font-display">{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -272,16 +260,12 @@ export default function Admin() {
                           <td className="px-6 py-4 text-white text-sm font-bold">{r.name}</td>
                           <td className="px-6 py-4 text-neutral-400 text-sm font-mono">{r.program}</td>
                           <td className="px-6 py-4">
-                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${
-                              r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"
-                            }`}>
+                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"}`}>
                               {r.status.toUpperCase()}
                             </span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${
-                              r.payment === "Paid" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
-                            }`}>
+                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.payment === "Paid" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>
                               {r.payment.toUpperCase()}
                             </span>
                           </td>
@@ -290,22 +274,14 @@ export default function Admin() {
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => toggleRegistrationStatus(r.id)}
-                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${
-                                  r.status === "Confirmed"
-                                    ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"
-                                    : "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-                                }`}
+                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${r.status === "Confirmed" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-green-500/20 text-green-400 hover:bg-green-500/30"}`}
                                 data-testid={`button-confirm-${r.id}`}
                               >
                                 {r.status === "Confirmed" ? "REVOKE" : "CONFIRM"}
                               </button>
                               <button
                                 onClick={() => togglePaymentStatus(r.id)}
-                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${
-                                  r.payment === "Paid"
-                                    ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"
-                                    : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
-                                }`}
+                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${r.payment === "Paid" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"}`}
                                 data-testid={`button-payment-${r.id}`}
                               >
                                 {r.payment === "Paid" ? "UNPAY" : "MARK PAID"}
@@ -321,249 +297,177 @@ export default function Admin() {
             </motion.div>
           )}
 
-          {activeTab === "schedule" && (
+          {activeTab === "risingstars" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-schedule-heading">
-                SCHEDULE MANAGER
-              </h2>
-              <div className="space-y-3">
-                {sessions.map((s) => (
-                  <div key={s.id} className="bg-[#171717] border border-white/5 p-6 flex flex-wrap items-center justify-between gap-4" data-testid={`row-session-${s.id}`}>
-                    {editingSession === s.id ? (
-                      <>
-                        <div className="flex-1 min-w-[200px]">
-                          <p className="text-white font-bold text-sm mb-1">{s.name}</p>
-                          <p className="text-neutral-500 text-xs font-mono">{s.ageGroup}</p>
-                        </div>
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <input
-                            value={editDay}
-                            onChange={(e) => setEditDay(e.target.value)}
-                            className="bg-[#0a0a0a] border border-neutral-700 px-3 py-2 text-sm text-white w-32 focus:outline-none focus:border-amber-500"
-                            data-testid={`input-edit-day-${s.id}`}
-                          />
-                          <input
-                            value={editTime}
-                            onChange={(e) => setEditTime(e.target.value)}
-                            className="bg-[#0a0a0a] border border-neutral-700 px-3 py-2 text-sm text-white w-44 focus:outline-none focus:border-amber-500"
-                            data-testid={`input-edit-time-${s.id}`}
-                          />
-                          <button
-                            onClick={() => saveSession(s.id)}
-                            className="bg-green-500/20 text-green-400 p-2 hover:bg-green-500/30 transition-colors"
-                            data-testid={`button-save-session-${s.id}`}
-                          >
-                            <Save size={16} />
-                          </button>
-                          <button
-                            onClick={() => setEditingSession(null)}
-                            className="bg-neutral-800 text-neutral-400 p-2 hover:bg-neutral-700 transition-colors"
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex-1 min-w-[200px]">
-                          <p className="text-white font-bold text-sm">{s.name}</p>
-                          <p className="text-neutral-500 text-xs font-mono">{s.ageGroup}</p>
-                        </div>
-                        <div className="flex items-center gap-6">
-                          <div className="text-right">
-                            <p className="text-amber-500 text-sm font-bold">{s.day}</p>
-                            <p className="text-neutral-400 text-xs font-mono">{s.time}</p>
-                          </div>
-                          <button
-                            onClick={() => startEditSession(s)}
-                            className="bg-white/5 text-neutral-400 p-2 hover:bg-white/10 hover:text-white transition-colors"
-                            data-testid={`button-edit-session-${s.id}`}
-                          >
-                            <Edit2 size={16} />
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === "trips" && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-trips-heading">
-                INTERNATIONAL SCOUTING TRIPS
-              </h2>
+              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-risingstars-heading">RISING STARS</h2>
 
               <div className="bg-[#171717] border border-white/5 p-6 mb-8">
-                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">
-                  ADD NEW TRIP
-                </h3>
+                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">ADD NEW STAR</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                      DESTINATION
-                    </label>
-                    <input
-                      value={newTrip.destination}
-                      onChange={(e) => setNewTrip({ ...newTrip, destination: e.target.value })}
-                      className="w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                      placeholder="e.g. Barcelona, Spain"
-                      data-testid="input-trip-destination"
-                    />
+                    <label className={labelClass}>NAME</label>
+                    <input value={newStar.name} onChange={(e) => setNewStar({ ...newStar, name: e.target.value })} className={inputClass} placeholder="Player name" data-testid="input-star-name" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                      DATES
-                    </label>
-                    <input
-                      value={newTrip.dates}
-                      onChange={(e) => setNewTrip({ ...newTrip, dates: e.target.value })}
-                      className="w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                      placeholder="e.g. July 10-20, 2026"
-                      data-testid="input-trip-dates"
-                    />
+                    <label className={labelClass}>POSITION</label>
+                    <input value={newStar.position} onChange={(e) => setNewStar({ ...newStar, position: e.target.value })} className={inputClass} placeholder="e.g. Attacker" data-testid="input-star-position" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                      COST
-                    </label>
-                    <input
-                      value={newTrip.cost}
-                      onChange={(e) => setNewTrip({ ...newTrip, cost: e.target.value })}
-                      className="w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                      placeholder="e.g. $3,500"
-                      data-testid="input-trip-cost"
-                    />
+                    <label className={labelClass}>CLUB</label>
+                    <input value={newStar.club} onChange={(e) => setNewStar({ ...newStar, club: e.target.value })} className={inputClass} placeholder="e.g. Ginga Academy" data-testid="input-star-club" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                      DESCRIPTION
-                    </label>
-                    <input
-                      value={newTrip.description}
-                      onChange={(e) => setNewTrip({ ...newTrip, description: e.target.value })}
-                      className="w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                      placeholder="Brief description of the trip"
-                      data-testid="input-trip-description"
-                    />
+                    <label className={labelClass}>IMAGE URL</label>
+                    <input value={newStar.image} onChange={(e) => setNewStar({ ...newStar, image: e.target.value })} className={inputClass} placeholder="https://..." data-testid="input-star-image" />
                   </div>
                 </div>
-                <button
-                  onClick={handleAddTrip}
-                  className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
-                  data-testid="button-add-trip"
-                >
-                  <Plus size={14} /> ADD TRIP
+                <button onClick={handleAddStar} className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors" data-testid="button-add-star">
+                  <Plus size={14} /> ADD STAR
                 </button>
               </div>
 
-              <div className="space-y-4">
-                {trips.map((trip) => (
-                  <div key={trip.id} className="bg-[#171717] border border-white/5 p-6" data-testid={`card-trip-${trip.id}`}>
-                    <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+              <div className="space-y-3">
+                {risingStars.map((star) => (
+                  <div key={star.id} className="bg-[#171717] border border-white/5 p-4 flex items-center justify-between gap-4" data-testid={`row-star-${star.id}`}>
+                    <div className="flex items-center gap-4">
+                      <img src={star.image} alt={star.name} className="w-12 h-12 object-cover flex-shrink-0" />
                       <div>
-                        <h3 className="text-lg font-bold text-white uppercase font-display">
-                          {trip.destination}
-                        </h3>
-                        <div className="flex items-center gap-4 mt-2">
-                          <span className="text-amber-500 text-sm font-mono">{trip.dates}</span>
-                          <span className="text-neutral-400 text-sm font-bold">{trip.cost}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Plane size={16} className="text-amber-500" />
-                        <span className="text-[10px] font-bold tracking-[0.2em] text-amber-500 font-display">
-                          ACTIVE
-                        </span>
+                        <p className="text-white font-bold text-sm">{star.name}</p>
+                        <p className="text-neutral-500 text-xs font-mono">{star.position} — {star.club}</p>
                       </div>
                     </div>
-                    <p className="text-neutral-400 text-sm mb-4">{trip.description}</p>
-                    {trip.bookedPlayers.length > 0 && (
-                      <div className="border-t border-white/5 pt-4">
-                        <p className="text-[10px] font-bold tracking-[0.2em] text-neutral-500 mb-2 font-display">
-                          BOOKED PLAYERS
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {trip.bookedPlayers.map((p) => (
-                            <span key={p} className="text-xs bg-white/5 text-white px-3 py-1 font-mono">
-                              {p}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <button
+                      onClick={() => removeRisingStar(star.id)}
+                      className="bg-red-500/10 text-red-400 p-2 hover:bg-red-500/20 transition-colors flex-shrink-0"
+                      data-testid={`button-delete-star-${star.id}`}
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 ))}
               </div>
             </motion.div>
           )}
 
-          {activeTab === "settings" && (
+          {activeTab === "media" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-settings-heading">
-                SETTINGS
-              </h2>
-              <div className="bg-[#171717] border border-white/5 p-6 space-y-6">
-                <div>
-                  <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-4 font-display">
-                    ACADEMY INFO
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                        ACADEMY NAME
-                      </label>
-                      <div className="bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-neutral-400 font-mono">
-                        Ginga Soccer Academy
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                        LOCATION
-                      </label>
-                      <div className="bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-neutral-400 font-mono">
-                        1197 Unit 5 Union Street, Kitchener, ON
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                        EMAIL
-                      </label>
-                      <div className="bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-neutral-400 font-mono">
-                        info@gingasoccer.ca
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.15em] block mb-2 font-display">
-                        HST NUMBER
-                      </label>
-                      <div className="bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-neutral-400 font-mono">
-                        818 696 890 RT0001
-                      </div>
-                    </div>
+              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-media-heading">MEDIA MANAGER</h2>
+
+              <div className="bg-[#171717] border border-white/5 p-6 mb-8">
+                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">UPLOAD IMAGE</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div>
+                    <label className={labelClass}>TITLE</label>
+                    <input value={newMediaItem.title} onChange={(e) => setNewMediaItem({ ...newMediaItem, title: e.target.value })} className={inputClass} placeholder="Image title" data-testid="input-media-title" />
+                  </div>
+                  <div>
+                    <label className={labelClass}>CATEGORY</label>
+                    <select
+                      value={newMediaItem.category}
+                      onChange={(e) => setNewMediaItem({ ...newMediaItem, category: e.target.value as any })}
+                      className={inputClass}
+                      data-testid="select-media-category"
+                    >
+                      <option value="Training">Training</option>
+                      <option value="Matches">Matches</option>
+                      <option value="International Trips">International Trips</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>IMAGE URL</label>
+                    <input value={newMediaItem.image} onChange={(e) => setNewMediaItem({ ...newMediaItem, image: e.target.value })} className={inputClass} placeholder="https://..." data-testid="input-media-url" />
                   </div>
                 </div>
-                <div className="border-t border-white/5 pt-6">
-                  <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-4 font-display">
-                    POLICIES
-                  </h3>
-                  <div className="bg-[#0a0a0a] border border-neutral-700 p-4">
-                    <p className="text-neutral-400 text-sm leading-relaxed">
-                      <span className="text-amber-500 font-bold">No-Refund Policy:</span> Ginga Soccer has a strict no-refund policy. Upon signing the registration form and committing to a team/program, families are held financially responsible for the entire season/program. All programs require a 6-month minimum commitment.
-                    </p>
+                <button onClick={handleAddMedia} className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors" data-testid="button-add-media">
+                  <Plus size={14} /> ADD IMAGE
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {media.map((item) => (
+                  <div key={item.id} className="relative group" data-testid={`card-admin-media-${item.id}`}>
+                    <img src={item.image} alt={item.title} className="w-full aspect-square object-cover" />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-2 p-2">
+                      <p className="text-white text-xs font-bold text-center">{item.title}</p>
+                      <p className="text-amber-500 text-[10px] font-mono">{item.category}</p>
+                      <button
+                        onClick={() => removeMedia(item.id)}
+                        className="bg-red-500/20 text-red-400 p-1.5 hover:bg-red-500/30 transition-colors mt-1"
+                        data-testid={`button-delete-media-${item.id}`}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "news" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-news-heading">NEWS MANAGER</h2>
+
+              <div className="bg-[#171717] border border-white/5 p-6 mb-8">
+                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">WRITE POST</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className={labelClass}>TITLE</label>
+                    <input value={newPost.title} onChange={(e) => setNewPost({ ...newPost, title: e.target.value })} className={inputClass} placeholder="Post title" data-testid="input-news-title" />
+                  </div>
+                  <div>
+                    <label className={labelClass}>DATE</label>
+                    <input value={newPost.date} onChange={(e) => setNewPost({ ...newPost, date: e.target.value })} className={inputClass} placeholder="e.g. Mar 5, 2026" data-testid="input-news-date" />
+                  </div>
+                  <div>
+                    <label className={labelClass}>IMAGE URL</label>
+                    <input value={newPost.image} onChange={(e) => setNewPost({ ...newPost, image: e.target.value })} className={inputClass} placeholder="https://..." data-testid="input-news-image" />
+                  </div>
+                  <div>
+                    <label className={labelClass}>EXCERPT</label>
+                    <input value={newPost.excerpt} onChange={(e) => setNewPost({ ...newPost, excerpt: e.target.value })} className={inputClass} placeholder="Short summary" data-testid="input-news-excerpt" />
                   </div>
                 </div>
+                <div className="mb-4">
+                  <label className={labelClass}>CONTENT</label>
+                  <textarea
+                    value={newPost.content}
+                    onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                    rows={4}
+                    className={`${inputClass} resize-none`}
+                    placeholder="Full article content..."
+                    data-testid="input-news-content"
+                  />
+                </div>
+                <button onClick={handleAddNews} className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors" data-testid="button-add-news">
+                  <Plus size={14} /> PUBLISH POST
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {news.map((post) => (
+                  <div key={post.id} className="bg-[#171717] border border-white/5 p-4 flex items-center justify-between gap-4" data-testid={`row-news-${post.id}`}>
+                    <div className="flex items-center gap-4">
+                      <img src={post.image} alt={post.title} className="w-16 h-12 object-cover flex-shrink-0" />
+                      <div>
+                        <p className="text-white font-bold text-sm">{post.title}</p>
+                        <p className="text-neutral-500 text-xs font-mono">{post.date}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeNews(post.id)}
+                      className="bg-red-500/10 text-red-400 p-2 hover:bg-red-500/20 transition-colors flex-shrink-0"
+                      data-testid={`button-delete-news-${post.id}`}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}
         </main>
       </div>
-
-      {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
     </div>
   );
 }

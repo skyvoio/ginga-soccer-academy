@@ -9,6 +9,9 @@ const navLinks = [
   { name: "PROGRAMS", path: "/programs" },
   { name: "GINGAMAX", path: "/gingamax" },
   { name: "SCHEDULE", path: "/schedule" },
+  { name: "ABOUT", path: "/about" },
+  { name: "MEDIA", path: "/media" },
+  { name: "CONTACT", path: "/contact" },
   { name: "MEMBERS", path: "/booking" },
 ];
 

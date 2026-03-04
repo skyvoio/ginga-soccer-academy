@@ -12,6 +12,9 @@ import Schedule from "@/pages/Schedule";
 import Booking from "@/pages/Booking";
 import Login from "@/pages/Login";
 import Admin from "@/pages/Admin";
+import About from "@/pages/About";
+import Media from "@/pages/Media";
+import Contact from "@/pages/Contact";
 
 function Router() {
   return (
@@ -21,6 +24,9 @@ function Router() {
       <Route path="/gingamax" component={GingaMax} />
       <Route path="/schedule" component={Schedule} />
       <Route path="/booking" component={Booking} />
+      <Route path="/about" component={About} />
+      <Route path="/media" component={Media} />
+      <Route path="/contact" component={Contact} />
       <Route path="/login" component={Login} />
       <Route path="/admin" component={Admin} />
       <Route>

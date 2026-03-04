@@ -1,0 +1,125 @@
+Here is the master prompt. It consolidates every feature from V3, V4, and V5 into a single, cohesive instruction set.
+
+Copy and paste this into your Replit AI agent.
+
+---
+
+# Project Master Instruction: Ginga Soccer Academy (The "Midnight Pitch" V2)
+
+We are finalizing the Ginga Soccer Academy website. We need to implement a "World Class" Content Management System, a Media Gallery, a Dynamic Player Carousel, and deep "Team" profiles.
+
+**Design System ("Midnight Pitch"):**
+
+* **Background:** `#0a0a0a` (Deep Black) & `#171717` (Charcoal)
+* **Accent:** `#F5B041` (Ginga Gold)
+* **Typography:** Headlines must be Massive, Uppercase, Heavy Weight (Adidas Style). Body text needs to be clean sans-serif.
+* **Vibe:** Exclusive, Athletic, High-Performance.
+
+---
+
+## Phase 1: Global State Management (`store.ts`)
+
+Update the Zustand store to manage dynamic content. The Admin panel will write to this, and the Frontend will read from it.
+
+1. **Rising Stars:** Array of `{ id, name, position, club, bio, image }`.
+2. **Media Gallery:** Array of `{ id, title, category, image }`.
+3. **News Posts:** Array of `{ id, title, date, excerpt, content, image }`.
+4. **Registrations:** Array of `{ id, name, program, status, paymentStatus }`.
+
+---
+
+## Phase 2: The Home Page (`Home.tsx`)
+
+### 1. New Masthead (Hero Section)
+
+Replace the current hero with this specific copy and layout:
+
+* **Eyebrow:** "ELITE TRAINING FACILITY" (Gold, Tracking-Widest)
+* **Headline:** "THE WAY TO SWAY<br />FOR BEAUTIFUL PLAYS" (Massive, White, 900-weight)
+* **Subtext:** "Unlock your full potential with professional coaching, state-of-the-art facilities, and a methodology inspired by the Brazilian Ginga style."
+* **CTA:** "View All Programs" (Solid Gold Button).
+
+### 2. Dynamic "Rising Stars" Carousel
+
+Create a new section below the Hero.
+
+* **Tech:** Use `framer-motion` to create an **infinite horizontal scroll** (`animate={{ x: ["0%", "-100%"] }}`).
+* **Behavior:** The cards scroll slowly left. Pausing on hover.
+* **Card Design:** Vertical "FIFA/Trading Card" style. Dark gradient overlay. Name in White, Position in Gold.
+* **Initial Data (Load into Store):**
+1. *Petra Bandula* (Attacker, Ginga Academy)
+2. *Viktoria Brodar* (Attacker, Ginga Academy)
+3. *Diago Delgado* (Attacker, Rio Ave FC Porto)
+4. *Lucas Dias* (Attacker, Sporting Portugal)
+5. *Pol Rivera Lopez* (Attacker, RCD Espanyol de Barcelona)
+6. *Jayden Newberry* (Attacker, Ginga Academy)
+7. *Carter Tavares/Roache* (Attacker, Italy / AC Perugia Calcio)
+
+
+
+---
+
+## Phase 3: The "Meet The Team" Page (`/about`)
+
+Create a high-contrast, magazine-style profile page.
+
+### Section 1: Kevin De Serpa (CEO & Head Trainer)
+
+* **Layout:** Hero Image Left | Typography/Bio Right.
+* **Header:** "KEVIN DE SERPA" (Massive Font).
+* **Subheader:** "10-year International Pro Career | Sporting CP (B) & FK Haugesund".
+* **Socials:** YouTube: `@kevindeserpa-mrginga`, IG: `@gingasoccerinc`.
+* **Bio (Timeline Format):**
+* *1998:* Signed pro with Toronto Lynx.
+* *Global:* E.C Commercial (Brazil), FC Penafiel (Portugal - 2nd Div Champ).
+* *Nordic:* FK Haugesund (Norway - Promotion), 1st Team All-Star.
+* *International:* U17 World Cup Qualifiers (Goals vs Mexico/USA).
+
+
+
+### Section 2: Kenen Shadd (Co-Founder)
+
+* **Header:** "KENEN SHADD" (Speed & Agility).
+* **Stats Grid:** "NCAA D1 Athlete", "5x Triple Jump Champ", "NJCAA National Champion".
+* **Bio:** "Maximus Performance background... Elite agility training."
+
+---
+
+## Phase 4: The Media Gallery (`/media`)
+
+Create a "Pinterest-style" Masonry Grid.
+
+* **Header:** "CAPTURING THE GINGA SPIRIT".
+* **Filters:** All, Training, Matches, International Trips.
+* **Interactions:** Hovering an image scales it slightly (`scale-105`) and adds a gold border.
+* **Lightbox:** Clicking an image expands it to full screen.
+
+---
+
+## Phase 5: The Contact Page (`/contact`)
+
+* **Layout:** Split Screen (Form Left, Info Right).
+* **Form:** Name, Email, Subject, Message.
+* **Action:** Button "Send Message" (Mock success).
+* **Info Side:**
+* "Have questions about our programs?"
+* Email: info@gingasoccer.ca ("We reply within 24 hours").
+* Address: 1197 Unit 5 Union Street, Kitchener, Ontario.
+
+
+
+---
+
+## Phase 6: The Admin Dashboard (`/admin`)
+
+Update the Admin Dashboard to manage the new dynamic features.
+
+1. **Sidebar Nav:** Dashboard, Rising Stars, Media, News, Registrations.
+2. **Tab: Rising Stars:** Form to Add Star (Name, Position, Club, Image). List view to Delete Stars. Updates the Home Carousel instantly.
+3. **Tab: Media Manager:** Form to Upload Image (Title, Category, URL). Grid view to Delete images. Updates `/media` instantly.
+4. **Tab: News Manager:** Form to Write Post (Title, Date, Image, Content). List view to Delete. Updates the Home page News section.
+5. **Tab: Registrations:** Table of players. Actions: "Confirm Registration", "Confirm Payment", "Export to CSV".
+
+---
+
+**Execution Note:** Ensure all styling uses Tailwind CSS with the configured dark theme colors. Use Lucide-React for all icons (User, Calendar, Trash, Plus, Instagram, Youtube).
