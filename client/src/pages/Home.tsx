@@ -123,13 +123,17 @@ export default function Home() {
   return (
     <div className="bg-[#0a0a0a]">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0a0a0a]" />
+        <div className="absolute inset-0">
+          <iframe
+            src="https://www.youtube.com/embed/yB-thID2N9E?autoplay=1&mute=1&loop=1&playlist=yB-thID2N9E&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1"
+            title="Background Video"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full pointer-events-none"
+            style={{ border: "none" }}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
