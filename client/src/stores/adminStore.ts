@@ -12,8 +12,10 @@ export interface RisingStar {
 export interface MediaItem {
   id: string;
   title: string;
-  category: "Training" | "Matches" | "International Trips";
+  category: "Training" | "Matches" | "International Trips" | "Interviews" | "International";
+  type: "image" | "video";
   image: string;
+  videoUrl?: string;
 }
 
 export interface NewsPost {
@@ -64,14 +66,10 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "rs7", name: "Carter Tavares/Roache", position: "Attacker", club: "Italy / AC Perugia Calcio", bio: "Dual-national prospect.", image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400&q=80" },
   ],
   media: [
-    { id: "m1", title: "Training Session", category: "Training", image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" },
-    { id: "m2", title: "Match Day", category: "Matches", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80" },
-    { id: "m3", title: "Lisbon Trip", category: "International Trips", image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" },
-    { id: "m4", title: "Speed Training", category: "Training", image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&q=80" },
-    { id: "m5", title: "Academy Cup", category: "Matches", image: "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80" },
-    { id: "m6", title: "Porto Exchange", category: "International Trips", image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&q=80" },
-    { id: "m7", title: "Turf Session", category: "Training", image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&q=80" },
-    { id: "m8", title: "Friendly Match", category: "Matches", image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80" },
+    { id: "m1", title: "Adjusting to Playing Soccer Abroad", category: "Interviews", type: "video", image: "https://img.youtube.com/vi/Fsn6Q_pUzSE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/Fsn6Q_pUzSE" },
+    { id: "m2", title: "F2FC at Old Trafford", category: "Matches", type: "video", image: "https://img.youtube.com/vi/UViTPSRWKBg/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/UViTPSRWKBg" },
+    { id: "m3", title: "Wembley Cup Final 2018", category: "Matches", type: "video", image: "https://img.youtube.com/vi/AjZ_nZuuObo/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/AjZ_nZuuObo" },
+    { id: "m4", title: "Public Pannas in Portugal", category: "International", type: "video", image: "https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/jLIM0LSd9PE" },
   ],
   news: [
     {

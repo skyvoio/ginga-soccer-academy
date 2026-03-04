@@ -1,0 +1,79 @@
+Project Update: Migrate Media Content from Legacy Site
+We need to populate the /media page with the specific content found on gingasoccer.ca/s-projects-basic. This requires updating our data structure to support Videos (YouTube Embeds) and adding the real content.
+
+Step 1: Update Data Structure (store.ts)
+Update the MediaItem interface and the mediaGallery initial state.
+
+Interface Update: Add a type field ('image' | 'video') and a videoUrl field (optional string) to the MediaItem interface.
+
+Initial State: Populate mediaGallery with these 4 specific items found on the legacy site:
+
+Item 1 (Video):
+
+Title: "Adjusting to Playing Soccer Abroad"
+
+Category: "Interviews"
+
+Type: video
+
+Video URL: https://www.youtube.com/embed/Fsn6Q_pUzSE
+
+Thumbnail: https://img.youtube.com/vi/Fsn6Q_pUzSE/maxresdefault.jpg
+
+Item 2 (Video):
+
+Title: "F2FC at Old Trafford"
+
+Category: "Matches"
+
+Type: video
+
+Video URL: https://www.youtube.com/embed/UViTPSRWKBg
+
+Thumbnail: https://img.youtube.com/vi/UViTPSRWKBg/maxresdefault.jpg
+
+Item 3 (Video):
+
+Title: "Wembley Cup Final 2018"
+
+Category: "Matches"
+
+Type: video
+
+Video URL: https://www.youtube.com/embed/AjZ_nZuuObo
+
+Thumbnail: https://img.youtube.com/vi/AjZ_nZuuObo/maxresdefault.jpg
+
+Item 4 (Video):
+
+Title: "Public Pannas in Portugal"
+
+Category: "International"
+
+Type: video
+
+Video URL: https://www.youtube.com/embed/jLIM0LSd9PE
+
+Thumbnail: https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg
+
+Step 2: Update Media Component (Media.tsx)
+Update the grid to handle these video items.
+
+Grid Item Display: If type === 'video', show the thumbnail with a "Play Button" overlay (use PlayCircle icon from lucide-react).
+
+Lightbox Behavior: When a user clicks a video item:
+
+Open the modal.
+
+Instead of an <img> tag, render an <iframe> with the videoUrl.
+
+Ensure the iframe has w-full, aspect-video, and allows fullscreen.
+
+Step 3: Admin Updates (/admin)
+Update the "Media Manager" tab in the Admin panel.
+
+Add a "Media Type" selector (Image vs Video).
+
+If "Video" is selected, ask for "YouTube Embed URL" instead of just "Image URL".
+
+Automatically generate the thumbnail URL from the YouTube ID if possible (optional logic).

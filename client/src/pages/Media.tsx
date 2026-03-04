@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
-import { useAdminStore } from "@/stores/adminStore";
+import { X, PlayCircle } from "lucide-react";
+import { useAdminStore, type MediaItem } from "@/stores/adminStore";
 
-const filters = ["All", "Training", "Matches", "International Trips"] as const;
+const filters = ["All", "Interviews", "Matches", "International"] as const;
 
 export default function Media() {
   const { media } = useAdminStore();
   const [activeFilter, setActiveFilter] = useState<string>("All");
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<MediaItem | null>(null);
 
   const filtered = activeFilter === "All" ? media : media.filter((m) => m.category === activeFilter);
 
@@ -71,18 +71,21 @@ export default function Media() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className="break-inside-avoid group cursor-pointer"
-                onClick={() => setLightboxImage(item.image)}
+                onClick={() => setLightboxItem(item)}
                 data-testid={`card-media-${item.id}`}
               >
                 <div className="relative overflow-hidden border-2 border-transparent transition-all duration-300 group-hover:border-amber-500/50 group-hover:scale-[1.02]">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                      i % 3 === 0 ? "aspect-[3/4]" : i % 3 === 1 ? "aspect-square" : "aspect-[4/3]"
-                    }`}
+                    className="w-full aspect-video object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
+                  {item.type === "video" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <PlayCircle size={56} className="text-white/80 drop-shadow-lg group-hover:text-amber-500 group-hover:scale-110 transition-all duration-300" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-white font-bold text-sm">{item.title}</p>
@@ -104,30 +107,49 @@ export default function Media() {
       </section>
 
       <AnimatePresence>
-        {lightboxImage && (
+        {lightboxItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6"
-            onClick={() => setLightboxImage(null)}
+            onClick={() => setLightboxItem(null)}
           >
             <button
               className="absolute top-6 right-6 text-white hover:text-amber-500 transition-colors z-10"
-              onClick={() => setLightboxImage(null)}
+              onClick={() => setLightboxItem(null)}
               data-testid="button-close-lightbox"
             >
               <X size={32} />
             </button>
-            <motion.img
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              src={lightboxImage}
-              alt="Gallery image"
-              className="max-w-full max-h-[90vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
+            {lightboxItem.type === "video" && lightboxItem.videoUrl ? (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className="w-full max-w-4xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <iframe
+                  src={lightboxItem.videoUrl}
+                  title={lightboxItem.title}
+                  className="w-full aspect-video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ border: "none" }}
+                />
+              </motion.div>
+            ) : (
+              <motion.img
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                src={lightboxItem.image}
+                alt={lightboxItem.title}
+                className="max-w-full max-h-[90vh] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>

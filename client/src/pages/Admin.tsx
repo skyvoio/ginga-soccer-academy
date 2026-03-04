@@ -19,7 +19,7 @@ import {
   Menu,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useAdminStore } from "@/stores/adminStore";
+import { useAdminStore, type MediaItem } from "@/stores/adminStore";
 import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
 type Tab = "dashboard" | "registrations" | "risingstars" | "media" | "news";
@@ -70,7 +70,7 @@ export default function Admin() {
   } = useAdminStore();
 
   const [newStar, setNewStar] = useState({ name: "", position: "", club: "", bio: "", image: "" });
-  const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as "Training" | "Matches" | "International Trips", image: "" });
+  const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as MediaItem["category"], type: "image" as "image" | "video", image: "", videoUrl: "" });
   const [newPost, setNewPost] = useState({ title: "", date: "", excerpt: "", content: "", image: "" });
 
   if (isLoading) {
@@ -120,9 +120,20 @@ export default function Admin() {
   };
 
   const handleAddMedia = () => {
-    if (!newMediaItem.title || !newMediaItem.image) return;
-    addMedia(newMediaItem);
-    setNewMediaItem({ title: "", category: "Training", image: "" });
+    if (!newMediaItem.title) return;
+    let thumbnail = newMediaItem.image;
+    if (newMediaItem.type === "video" && newMediaItem.videoUrl) {
+      const match = newMediaItem.videoUrl.match(/(?:embed\/|v=|\/v\/|youtu\.be\/)([^?&/]+)/);
+      if (match && !thumbnail) {
+        thumbnail = `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+      }
+      if (!thumbnail) return;
+      addMedia({ title: newMediaItem.title, category: newMediaItem.category, type: "video", image: thumbnail, videoUrl: newMediaItem.videoUrl });
+    } else {
+      if (!thumbnail) return;
+      addMedia({ title: newMediaItem.title, category: newMediaItem.category, type: "image", image: thumbnail });
+    }
+    setNewMediaItem({ title: "", category: "Training", type: "image", image: "", videoUrl: "" });
   };
 
   const handleAddNews = () => {
@@ -354,11 +365,11 @@ export default function Admin() {
               <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-media-heading">MEDIA MANAGER</h2>
 
               <div className="bg-[#171717] border border-white/5 p-6 mb-8">
-                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">UPLOAD IMAGE</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-6 font-display">ADD MEDIA</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className={labelClass}>TITLE</label>
-                    <input value={newMediaItem.title} onChange={(e) => setNewMediaItem({ ...newMediaItem, title: e.target.value })} className={inputClass} placeholder="Image title" data-testid="input-media-title" />
+                    <input value={newMediaItem.title} onChange={(e) => setNewMediaItem({ ...newMediaItem, title: e.target.value })} className={inputClass} placeholder="Media title" data-testid="input-media-title" />
                   </div>
                   <div>
                     <label className={labelClass}>CATEGORY</label>
@@ -370,23 +381,50 @@ export default function Admin() {
                     >
                       <option value="Training">Training</option>
                       <option value="Matches">Matches</option>
+                      <option value="Interviews">Interviews</option>
+                      <option value="International">International</option>
                       <option value="International Trips">International Trips</option>
                     </select>
                   </div>
                   <div>
-                    <label className={labelClass}>IMAGE URL</label>
-                    <input value={newMediaItem.image} onChange={(e) => setNewMediaItem({ ...newMediaItem, image: e.target.value })} className={inputClass} placeholder="https://..." data-testid="input-media-url" />
+                    <label className={labelClass}>MEDIA TYPE</label>
+                    <select
+                      value={newMediaItem.type}
+                      onChange={(e) => setNewMediaItem({ ...newMediaItem, type: e.target.value as "image" | "video" })}
+                      className={inputClass}
+                      data-testid="select-media-type"
+                    >
+                      <option value="image">Image</option>
+                      <option value="video">Video (YouTube)</option>
+                    </select>
                   </div>
+                  {newMediaItem.type === "video" ? (
+                    <div>
+                      <label className={labelClass}>YOUTUBE EMBED URL</label>
+                      <input value={newMediaItem.videoUrl} onChange={(e) => setNewMediaItem({ ...newMediaItem, videoUrl: e.target.value })} className={inputClass} placeholder="https://www.youtube.com/embed/..." data-testid="input-media-video-url" />
+                    </div>
+                  ) : (
+                    <div>
+                      <label className={labelClass}>IMAGE URL</label>
+                      <input value={newMediaItem.image} onChange={(e) => setNewMediaItem({ ...newMediaItem, image: e.target.value })} className={inputClass} placeholder="https://..." data-testid="input-media-url" />
+                    </div>
+                  )}
                 </div>
+                {newMediaItem.type === "video" && (
+                  <p className="text-neutral-500 text-xs font-mono mb-4">Thumbnail will be auto-generated from YouTube ID if left blank.</p>
+                )}
                 <button onClick={handleAddMedia} className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors" data-testid="button-add-media">
-                  <Plus size={14} /> ADD IMAGE
+                  <Plus size={14} /> {newMediaItem.type === "video" ? "ADD VIDEO" : "ADD IMAGE"}
                 </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {media.map((item) => (
                   <div key={item.id} className="relative group" data-testid={`card-admin-media-${item.id}`}>
-                    <img src={item.image} alt={item.title} className="w-full aspect-square object-cover" />
+                    <img src={item.image} alt={item.title} className="w-full aspect-video object-cover" />
+                    {item.type === "video" && (
+                      <div className="absolute top-2 left-2 bg-black/70 px-2 py-0.5 text-[9px] font-bold text-amber-500 tracking-wider font-display">VIDEO</div>
+                    )}
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-2 p-2">
                       <p className="text-white text-xs font-bold text-center">{item.title}</p>
                       <p className="text-amber-500 text-[10px] font-mono">{item.category}</p>
