@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
@@ -120,18 +121,72 @@ const newsItems = [
 ];
 
 export default function Home() {
+  const [videoEnded, setVideoEnded] = useState(false);
+  const playerRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const existing = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+    if (!existing) {
+      document.head.appendChild(tag);
+    }
+
+    const onReady = () => {
+      if (playerRef.current) return;
+      playerRef.current = new (window as any).YT.Player("hero-yt-player", {
+        videoId: "yB-thID2N9E",
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          showinfo: 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          iv_load_policy: 3,
+          disablekb: 1,
+        },
+        events: {
+          onStateChange: (event: any) => {
+            if (event.data === (window as any).YT.PlayerState.ENDED) {
+              setVideoEnded(true);
+            }
+          },
+        },
+      });
+    };
+
+    if ((window as any).YT && (window as any).YT.Player) {
+      onReady();
+    } else {
+      (window as any).onYouTubeIframeAPIReady = onReady;
+    }
+
+    return () => {
+      if (playerRef.current && playerRef.current.destroy) {
+        playerRef.current.destroy();
+        playerRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <div className="bg-[#0a0a0a]">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <iframe
-            src="https://www.youtube.com/embed/yB-thID2N9E?autoplay=1&mute=1&loop=1&playlist=yB-thID2N9E&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1"
-            title="Background Video"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full pointer-events-none"
-            style={{ border: "none" }}
-          />
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms]"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80')`,
+            opacity: videoEnded ? 1 : 0,
+          }}
+        />
+        <div
+          className="absolute inset-0 transition-opacity duration-[2000ms]"
+          style={{ opacity: videoEnded ? 0 : 1 }}
+        >
+          <div id="hero-yt-player" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full pointer-events-none" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
