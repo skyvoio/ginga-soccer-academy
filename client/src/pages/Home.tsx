@@ -11,6 +11,12 @@ import {
   Dumbbell,
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
+import justplayImg from "@assets/Ginga_Justplay__1772628239456.png";
+import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
+import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
+import privateSessionImg from "@assets/Ginga_Soccer_Private_Session_Theo_soccer_copy_1772628780022.jpeg";
+import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
+import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
 
 const programCards = [
   {
@@ -21,33 +27,37 @@ const programCards = [
     description:
       "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.",
     link: "/programs",
+    image: justplayImg,
   },
   {
     icon: Users,
-    title: "GROUP SESSION",
-    price: "$50 + Tax",
-    label: "90m Session",
+    title: "GINGA SUMMER CAMP",
+    price: "$500/wk + HST",
+    label: "August Weekly",
     description:
-      "Small group training to improve teamwork, positioning, and competitive play.",
+      "Full-week intensive summer training camp with professional coaching and competitive match play.",
     link: "/programs",
-  },
-  {
-    icon: MapPin,
-    title: "TURF RENTAL",
-    price: "From $70",
-    label: "1h Session",
-    description:
-      "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($70).",
-    link: "/programs",
+    image: summerCampImg,
   },
   {
     icon: Dumbbell,
+    title: "GINGAMAX SPEED & AGILITY",
+    price: "$50 + Tax",
+    label: "Per Session",
+    description:
+      "Elite speed and agility training powered by Maximus Performance methodology.",
+    link: "/gingamax",
+    image: agilityImg,
+  },
+  {
+    icon: MapPin,
     title: "PRIVATE SESSION",
     price: "$175 + Tax",
     label: "2h Session",
     description:
       "One-on-one intensive training focused on individual technique and tactical understanding.",
     link: "/programs",
+    image: privateSessionImg,
   },
 ];
 
@@ -320,29 +330,35 @@ export default function Home() {
               >
                 <Link href={program.link}>
                   <div
-                    className="group relative bg-[#171717] border border-white/5 p-8 h-full transition-all duration-500 hover:border-amber-500/30"
+                    className="group relative bg-[#171717] border border-white/5 overflow-hidden h-full transition-all duration-500 hover:border-amber-500/30"
                     data-testid={`card-feature-${i}`}
                   >
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-500 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-                    <program.icon
-                      className="text-amber-500 mb-4"
-                      size={28}
-                      strokeWidth={1.5}
-                    />
-                    <h3 className="text-base font-bold text-white uppercase tracking-wide mb-1 font-display">
-                      {program.title}
-                    </h3>
-                    <p className="text-amber-500 text-xl font-light mb-1">
-                      {program.price}
-                    </p>
-                    <p className="text-neutral-500 text-[10px] font-mono mb-4">
-                      {program.label}
-                    </p>
-                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
-                      {program.description}
-                    </p>
-                    <div className="flex items-center gap-2 text-amber-500 text-xs font-bold tracking-[0.15em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      LEARN MORE <ArrowRight size={14} />
+                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-500 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 z-10" />
+                    <div className="relative h-44 overflow-hidden">
+                      <img
+                        src={program.image}
+                        alt={program.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-black/30 to-transparent" />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-base font-bold text-white uppercase tracking-wide mb-1 font-display">
+                        {program.title}
+                      </h3>
+                      <p className="text-amber-500 text-xl font-light mb-1">
+                        {program.price}
+                      </p>
+                      <p className="text-neutral-500 text-[10px] font-mono mb-3">
+                        {program.label}
+                      </p>
+                      <p className="text-neutral-400 text-sm leading-relaxed mb-4">
+                        {program.description}
+                      </p>
+                      <div className="flex items-center gap-2 text-amber-500 text-xs font-bold tracking-[0.15em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        LEARN MORE <ArrowRight size={14} />
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -412,6 +428,59 @@ export default function Home() {
                 </p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+              TRUSTED BY
+            </p>
+            <h2
+              className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-display"
+              data-testid="text-partners-title"
+            >
+              OUR PARTNERS
+            </h2>
+          </motion.div>
+
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="group"
+              data-testid="partner-challenge-cup"
+            >
+              <img
+                src={challengeCupImg}
+                alt="Challenge Cup Tournaments"
+                className="h-20 md:h-28 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="group"
+              data-testid="partner-brazuca"
+            >
+              <img
+                src={brazucaImg}
+                alt="Brazuca Soccer Sports and Events"
+                className="h-20 md:h-28 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+              />
+            </motion.div>
           </div>
         </div>
       </section>

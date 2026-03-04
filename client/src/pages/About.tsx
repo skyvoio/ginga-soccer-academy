@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Instagram, Youtube, Award, Zap, Trophy } from "lucide-react";
+import kevinImg from "@assets/kevin-de-serpa_1772628179833.jpg";
+import kenenImg from "@assets/Kenen_Shadd_1772628402082.jpeg";
 
 export default function About() {
   return (
@@ -36,7 +38,7 @@ export default function About() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <img
-                src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=80"
+                src={kevinImg}
                 alt="Kevin De Serpa"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -184,7 +186,7 @@ export default function About() {
               className="relative aspect-[3/4] overflow-hidden order-1 lg:order-2"
             >
               <img
-                src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&q=80"
+                src={kenenImg}
                 alt="Kenen Shadd"
                 className="w-full h-full object-cover"
                 loading="lazy"
