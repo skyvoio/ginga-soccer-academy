@@ -27,13 +27,13 @@ interface Program {
 }
 
 const PROGRAMS: Program[] = [
-  { id: "p1", category: "TRAINING", title: "Private Session", price: "$175 + tax", details: "120 Min | 1-on-1 Coaching", isCamp: false },
-  { id: "p2", category: "TRAINING", title: "Group Session", price: "$50 + tax", details: "90 Min | Small Group Tactics", isCamp: false },
-  { id: "p3", category: "TRAINING", title: "Just Play", price: "$50 + tax", details: "120 Min | Sundays Only", isCamp: false },
-  { id: "p4", category: "TRAINING", title: "GingaMax Speed", price: "$50 + tax", details: "Powered by Maximus", isCamp: false },
-  { id: "c1", category: "CAMPS", title: "March Break Camp", price: "$500", details: "March 11-15 | Intensive", isCamp: true },
-  { id: "c2", category: "CAMPS", title: "Summer Camp", price: "$500/wk", details: "July & September", isCamp: true },
-  { id: "c3", category: "CAMPS", title: "December Camp", price: "$500", details: "December Break", isCamp: true },
+  { id: "p1", category: "TRAINING", title: "Justplay", price: "$50 + Tax", details: "120m Session", isCamp: false },
+  { id: "p2", category: "TRAINING", title: "Group Session", price: "$50 + Tax", details: "90m Session", isCamp: false },
+  { id: "p3", category: "TRAINING", title: "Private Session", price: "$175 + Tax", details: "2h Session", isCamp: false },
+  { id: "p4", category: "TRAINING", title: "GingaMax Speed", price: "$50 + Tax", details: "Powered by Maximus", isCamp: false },
+  { id: "c1", category: "CAMPS", title: "March Break Camp", price: "$500 + HST", details: "March 16-20 | 9am-4pm", isCamp: true },
+  { id: "c2", category: "CAMPS", title: "Summer Camp", price: "$500/wk + HST", details: "August Weekly Sessions", isCamp: true },
+  { id: "c3", category: "CAMPS", title: "Christmas Camp", price: "$300 + HST", details: "Dec 28-30 | 3 Days", isCamp: true },
   { id: "r1", category: "RENTALS", title: "Full Turf Rental", price: "$150/hr", details: "Full Pitch Access", isCamp: false },
   { id: "r2", category: "RENTALS", title: "3/4 Turf Rental", price: "$100/hr", details: "Three-Quarter Pitch", isCamp: false },
   { id: "r3", category: "RENTALS", title: "Mini Turf Rental", price: "$70/hr", details: "Mini Pitch", isCamp: false },
@@ -126,7 +126,18 @@ export default function Booking() {
   };
 
   const handleDownload = () => {
-    setTimeout(() => setHasDownloaded(true), 800);
+    const pdfUrl = selectedProgram?.isCamp
+      ? "/Ginga_2026_Camps_Registration_Form.pdf"
+      : "/Ginga_2026_Programs_Registration_Form.pdf";
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = selectedProgram?.isCamp
+      ? "Ginga_2026_Camps_Registration_Form.pdf"
+      : "Ginga_2026_Programs_Registration_Form.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => setHasDownloaded(true), 400);
   };
 
   const handlePayment = () => {

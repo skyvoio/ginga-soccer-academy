@@ -1,0 +1,109 @@
+This is a significant expansion that moves the site from a "Brochure" to a fully functional "Club Management System." We are introducing a new Rising Stars feature (Benfica influence) and a robust Admin Panel.
+
+Here is the comprehensive prompt to feed into your Replit AI agent. I have structured it to ensure the "Midnight Pitch" design language remains consistent even in the backend.
+
+Project Update: Ginga Soccer Academy V2 - Content, Stars, and Admin
+We need to perform a major update to the Home, Programs, and create a new Admin architecture. Keep the "Midnight Pitch" aesthetic (Dark #0a0a0a, Gold #F5B041, White text).
+
+Part 1: Front-End Content Updates
+1. Update the Masthead (Hero Section) in Home.tsx
+Replace the current hero text with this exact copy. Use "Adidas-style" heavy, uppercase fonts for the headline.
+
+Eyebrow Text: "Elite Training Facility" (Gold, tracking-widest)
+
+Main Headline: "THE WAY TO SWAY FOR BEAUTIFUL PLAYS" (Massive, White, broken onto two lines)
+
+Subtext: "Unlock your full potential with professional coaching, state-of-the-art facilities, and a methodology inspired by the Brazilian Ginga style."
+
+Primary CTA: "View All Programs" (Solid Gold background)
+
+2. Update the Programs Section in Home.tsx
+Update the PROGRAMS data array with this exact content. Use the existing card design but update the details:
+
+Justplay ($50 + Tax)
+
+Label: 120m Session
+
+Desc: 120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.
+
+Group Session ($50 + Tax)
+
+Label: 90m Session
+
+Desc: Small group training to improve teamwork, positioning, and competitive play.
+
+Turf Rental (From $70)
+
+Label: 1h Session
+
+Desc: Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($70).
+
+Private Session ($175 + Tax)
+
+Label: 2h Session
+
+Desc: One-on-one intensive training focused on individual technique and tactical understanding.
+
+3. Create New "Rising Stars" Section
+Add a new section below the Hero called "Rising Stars".
+
+Design: A horizontal scroll or grid of "Player Cards." These should look like premium trading cards (FIFA Ultimate Team style but dark/minimal).
+
+Data:
+
+Petra Bandula | #Attacker | Ginga Academy | "Rising star attacker."
+
+Viktoria Brodar | #Attacker | Ginga Academy | "Skilled attacker."
+
+Diago Delgado | #Attacker | Rio Ave FC Porto | "Rising star attacker."
+
+Footer Link: Add a "View All Players" text link below the grid.
+
+Part 2: The Admin Dashboard (New Feature)
+Create a new route /admin (protected by a mock login for now). The design must remain dark and professional.
+
+1. Dashboard Layout
+Sidebar: Dashboard, Schedule, Registrations, Trips, Settings.
+
+Top Bar: "Admin Console" with Logout.
+
+2. Tab: Registrations (Player Management)
+Create a data table to manage registered players.
+
+Columns: Name, Program, Status (Pending/Confirmed), Payment (Unpaid/Paid), Date.
+
+Actions:
+
+"Confirm Registration" button (toggles status).
+
+"Confirm Payment" button (toggles payment status).
+
+Export Feature: Add a button "Export to CSV" that downloads the currently filtered list of confirmed players.
+
+3. Tab: Schedule Manager
+A simple UI to update training times.
+
+List view of current sessions.
+
+"Edit" button to change time/date of specific sessions.
+
+4. Tab: Trip Manager (New)
+A section to manage "International Scouting Trips".
+
+Form to add a new Trip (Destination, Dates, Cost, Description).
+
+List view of active trips.
+
+Ability to see which players have "booked" a trip (mock data).
+
+Technical Implementation Notes
+Use lucide-react for icons (UserCheck, Calendar, Plane, Download).
+
+Store the admin data in zustand store so updates persist during the session.
+
+Ensure the "Export" function actually generates a browser-downloadable .csv file using a standard JavaScript blob method.
+
+Designer's Note for the User
+When you run this prompt, Replit will build the Admin Panel. Since we aren't connected to a real database (like Supabase) yet, the "Export" feature will download the mock data or state data currently in the app. This is perfect for a demo.
+
+Design Detail: For the "Rising Stars" section, I requested a "Trading Card" look. This fits your Benfica inspiration perfectly—making the players feel like signed pros.

@@ -17,46 +17,58 @@ interface Program {
 
 const programs: Program[] = [
   {
-    id: "private",
-    category: "TRAINING",
-    title: "Private Sessions",
-    price: "$175 + tax",
-    details: "120 Min | 1-on-1 Coaching",
-    description:
-      "Personalized elite coaching sessions focused on your individual development needs.",
-    icon: Users,
-    image:
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80",
-  },
-  {
-    id: "group",
-    category: "TRAINING",
-    title: "Group Sessions",
-    price: "$50 + tax",
-    details: "90 Min | Small Group Tactics",
-    description:
-      "High-intensity group training focused on tactical awareness and team play.",
-    icon: Users,
-    image:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
-  },
-  {
     id: "justplay",
     category: "TRAINING",
-    title: "Just Play",
-    price: "$50 + tax",
-    details: "120 Min | Sundays Only",
+    title: "Justplay",
+    price: "$50 + Tax",
+    details: "120m Session",
     description:
-      "Open play sessions for match practice and competitive gameplay every Sunday.",
+      "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.",
     icon: Clock,
     image:
       "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80",
   },
   {
+    id: "group",
+    category: "TRAINING",
+    title: "Group Session",
+    price: "$50 + Tax",
+    details: "90m Session",
+    description:
+      "Small group training to improve teamwork, positioning, and competitive play.",
+    icon: Users,
+    image:
+      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
+  },
+  {
+    id: "turf-rental",
+    category: "TRAINING",
+    title: "Turf Rental",
+    price: "From $70",
+    details: "1h Session",
+    description:
+      "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($70).",
+    icon: MapPin,
+    image:
+      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
+  },
+  {
+    id: "private",
+    category: "TRAINING",
+    title: "Private Session",
+    price: "$175 + Tax",
+    details: "2h Session",
+    description:
+      "One-on-one intensive training focused on individual technique and tactical understanding.",
+    icon: Dumbbell,
+    image:
+      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80",
+  },
+  {
     id: "gingamax",
     category: "TRAINING",
     title: "GingaMax Speed",
-    price: "$50 + tax",
+    price: "$50 + Tax",
     details: "Powered by Maximus",
     description:
       "Data-driven speed, agility, and acceleration training using elite performance science.",
@@ -68,10 +80,10 @@ const programs: Program[] = [
     id: "march-camp",
     category: "CAMPS",
     title: "March Break Camp",
-    price: "$500",
-    details: "March 11-15 | Intensive",
+    price: "$500 + HST",
+    details: "March 16-20 | 9am-4pm",
     description:
-      "Five-day intensive training camp during March Break. Full-day programming.",
+      "Five-day intensive training camp during March Break. Full-day programming. Space limited to 30 participants.",
     icon: Calendar,
     image:
       "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
@@ -80,10 +92,10 @@ const programs: Program[] = [
     id: "summer-camp",
     category: "CAMPS",
     title: "Summer Camp",
-    price: "$500/wk",
-    details: "July & September",
+    price: "$500/wk + HST",
+    details: "August Weekly Sessions",
     description:
-      "Weekly intensive summer camps. Multiple sessions available throughout July and September.",
+      "Weekly intensive summer camps. Multiple weeks available in August. Multi-child and multi-week discounts available.",
     icon: Calendar,
     image:
       "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&q=80",
@@ -91,9 +103,9 @@ const programs: Program[] = [
   {
     id: "december-camp",
     category: "CAMPS",
-    title: "December Camp",
-    price: "$500",
-    details: "December Break | Intensive",
+    title: "Christmas Camp",
+    price: "$300 + HST",
+    details: "Dec 28-30 | 3 Days",
     description:
       "End-of-year intensive camp. Perfect for maintaining peak performance during the off-season.",
     icon: Calendar,
@@ -233,8 +245,7 @@ export default function Programs() {
                             className="text-xs font-bold tracking-[0.15em] text-amber-500 uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 flex-shrink-0"
                             data-testid={`link-book-${program.id}`}
                           >
-                            BOOK NOW{" "}
-                            <ChevronRight size={12} />
+                            BOOK NOW <ChevronRight size={12} />
                           </Link>
                         </div>
                       </div>

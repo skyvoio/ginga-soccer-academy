@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -11,6 +11,7 @@ import GingaMax from "@/pages/GingaMax";
 import Schedule from "@/pages/Schedule";
 import Booking from "@/pages/Booking";
 import Login from "@/pages/Login";
+import Admin from "@/pages/Admin";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/schedule" component={Schedule} />
       <Route path="/booking" component={Booking} />
       <Route path="/login" component={Login} />
+      <Route path="/admin" component={Admin} />
       <Route>
         <div className="min-h-screen pt-32 text-center px-6">
           <h1 className="text-4xl font-black text-white uppercase tracking-tighter font-display">
@@ -36,13 +38,16 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isAdmin = location.startsWith("/admin");
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="bg-[#0a0a0a] min-h-screen text-white font-sans selection:bg-amber-500 selection:text-black">
-          <Navbar />
+          {!isAdmin && <Navbar />}
           <Router />
-          <Footer />
+          {!isAdmin && <Footer />}
         </div>
         <Toaster />
       </TooltipProvider>

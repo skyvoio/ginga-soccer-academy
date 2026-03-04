@@ -23,6 +23,15 @@ function verifyPassword(password: string, stored: string): boolean {
   return hash === testHash;
 }
 
+async function seedAdminUser() {
+  const existing = await storage.getUserByUsername("admin");
+  if (!existing) {
+    const hashedPassword = hashPassword("ginga2026");
+    await storage.createUser({ username: "admin", password: hashedPassword });
+    console.log("Admin user seeded: username=admin");
+  }
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -71,6 +80,8 @@ export async function registerRoutes(
     }
   });
 
+  await seedAdminUser();
+
   app.post("/api/auth/register", async (req, res) => {
     try {
       const parsed = insertUserSchema.safeParse(req.body);
@@ -78,6 +89,11 @@ export async function registerRoutes(
         return res.status(400).json({ message: "Username and password are required" });
       }
       const { username, password } = parsed.data;
+
+      if (username.toLowerCase() === "admin") {
+        return res.status(400).json({ message: "Username not available" });
+      }
+
       const existing = await storage.getUserByUsername(username);
       if (existing) {
         return res.status(400).json({ message: "Username already taken" });
