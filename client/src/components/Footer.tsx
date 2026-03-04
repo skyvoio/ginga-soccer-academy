@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { MapPin, Mail, Instagram, Youtube } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
+import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
 export default function Footer() {
   return (
@@ -8,11 +9,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-6 w-6 bg-gradient-to-br from-amber-400 to-amber-600 rotate-45" />
-              <span className="text-xl font-black tracking-tighter text-white uppercase font-display">
-                GINGA<span className="text-amber-500">.</span>
-              </span>
+            <div className="mb-6">
+              <img src={logoSrc} alt="Ginga Soccer Academy" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-neutral-500 text-sm leading-relaxed mb-6">
               Premium soccer training academy. Developing elite players through

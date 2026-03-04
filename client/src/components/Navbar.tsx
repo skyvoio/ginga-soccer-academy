@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
+import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
 const navLinks = [
   { name: "PROGRAMS", path: "/programs" },
@@ -47,10 +48,7 @@ export default function Navbar() {
           className="flex items-center gap-3 group"
           data-testid="link-home"
         >
-          <div className="h-8 w-8 bg-gradient-to-br from-amber-400 to-amber-600 rotate-45 group-hover:rotate-0 transition-transform duration-700" />
-          <span className="text-2xl font-black tracking-tighter text-white uppercase font-display">
-            GINGA<span className="text-amber-500">.</span>
-          </span>
+          <img src={logoSrc} alt="Ginga Soccer Academy" className="h-12 w-auto object-contain" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
