@@ -1,4 +1,11 @@
 import { create } from "zustand";
+import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
+import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
+import diagoImg from "@assets/Diago_Delgado_1773607422404.jpeg";
+import lucasDiasImg from "@assets/Lucas_Dias__1773607422405.jpeg";
+import polImg from "@assets/Pol_Rivera_1773607422405.jpeg";
+import lucasArecoImg from "@assets/Lucas_Areco_1773607422404.jpeg";
+import carterImg from "@assets/Carter_Tavares_1773607422404.jpeg";
 
 export interface RisingStar {
   id: string;
@@ -57,13 +64,13 @@ interface AdminState {
 
 export const useAdminStore = create<AdminState>((set) => ({
   risingStars: [
-    { id: "rs1", name: "Petra Bandula", position: "Attacker", club: "Ginga Academy", bio: "Rising star attacker.", image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&q=80" },
-    { id: "rs2", name: "Viktoria Brodar", position: "Attacker", club: "Ginga Academy", bio: "Skilled attacker.", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80" },
-    { id: "rs3", name: "Diago Delgado", position: "Attacker", club: "Rio Ave FC Porto", bio: "Rising star attacker.", image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=400&q=80" },
-    { id: "rs4", name: "Lucas Dias", position: "Attacker", club: "Sporting Portugal", bio: "Technical forward with vision.", image: "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=400&q=80" },
-    { id: "rs5", name: "Pol Rivera Lopez", position: "Attacker", club: "RCD Espanyol de Barcelona", bio: "Creative playmaker.", image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80" },
-    { id: "rs6", name: "Jayden Newberry", position: "Attacker", club: "Ginga Academy", bio: "Dynamic young talent.", image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&q=80" },
-    { id: "rs7", name: "Carter Tavares/Roache", position: "Attacker", club: "Italy / AC Perugia Calcio", bio: "Dual-national prospect.", image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400&q=80" },
+    { id: "rs1", name: "Petra Bandula", position: "Attacker", club: "Ginga Academy", bio: "Rising star attacker.", image: petraImg },
+    { id: "rs2", name: "Viktoria Brodar", position: "Attacker", club: "Ginga Academy", bio: "Skilled attacker.", image: viktoriaImg },
+    { id: "rs3", name: "Diago Delgado", position: "Attacker", club: "Rio Ave FC Porto", bio: "Rising star attacker.", image: diagoImg },
+    { id: "rs4", name: "Lucas Dias", position: "Attacker", club: "Sporting Portugal", bio: "Technical forward with vision.", image: lucasDiasImg },
+    { id: "rs5", name: "Pol Rivera Lopez", position: "Attacker", club: "RCD Espanyol de Barcelona", bio: "Creative playmaker.", image: polImg },
+    { id: "rs6", name: "Lucas Areco", position: "Attacker", club: "Ginga Academy", bio: "Dynamic young talent.", image: lucasArecoImg },
+    { id: "rs7", name: "Carter Tavares/Roache", position: "Attacker", club: "Italy / AC Perugia Calcio", bio: "Dual-national prospect.", image: carterImg },
   ],
   media: [
     { id: "m1", title: "Adjusting to Playing Soccer Abroad", category: "Interviews", type: "video", image: "https://img.youtube.com/vi/Fsn6Q_pUzSE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/Fsn6Q_pUzSE" },
