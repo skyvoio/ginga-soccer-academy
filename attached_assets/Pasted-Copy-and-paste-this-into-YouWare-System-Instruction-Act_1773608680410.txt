@@ -1,0 +1,187 @@
+Copy and paste this into YouWare:
+System Instruction:
+Act as a Senior React Developer. Please completely replace the content and data structure of the "Programs / Services" page. Remove all the old, brief descriptions and replace them with the comprehensive, updated service cards detailed below.
+
+Design/Layout Requirements:
+
+Maintain a clean, professional "Card" or "List" layout for each service.
+
+For services with long descriptions (e.g., Ginga Private Training, Ginga Elite Group Training), use bullet points where applicable to make the text scannable.
+
+Every single service (except Running & Agility) MUST include the exact Cancellation Policy block at the bottom of its description. Use bold headers for the policy points to make them stand out.
+
+Content to Implement:
+1. Ginga Private Training
+
+Duration: 2 hr | MAR. - DEC.
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $175 + tax
+
+Description: Unlock Your Potential with Personalized Soccer Training. Discover the benefits of private training and small group sessions, tailored for players of all ages.
+
+Details:
+
+Assessment for Personalized Programs: In the initial session, each player undergoes a comprehensive assessment to craft a personalized program addressing strengths and areas for development.
+
+Enhance Ball Control: We prioritize refining ball control—a fundamental aspect of the game.
+
+Build Confidence: Targeted exercises refine technical skills and build confidence.
+
+Elevate Your Game: Accelerate your ability to reach the next level, mastering advanced techniques and tactics.
+
+Home Exercises: Personalized home exercises are provided for continuous improvement.
+
+Frequency and Duration: We recommend 1-2 sessions a week for a minimum of 10 weeks.
+
+Button: Book Now
+
+Add Cancellation Policy block at the bottom.
+
+2. Ginga Elite Group Training (MON-FRI)
+
+Duration: MAR. - DEC. (Min 6 Months)
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: From $50 + tax
+
+Description: Elevate Your Player's Performance with Ginga Training Programs. Immerse in training methodologies inspired by Europe and South America.
+
+Program Highlights:
+
+Stretches/Warm-Ups: Comprehensive physical and mental preparation.
+
+Skill Development: Passing, heading, dribbling, trapping, shooting, defensive and attacking play.
+
+Communication: Fostering effective on-field communication.
+
+Scrimmage: Practical application through controlled scrimmages.
+
+Note: Training runs March-December, omitting August (camp focus). September training included.
+
+Button: Read More
+
+Add Cancellation Policy block at the bottom.
+
+3. Running & Agility (GingaMax)
+
+Duration: 1 hr
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $50 + tax
+
+Description: Specialized conditioning to enhance speed, stamina, and on-field agility. Powered by Maximus Performance.
+
+Button: View Program
+(No cancellation policy needed on this card as it links to the main program page).
+
+4. Turf Rental
+
+Duration: 1 hr
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: From $100 + tax
+
+Description: Rent our premium turf field for your own team practice or recreational game.
+
+Pricing Options:
+
+Full Turf - Field 1 (36ft W x 102ft L): $150 + tax/hr
+
+3/4 Turf - Field 1 (36ft W x 80ft L): $100 + tax/hr
+
+Mini Field (20ft W x 50ft L): $70 + tax/hr
+
+Available Time Slots:
+
+Mon: 9:00 PM, 10:00 PM
+
+Tues: 8:00 PM, 9:00 PM, 10:00 PM
+
+Wed: 8:00 PM, 9:00 PM, 10:00 PM
+
+Thurs: 8:00 PM, 9:00 PM, 10:00 PM
+
+Fri: 9:00 PM, 10:00 PM
+
+Button: Book Now
+
+Add Cancellation Policy block at the bottom.
+
+5. Just Play & Groups
+
+Duration: 90m - 120m
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $50 + tax
+
+Description: Join our Just Play sessions and Group trainings designed to improve game intelligence and teamwork.
+
+Groups (90min): Small group training to improve teamwork, positioning, and competitive play.
+
+Justplay (120min): Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility. Available on Sundays Only.
+
+Button: Book Now
+
+Add Cancellation Policy block at the bottom.
+
+CAMPS SECTION
+6. Ginga March Break Camp
+
+Date: March 16-20, 2026
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $500 + tax
+
+Program Focus: Dribbling, Passing, Control, 1v1s, Attacking/Defending, Small Sided Games, Freestyle, Co-ordination/Agility.
+
+What to Bring: Indoor/Outdoor Cleats, Running Shoes, Lunch, Water.
+
+Contact: INFO@GINGASOCCER.CA
+
+Add Cancellation Policy block at the bottom.
+
+7. Summer Camp August 2026
+
+Dates: August 3-7, 10-14, 17-21, 24-28
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $500 + tax per week
+
+Program Focus: Join us for our comprehensive Summer Camp running through August 2026. Develop your skills, make new friends, and enjoy the beautiful game.
+
+August Special Offer:
+
+Book all 4 weeks → Get 1 week FREE!
+
+Book 3 weeks → Get $150 OFF!
+
+Button: Contact Us
+
+Add Cancellation Policy block at the bottom.
+
+8. Christmas Camp
+
+Date: December 28-30, 2026
+
+Location: 1197 Unit 5 Union Street, Kitchener, Ontario
+
+Price: $300 + tax
+
+Program Focus: Join us for a festive end-of-year camp during the holiday break. Perfect for staying sharp during the off-season.
+
+Button: Contact Us
+
+Add Cancellation Policy block at the bottom.
+
+EXACT CANCELLATION POLICY TEXT (To be used where requested above):
+Registration Deadline: Due to field constraints, our program has limited registration. Secure your spot promptly.
+Refund Policy: Ginga Soccer operates on a no-refund policy.
+Weather Conditions: Sessions are canceled only in severe weather conditions. We will make every effort to notify you via email and reschedule any missed sessions due to weather. Ginga Soccer is not responsible for refunds if rescheduling becomes challenging.

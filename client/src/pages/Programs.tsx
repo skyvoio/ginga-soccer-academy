@@ -1,6 +1,11 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-react";
+import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
+import groupImg from "@assets/Ginga_Group_1773867449495.JPG";
+import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
+import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
+import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
 
 type ProgramCategory = "TRAINING" | "CAMPS" | "RENTALS";
 
@@ -25,8 +30,7 @@ const programs: Program[] = [
     description:
       "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.",
     icon: Clock,
-    image:
-      "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80",
+    image: justplayImg,
   },
   {
     id: "group",
@@ -37,8 +41,7 @@ const programs: Program[] = [
     description:
       "Small group training to improve teamwork, positioning, and competitive play.",
     icon: Users,
-    image:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
+    image: groupImg,
   },
   {
     id: "turf-rental",
@@ -49,8 +52,7 @@ const programs: Program[] = [
     description:
       "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($70).",
     icon: MapPin,
-    image:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
+    image: justplayImg,
   },
   {
     id: "private",
@@ -61,8 +63,7 @@ const programs: Program[] = [
     description:
       "One-on-one intensive training focused on individual technique and tactical understanding.",
     icon: Dumbbell,
-    image:
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80",
+    image: groupImg,
   },
   {
     id: "gingamax",
@@ -73,8 +74,7 @@ const programs: Program[] = [
     description:
       "Data-driven speed, agility, and acceleration training using elite performance science.",
     icon: Dumbbell,
-    image:
-      "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&q=80",
+    image: agilityImg,
   },
   {
     id: "march-camp",
@@ -85,8 +85,7 @@ const programs: Program[] = [
     description:
       "Five-day intensive training camp during March Break. Full-day programming. Space limited to 30 participants.",
     icon: Calendar,
-    image:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
+    image: marchCampImg,
   },
   {
     id: "summer-camp",
@@ -97,8 +96,7 @@ const programs: Program[] = [
     description:
       "Weekly intensive summer camps. Multiple weeks available in August. Multi-child and multi-week discounts available.",
     icon: Calendar,
-    image:
-      "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&q=80",
+    image: summerCampImg,
   },
   {
     id: "december-camp",

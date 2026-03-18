@@ -11,10 +11,10 @@ import {
   Dumbbell,
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
-import justplayImg from "@assets/Ginga_Justplay__1772628239456.png";
+import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
-import privateSessionImg from "@assets/Ginga_Soccer_Private_Session_Theo_soccer_copy_1772628780022.jpeg";
+import privateSessionImg from "@assets/Ginga_Group_1773867449495.JPG";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
 import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
 
@@ -138,7 +138,7 @@ export default function Home() {
     const onReady = () => {
       if (playerRef.current) return;
       playerRef.current = new (window as any).YT.Player("hero-yt-player", {
-        videoId: "yB-thID2N9E",
+        videoId: "JoYCUpivuUQ",
         playerVars: {
           autoplay: 1,
           mute: 1,

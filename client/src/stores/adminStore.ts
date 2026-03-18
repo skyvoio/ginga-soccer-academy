@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
+import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
+import newsSummerImg from "@assets/Ginga_News_Soccer_Summer_Camp_1773867574216.jpg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
 import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
 import diagoImg from "@assets/Diago_Delgado_1773607422404.jpeg";
@@ -85,7 +88,7 @@ export const useAdminStore = create<AdminState>((set) => ({
       date: "Mar 1, 2026",
       excerpt: "Secure your spot for the most intensive summer training experience in the region.",
       content: "Secure your spot for the most intensive summer training experience in the region. Our summer camps run weekly throughout August with professional coaching staff.",
-      image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
+      image: newsSummerImg,
     },
     {
       id: "n2",
@@ -93,7 +96,7 @@ export const useAdminStore = create<AdminState>((set) => ({
       date: "Feb 20, 2026",
       excerpt: "Our partnership with Maximus Performance brings cutting-edge speed training technology.",
       content: "Our partnership with Maximus Performance brings cutting-edge speed training technology to Ginga Soccer Academy.",
-      image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80",
+      image: newsHolidayImg,
     },
     {
       id: "n3",
@@ -101,7 +104,7 @@ export const useAdminStore = create<AdminState>((set) => ({
       date: "Feb 15, 2026",
       excerpt: "Three academy players earn spots on the Ontario Provincial Select Team.",
       content: "Three of our academy players have been selected for the Ontario Provincial Select Team, showcasing the caliber of talent at Ginga Soccer Academy.",
-      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
+      image: newsCoachImg,
     },
     {
       id: "n4",
