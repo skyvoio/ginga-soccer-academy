@@ -84,28 +84,48 @@ export default function About() {
                 KEVIN DE SERPA
               </h2>
               <p className="text-neutral-400 text-lg mb-8">
-                10-year International Pro Career | Sporting CP (B) & FK Haugesund
+                10-year International Pro Career | Canadian National Team | FC Penafiel · FK Haugesund · Benfica U18
               </p>
 
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {[
-                  { year: "1998", text: "Signed pro with Toronto Lynx." },
-                  { year: "GLOBAL", text: "E.C Commercial (Brazil), FC Penafiel (Portugal - 2nd Div Champ)." },
-                  { year: "NORDIC", text: "FK Haugesund (Norway - Promotion), 1st Team All-Star." },
-                  { year: "INT'L", text: "U17 World Cup Qualifiers (Goals vs Mexico/USA)." },
+                  {
+                    label: "NATIONAL TEAM",
+                    text: "Represented U17 Canadian National Team in CONCACAF World Cup Qualifiers, scoring against Mexico, Netherlands Antilles, and USA. Played internationally in Bermuda and Portugal, including a stint with Benfica U18.",
+                  },
+                  {
+                    label: "1998",
+                    text: "Signed first professional contract with Toronto Lynx. Continued with the U20 Canadian National Team, A-League's Toronto Lynx, and Livingston FC in Scotland.",
+                  },
+                  {
+                    label: "1999",
+                    text: "Ventured to Brazil with E.C Commercial. Joined Mississauga Olympians and trained in Portugal and Spain.",
+                  },
+                  {
+                    label: "2004",
+                    text: "Signed a 5-year contract with FC Penafiel in Portugal, winning the 2nd Division championship in the inaugural year. Brief stint with Mirandela in Portugal.",
+                  },
+                  {
+                    label: "2005",
+                    text: "Signed a 1-year contract with FK Haugesund in Norway, achieving promotion to 1st Division. Selected as first team All-Star in 2nd Division Norway.",
+                  },
+                  {
+                    label: "2006–2007",
+                    text: "Overcame an ankle injury to contribute to Stord Sunnhordland. Trial with top-division club Brann (Norway). Secured a 1-year contract with Mandalskameratene in 1st Division Norway. Represented Canada in futsal in Brazil before a career-ending shin fracture in 2007.",
+                  },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    transition={{ duration: 0.5, delay: i * 0.07 }}
                     className="flex gap-6 items-start"
                     data-testid={`timeline-item-${i}`}
                   >
-                    <div className="flex-shrink-0 w-20">
-                      <span className="text-amber-500 text-xs font-bold tracking-[0.2em] font-display">
-                        {item.year}
+                    <div className="flex-shrink-0 w-24">
+                      <span className="text-amber-500 text-[10px] font-bold tracking-[0.2em] font-display leading-tight">
+                        {item.label}
                       </span>
                     </div>
                     <div className="flex-1 border-l border-white/10 pl-6">
@@ -194,6 +214,93 @@ export default function About() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent" />
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 bg-[#0a0a0a]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+              FINDING INSPIRATION IN EVERY TURN
+            </p>
+            <h2
+              className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter font-display"
+              data-testid="text-ginga-story-title"
+            >
+              THE ROOTS OF GINGA
+            </h2>
+            <p className="mt-4 text-neutral-500 text-sm font-mono tracking-widest">
+              A JOURNEY THROUGH TIME AND CULTURE
+            </p>
+          </motion.div>
+
+          <div className="space-y-10">
+            {[
+              {
+                label: "ORIGINS",
+                body: "Ginga finds its origins in the Kikongo language, spoken in parts of present-day Angola and the Congo Kingdom. The Portuguese, arriving in the early fifteenth century, played a role in shaping the cultural connections that brought Ginga into the Portuguese language.",
+              },
+              {
+                label: "NZINGA, MBUNDO QUEEN",
+                body: "The metonymic effect of Nzinga, the first woman to lead the Mbundo Kingdom, left an imprint on the Portuguese language as a reference to warriors and a secret male society. Referred to as 'Ginga' by the Portuguese, these Ngingas Warriors played a crucial role, according to African historian Joseph Miller. The word 'Jinga,' with its semantic focus on constant movement, also contributed to the development of Ginga.",
+              },
+              {
+                label: "BRAZILIAN SPIRIT",
+                body: "In Brazilian Portuguese, Ginga is a slang word synonymous with shaking the body with skill. It represents a search for a balanced life, embodied by the flow and rhythm of movement — the fluidity of motion seen in athletes like Ronaldo and Michael Jordan, embodying the rhythm of life.",
+              },
+              {
+                label: "LIFE FORCE",
+                body: "Ginga serves as the life force of Afro-Brazilian people, resonating with Afro-Americans and Native Americans. For Rio de Janeiro resident Jefferson, Ginga is reflected in his way of walking, speaking, and dressing — a slow, dancing, and light-hearted approach to life.",
+              },
+              {
+                label: "RHYTHM & EXCELLENCE",
+                body: "Music plays a pivotal role in Ginga's essence, symbolizing rhythm present in everything — from the sea to the wind through the trees. Tuning into this rhythm harmonizes the physical and spiritual selves, allowing individuals to achieve excellence. Brazilian footballers, hailed as the best globally, attribute their unique style and fluency of motion to the power of Ginga.",
+              },
+              {
+                label: "THE GIFT",
+                body: "In essence, Ginga is a gift from the divine, accessible to all who are willing to tune in and receive its transformative energy.",
+              },
+            ].map((section, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
+                className="flex gap-8 items-start"
+                data-testid={`ginga-story-section-${i}`}
+              >
+                <div className="flex-shrink-0 w-32 pt-1">
+                  <span className="text-amber-500 text-[10px] font-bold tracking-[0.2em] font-display leading-tight">
+                    {section.label}
+                  </span>
+                </div>
+                <div className="flex-1 border-l border-amber-500/20 pl-8">
+                  <p className="text-neutral-400 text-base leading-relaxed">
+                    {section.body}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="mt-20 text-center"
+          >
+            <p className="text-amber-500/60 text-sm font-mono tracking-[0.3em] italic">
+              "THE WAY TO PLAY BEAUTIFUL SOCCER"
+            </p>
+          </motion.div>
         </div>
       </section>
     </div>
