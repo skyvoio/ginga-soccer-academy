@@ -18,7 +18,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-neutral-500 text-sm">
               <MapPin size={14} className="text-amber-500 flex-shrink-0" />
-              <span>1197 Unit 5 Union Street, Kitchener, ON</span>
+              <span>1197 Union Street, Unit 5, Kitchener, ON</span>
             </div>
           </div>
 

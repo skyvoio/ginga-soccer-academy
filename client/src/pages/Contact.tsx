@@ -186,7 +186,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="text-white font-bold text-sm uppercase font-display mb-1">LOCATION</h3>
-                    <p className="text-neutral-300 text-sm">1197 Unit 5 Union Street</p>
+                    <p className="text-neutral-300 text-sm">1197 Union Street, Unit 5</p>
                     <p className="text-neutral-300 text-sm">Kitchener, Ontario</p>
                   </div>
                 </div>

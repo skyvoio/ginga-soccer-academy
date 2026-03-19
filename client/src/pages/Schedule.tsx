@@ -196,7 +196,7 @@ export default function Schedule() {
                   LOCATION
                 </h3>
                 <p className="text-neutral-400 text-sm">
-                  1197 Unit 5 Union Street, Kitchener, Ontario
+                  1197 Union Street, Unit 5, Kitchener, Ontario
                 </p>
               </div>
             </div>
