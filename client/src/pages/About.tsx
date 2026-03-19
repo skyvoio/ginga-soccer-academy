@@ -47,7 +47,7 @@ export default function About() {
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="flex gap-3">
                   <a
-                    href="https://youtube.com/@kevindeserpa-mrginga"
+                    href="https://www.youtube.com/@kevindeserpa-mrginga"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-amber-500 hover:border-amber-500/50 transition-colors"
@@ -56,7 +56,7 @@ export default function About() {
                     <Youtube size={18} />
                   </a>
                   <a
-                    href="https://instagram.com/gingasoccerinc"
+                    href="https://www.instagram.com/gingasoccerinc/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-amber-500 hover:border-amber-500/50 transition-colors"
@@ -137,10 +137,26 @@ export default function About() {
                 ))}
               </div>
 
-              <div className="mt-8 flex items-center gap-2 text-neutral-500 text-xs font-mono">
-                <Youtube size={14} className="text-amber-500" /> @kevindeserpa-mrginga
-                <span className="mx-2">|</span>
-                <Instagram size={14} className="text-amber-500" /> @gingasoccerinc
+              <div className="mt-8 flex items-center gap-4">
+                <a
+                  href="https://www.youtube.com/@kevindeserpa-mrginga"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-neutral-500 hover:text-amber-500 transition-colors text-xs font-mono"
+                  data-testid="link-kevin-youtube-text"
+                >
+                  <Youtube size={14} className="text-amber-500" /> @kevindeserpa-mrginga
+                </a>
+                <span className="text-white/10">|</span>
+                <a
+                  href="https://www.instagram.com/gingasoccerinc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-neutral-500 hover:text-amber-500 transition-colors text-xs font-mono"
+                  data-testid="link-kevin-instagram-text"
+                >
+                  <Instagram size={14} className="text-amber-500" /> @gingasoccerinc
+                </a>
               </div>
             </motion.div>
           </div>

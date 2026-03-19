@@ -79,21 +79,27 @@ export default function Footer() {
               </a>
               <div className="flex gap-4 mt-4">
                 <a
-                  href="#"
+                  href="https://www.instagram.com/gingasoccerinc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-neutral-500 hover:text-amber-500 transition-colors"
                   data-testid="link-instagram"
                 >
                   <Instagram size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@kevindeserpa-mrginga"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-neutral-500 hover:text-amber-500 transition-colors"
                   data-testid="link-youtube"
                 >
                   <Youtube size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/gingasoccerinc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-neutral-500 hover:text-amber-500 transition-colors"
                   data-testid="link-tiktok"
                 >
