@@ -17,55 +17,63 @@ const schedule: DaySchedule[] = [
   {
     day: "MONDAY",
     slots: [
-      { time: "4:00 PM - 5:30 PM", program: "Group Session", type: "group" },
-      { time: "5:30 PM - 7:30 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "7:30 PM - 9:00 PM", program: "GingaMax Speed", type: "gingamax" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "5:00 PM - 6:30 PM", program: "Group Session", type: "group", notes: "2017–2018" },
+      { time: "6:30 PM - 8:00 PM", program: "Group Session", type: "group", notes: "2015–2016" },
     ],
   },
   {
     day: "TUESDAY",
     slots: [
-      { time: "4:00 PM - 5:30 PM", program: "Group Session", type: "group" },
-      { time: "5:30 PM - 7:30 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "7:30 PM - 9:00 PM", program: "Open Turf Rental", type: "open" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
     ],
   },
   {
     day: "WEDNESDAY",
     slots: [
-      { time: "4:00 PM - 5:30 PM", program: "Group Session", type: "group" },
-      { time: "5:30 PM - 7:30 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "7:30 PM - 9:00 PM", program: "GingaMax Speed", type: "gingamax" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "5:00 PM - 6:30 PM", program: "Group Session", type: "group", notes: "2009–2011" },
+      { time: "6:30 PM - 8:00 PM", program: "Group Session", type: "group", notes: "2015–2016" },
     ],
   },
   {
     day: "THURSDAY",
     slots: [
-      { time: "4:00 PM - 5:30 PM", program: "Group Session", type: "group" },
-      { time: "5:30 PM - 7:30 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "7:30 PM - 9:00 PM", program: "Open Turf Rental", type: "open" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "6:30 PM - 8:00 PM", program: "Group Session", type: "group", notes: "2012–2014" },
     ],
   },
   {
     day: "FRIDAY",
     slots: [
-      { time: "4:00 PM - 6:00 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "6:00 PM - 9:00 PM", program: "Open Turf Rental", type: "open" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "5:00 PM - 6:30 PM", program: "Group Session", type: "group", notes: "2009–2011" },
+      { time: "6:30 PM - 8:00 PM", program: "Group Session", type: "group", notes: "2015–2016" },
     ],
   },
   {
     day: "SATURDAY",
     slots: [
-      { time: "9:00 AM - 12:00 PM", program: "Private Sessions", type: "private", notes: "By appointment" },
-      { time: "12:00 PM - 3:00 PM", program: "Open Turf Rental", type: "open" },
-      { time: "3:00 PM - 5:00 PM", program: "GingaMax Speed", type: "gingamax" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
     ],
   },
   {
     day: "SUNDAY",
     slots: [
-      { time: "10:00 AM - 12:00 PM", program: "Just Play", type: "justplay" },
-      { time: "12:00 PM - 2:00 PM", program: "Open Turf Rental", type: "open" },
+      { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "3:00 PM - 5:00 PM", program: "Just Play", type: "justplay" },
     ],
   },
 ];
@@ -122,9 +130,7 @@ export default function Schedule() {
             {[
               { type: "private", label: "Private" },
               { type: "group", label: "Group" },
-              { type: "gingamax", label: "GingaMax" },
               { type: "justplay", label: "Just Play" },
-              { type: "open", label: "Open Rental" },
             ].map((item) => (
               <div key={item.type} className="flex items-center gap-2 text-xs text-neutral-400">
                 <div className={`w-2 h-2 rounded-full ${typeDots[item.type]}`} />
@@ -204,10 +210,11 @@ export default function Schedule() {
                   IMPORTANT NOTICE
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed">
-                  Schedule is subject to change during camp weeks (March,
-                  July, September, December). Private sessions are available by
-                  appointment only. Please contact info@gingasoccer.ca for
-                  scheduling.
+                  Schedule is subject to change during camp weeks (March, August, December). Private sessions are available by appointment only. Please contact{" "}
+                  <a href="mailto:info@gingasoccer.ca" className="text-amber-500 hover:text-amber-400 transition-colors">
+                    info@gingasoccer.ca
+                  </a>{" "}
+                  for scheduling.
                 </p>
               </div>
             </div>

@@ -48,10 +48,10 @@ const programs: Program[] = [
     id: "turf-rental",
     category: "TRAINING",
     title: "Turf Rental",
-    price: "From $70",
+    price: "From $60/hr",
     details: "1h Session",
     description:
-      "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($70).",
+      "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($60/hr).",
     icon: MapPin,
     image: justplayImg,
   },
