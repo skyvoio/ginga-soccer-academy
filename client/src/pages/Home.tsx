@@ -14,7 +14,7 @@ import { useAdminStore } from "@/stores/adminStore";
 import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
-import privateSessionImg from "@assets/Ginga_Group_1773867449495.JPG";
+import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
 import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
 

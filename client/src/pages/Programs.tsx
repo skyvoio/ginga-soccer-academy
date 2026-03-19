@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-react";
 import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import groupImg from "@assets/Ginga_Group_1773867449495.JPG";
+import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
@@ -63,7 +64,7 @@ const programs: Program[] = [
     description:
       "One-on-one intensive training focused on individual technique and tactical understanding.",
     icon: Dumbbell,
-    image: groupImg,
+    image: privateSessionImg,
   },
   {
     id: "gingamax",
