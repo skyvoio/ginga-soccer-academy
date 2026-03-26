@@ -10,6 +10,12 @@ import polImg from "@assets/Pol_Rivera_1773607422405.jpeg";
 import lucasArecoImg from "@assets/Lucas_Areco_1773607422404.jpeg";
 import carterImg from "@assets/Carter_Tavares_1773607422404.jpeg";
 
+export interface ContentBlock {
+  key: string;
+  label: string;
+  value: string;
+}
+
 export interface RisingStar {
   id: string;
   name: string;
@@ -47,10 +53,13 @@ export interface Registration {
 }
 
 interface AdminState {
+  contentBlocks: ContentBlock[];
   risingStars: RisingStar[];
   media: MediaItem[];
   news: NewsPost[];
   registrations: Registration[];
+
+  updateContentBlock: (key: string, value: string) => void;
 
   addRisingStar: (star: Omit<RisingStar, "id">) => void;
   removeRisingStar: (id: string) => void;
@@ -66,6 +75,26 @@ interface AdminState {
 }
 
 export const useAdminStore = create<AdminState>((set) => ({
+  contentBlocks: [
+    { key: "home_hero_tagline", label: "Home — Hero Tagline", value: "Train Like The World Is Watching." },
+    { key: "home_hero_sub", label: "Home — Hero Subtitle", value: "Premium soccer training for athletes who demand more. Based in Kitchener, Ontario." },
+    { key: "programs_intro", label: "Programs — Intro Text", value: "From private coaching to competitive camps, find the program that matches your ambition." },
+    { key: "justplay_desc", label: "Programs — Justplay Description", value: "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility." },
+    { key: "group_desc", label: "Programs — Group Session Description", value: "Small group training to improve teamwork, positioning, and competitive play." },
+    { key: "private_desc", label: "Programs — Private Session Description", value: "One-on-one intensive training focused on individual technique and tactical understanding." },
+    { key: "march_camp_desc", label: "Camps — March Break Description", value: "Five-day intensive training camp during March Break. Full-day programming from 9am to 4pm. Space is limited — register early to secure your spot." },
+    { key: "summer_camp_promo", label: "Camps — Summer Camp Promo Text", value: "Book all 4 weeks and get 1 week FREE, or book 3 weeks and save $150." },
+    { key: "christmas_camp_desc", label: "Camps — Christmas Camp Description", value: "End-of-year intensive camp over 3 days. Perfect for maintaining peak performance and finishing the year strong." },
+    { key: "about_tagline", label: "About — Page Tagline", value: "Built on love for the game. Rooted in Brazilian football culture." },
+    { key: "contact_address", label: "Contact — Address", value: "1197 Union Street, Unit 5, Kitchener, Ontario" },
+    { key: "contact_email", label: "Contact — Email", value: "info@gingasoccer.ca" },
+  ],
+
+  updateContentBlock: (key, value) =>
+    set((state) => ({
+      contentBlocks: state.contentBlocks.map((b) => (b.key === key ? { ...b, value } : b)),
+    })),
+
   risingStars: [
     { id: "rs1", name: "Petra Bandula", position: "Attacker", club: "Ginga Academy", bio: "Rising star attacker.", image: petraImg },
     { id: "rs2", name: "Viktoria Brodar", position: "Attacker", club: "Ginga Academy", bio: "Skilled attacker.", image: viktoriaImg },

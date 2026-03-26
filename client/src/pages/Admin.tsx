@@ -17,15 +17,18 @@ import {
   DollarSign,
   Clock,
   Menu,
+  FileText,
+  Save,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminStore, type MediaItem } from "@/stores/adminStore";
 import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
-type Tab = "dashboard" | "registrations" | "risingstars" | "media" | "news";
+type Tab = "dashboard" | "content" | "registrations" | "risingstars" | "media" | "news";
 
 const sidebarItems: { key: Tab; label: string; icon: typeof LayoutDashboard }[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "content", label: "Content Editor", icon: FileText },
   { key: "risingstars", label: "Rising Stars", icon: Star },
   { key: "media", label: "Media", icon: Image },
   { key: "news", label: "News", icon: Newspaper },
@@ -55,6 +58,8 @@ export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const {
+    contentBlocks,
+    updateContentBlock,
     registrations,
     risingStars,
     media,
@@ -68,6 +73,9 @@ export default function Admin() {
     addNews,
     removeNews,
   } = useAdminStore();
+
+  const [editedBlocks, setEditedBlocks] = useState<Record<string, string>>({});
+  const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
 
   const [newStar, setNewStar] = useState({ name: "", position: "", club: "", bio: "", image: "" });
   const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as MediaItem["category"], type: "image" as "image" | "video", image: "", videoUrl: "" });
@@ -239,6 +247,59 @@ export default function Admin() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "content" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="mb-8">
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display" data-testid="text-content-heading">CONTENT EDITOR</h2>
+                <p className="text-neutral-500 text-sm mt-2">Edit key text blocks that appear across the public site.</p>
+              </div>
+              <div className="space-y-6">
+                {contentBlocks.map((block) => {
+                  const draft = editedBlocks[block.key] ?? block.value;
+                  const isDirty = draft !== block.value;
+                  const isSaved = savedKeys.has(block.key);
+                  return (
+                    <div key={block.key} className="bg-[#171717] border border-white/5 p-6" data-testid={`card-content-${block.key}`}>
+                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] block mb-3 font-display">
+                        {block.label}
+                      </label>
+                      <textarea
+                        value={draft}
+                        onChange={(e) => {
+                          setEditedBlocks((prev) => ({ ...prev, [block.key]: e.target.value }));
+                          setSavedKeys((prev) => { const next = new Set(prev); next.delete(block.key); return next; });
+                        }}
+                        rows={draft.length > 120 ? 4 : 2}
+                        className="w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors resize-none font-mono"
+                        data-testid={`textarea-content-${block.key}`}
+                      />
+                      <div className="flex items-center justify-between mt-3">
+                        <span className="text-xs text-neutral-600 font-mono">{block.key}</span>
+                        <button
+                          onClick={() => {
+                            updateContentBlock(block.key, draft);
+                            setSavedKeys((prev) => new Set([...prev, block.key]));
+                          }}
+                          disabled={!isDirty && !isSaved}
+                          className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] transition-all duration-200 ${
+                            isSaved
+                              ? "bg-green-500/10 text-green-400 border border-green-500/30"
+                              : isDirty
+                              ? "bg-amber-500 text-black hover:bg-amber-400"
+                              : "bg-neutral-800 text-neutral-600 cursor-not-allowed"
+                          }`}
+                          data-testid={`button-save-${block.key}`}
+                        >
+                          {isSaved ? <><Check size={12} /> SAVED</> : <><Save size={12} /> SAVE</>}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </motion.div>
           )}

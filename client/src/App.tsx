@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FloatingAdminButton from "@/components/FloatingAdminButton";
 import Home from "@/pages/Home";
 import Programs from "@/pages/Programs";
 import GingaMax from "@/pages/GingaMax";
@@ -54,6 +55,7 @@ function App() {
           {!isAdmin && <Navbar />}
           <Router />
           {!isAdmin && <Footer />}
+          {!isAdmin && <FloatingAdminButton />}
         </div>
         <Toaster />
       </TooltipProvider>

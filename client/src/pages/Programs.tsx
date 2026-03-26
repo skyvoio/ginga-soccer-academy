@@ -81,10 +81,10 @@ const programs: Program[] = [
     id: "march-camp",
     category: "CAMPS",
     title: "March Break Camp",
-    price: "$500 + HST",
-    details: "March 16-20 | 9am-4pm",
+    price: "$500 + Tax",
+    details: "March 16–20 | 9am–4pm",
     description:
-      "Five-day intensive training camp during March Break. Full-day programming. Space limited to 30 participants.",
+      "Five-day intensive training camp during March Break. Full-day programming from 9am to 4pm. Space is limited — register early to secure your spot.",
     icon: Calendar,
     image: marchCampImg,
   },
@@ -92,10 +92,10 @@ const programs: Program[] = [
     id: "summer-camp",
     category: "CAMPS",
     title: "Summer Camp",
-    price: "$500/wk + HST",
-    details: "August Weekly Sessions",
+    price: "$500 + Tax / wk",
+    details: "Aug 3–7 · 10–14 · 17–21 · 24–28",
     description:
-      "Weekly intensive summer camps. Multiple weeks available in August. Multi-child and multi-week discounts available.",
+      "Weekly intensive summer camps throughout August. Available weeks: Aug 3–7, Aug 10–14, Aug 17–21, Aug 24–28. Book all 4 weeks and get 1 week FREE, or book 3 weeks and save $150.",
     icon: Calendar,
     image: summerCampImg,
   },
@@ -103,49 +103,45 @@ const programs: Program[] = [
     id: "december-camp",
     category: "CAMPS",
     title: "Christmas Camp",
-    price: "$300 + HST",
-    details: "Dec 28-30 | 3 Days",
+    price: "$300 + Tax",
+    details: "Dec 28–30 | 3 Days",
     description:
-      "End-of-year intensive camp. Perfect for maintaining peak performance during the off-season.",
+      "End-of-year intensive camp over 3 days. Perfect for maintaining peak performance and finishing the year strong.",
     icon: Calendar,
-    image:
-      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&q=80",
+    image: marchCampImg,
   },
   {
     id: "full-turf",
     category: "RENTALS",
     title: "Full Turf Rental",
-    price: "$150/hr",
-    details: "Full Pitch Access",
+    price: "$150 + Tax / hr",
+    details: "Full Pitch · Field 2: 20×50",
     description:
-      "Complete turf facility rental for teams, events, or private training sessions.",
+      "Complete turf facility rental for teams, events, or private training sessions. Field 2 available at 20×50.",
     icon: MapPin,
-    image:
-      "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80",
+    image: justplayImg,
   },
   {
     id: "three-quarter-turf",
     category: "RENTALS",
     title: "3/4 Turf Rental",
-    price: "$100/hr",
+    price: "$100 + Tax / hr",
     details: "Three-Quarter Pitch",
     description:
       "Three-quarter pitch rental ideal for mid-size teams and training groups.",
     icon: MapPin,
-    image:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80",
+    image: groupImg,
   },
   {
     id: "mini-turf",
     category: "RENTALS",
     title: "Mini Turf Rental",
-    price: "$70/hr",
+    price: "$60 + Tax / hr",
     details: "Mini Pitch",
     description:
       "Compact turf rental perfect for small group sessions and individual training.",
     icon: MapPin,
-    image:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=80",
+    image: justplayImg,
   },
 ];
 
