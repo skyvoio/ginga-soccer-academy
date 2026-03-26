@@ -1,0 +1,101 @@
+Role: You are an Expert Full-Stack Next.js Developer.
+Project: Upgrade the static Ginga Soccer Academy site into a dynamic Next.js (App Router) application with a custom CMS, secure file handling, and new content.
+Design Constraint: Maintain the existing Tailwind CSS aesthetic, layout, and "vibe." Do not degrade the UI.
+
+PHASE 1: THE DATABASE ARCHITECTURE
+Initialize Prisma with PostgreSQL and use this exact schema:
+
+Code snippet
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // Hashed 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model ContentBlock {
+  id          String   @id @default(uuid())
+  sectionKey  String   @unique 
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model MediaAsset {
+  id          String   @id @default(uuid())
+  fileName    String
+  fileUrl     String   // Public URL from Object Storage
+  fileType    FileType // IMAGE or PDF
+  section     String?  
+  uploadedAt  DateTime @default(now())
+}
+model RegistrationSubmission {
+  id              String   @id @default(uuid())
+  studentName     String
+  parentName      String
+  contactEmail    String
+  signedFormUrl   String   // PRIVATE URL to uploaded signed PDF
+  status          Status   @default(PENDING)
+  submittedAt     DateTime @default(now())
+  reviewedAt      DateTime?
+}
+enum FileType { IMAGE, PDF }
+enum Status { PENDING, REVIEWED, COMPLETED }
+PHASE 2: CONTENT & PAGE UPDATES (Seed this or hardcode into the new dynamic views)
+Apply these specific updates to the site content:
+
+Global Address: Update all footer/contact addresses to: 1197 Unit 5 Union Street Kitchener Ontario. Remove the phone number (226) 339-0419 completely.
+
+Services Page Updates:
+
+Update all program dates to "March-December".
+
+Link the "Just Play" header to the detailed Just Play section.
+
+Camps: * March Break Camp: March 16-20 ($500 + Tax).
+
+Summer Camp: Weeks August 3-7, 10-14, 17-21, 24-28 ($500 + Tax).
+
+Christmas: Dec 28-30 ($300 + Tax).
+
+Add Promo text: "For August, book all 4 weeks get 1 week free or book 3 weeks and get $150 off."
+
+Remove: Available Camps, old Christmas Camp, Portugal Camp, Spain Camp, Malaga Camp, Challenge Cup Tournament, and "Upcoming Dates".
+
+Turf & Training: Full Turf ($150+Tax), 3/4 Turf ($100+Tax). Field 2 Full 20x50. 6 Month Training: Min of Smart (Omit August, add September).
+
+New "About Us" Page: Create a new route (/about).
+
+Section 1: "Finding Inspiration in Every Turn" - Explain the roots of Ginga (Kikongo language, Queen Nzinga, Ngingas Warriors, Jinga movement).
+
+Section 2: Mission Statement.
+
+Section 3: "Meet The Team" featuring Kevin De Serpa (CEO, 10-year pro, freestyle athlete for Sony/Adidas) and Kenen Shadd (Co-Founder, Maximus Performance, NCAA Div 1 Triple Jump champ). Leave placeholders for their photos.
+
+PHASE 3: ADMIN UI & EDIT FUNCTIONALITY
+
+Authentication: Implement session-based login for the Admin.
+
+Floating Edit Button: Render a floating "Settings/Edit" button on the public site only visible if an Admin session exists. Clicking it opens the /admin dashboard.
+
+The Dashboard (/admin): Build a UI with three tabs:
+
+Text Editor: Fetch all ContentBlock items into textareas. Admin can edit and click "Save" to update the live site.
+
+Media Manager: View all MediaAsset items. Admin can upload, replace, or delete photos and the "2026 Programs Registration Form Ginga" PDF. Crucial: Replacing/deleting a file must execute a delete command in the cloud storage bucket to prevent bloat.
+
+Inbox: A data table of RegistrationSubmission entries with a secure "Download Form" button.
+
+PHASE 4: SECURE REGISTRATION FLOW
+
+Public View: Add a section for users to download the blank "2026 Programs Registration Form Ginga".
+
+Upload Portal: Create a form (Student Name, Parent Name, Email, File Upload) for parents to upload their signed PDF.
+
+API Security: The submission API must enforce PDF-only uploads and save the file to a private storage bucket, logging the private URI in the database so it cannot be publicly scraped.
