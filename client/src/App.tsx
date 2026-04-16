@@ -1,4 +1,4 @@
-import { Switch, Route, useLocation } from "wouter";
+import { Switch, Route, useLocation, Router as WouterRouter } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -44,19 +44,29 @@ function Router() {
   );
 }
 
-function App() {
+const basePath = import.meta.env.VITE_BASE_PATH ?? "";
+
+function AppContent() {
   const [location] = useLocation();
   const isAdmin = location.startsWith("/admin");
 
   return (
+    <div className="bg-[#0a0a0a] min-h-screen text-white font-sans selection:bg-amber-500 selection:text-black">
+      {!isAdmin && <Navbar />}
+      <Router />
+      {!isAdmin && <Footer />}
+      {!isAdmin && <FloatingAdminButton />}
+    </div>
+  );
+}
+
+function App() {
+  return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="bg-[#0a0a0a] min-h-screen text-white font-sans selection:bg-amber-500 selection:text-black">
-          {!isAdmin && <Navbar />}
-          <Router />
-          {!isAdmin && <Footer />}
-          {!isAdmin && <FloatingAdminButton />}
-        </div>
+        <WouterRouter base={basePath}>
+          <AppContent />
+        </WouterRouter>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
