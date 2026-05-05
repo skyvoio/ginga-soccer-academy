@@ -130,10 +130,10 @@ export const useAdminStore = create<AdminState>((set) => ({
     },
     {
       id: "n3",
-      title: "Academy Players Selected for Provincial Team",
+      title: "Ginga Soccer Providing Soccer Experiences Abroad in Portugal",
       date: "Feb 15, 2026",
-      excerpt: "Three academy players earn spots on the Ontario Provincial Select Team.",
-      content: "Three of our academy players have been selected for the Ontario Provincial Select Team, showcasing the caliber of talent at Ginga Soccer Academy.",
+      excerpt: "Ginga Soccer Academy continues to open doors for players, creating elite soccer experiences on the international stage in Portugal.",
+      content: "Ginga Soccer Academy continues to open doors for players, creating elite soccer experiences on the international stage in Portugal. Our players have had the opportunity to train, compete, and develop alongside top European clubs, gaining invaluable exposure and experience that shapes their future in the game.",
       image: newsCoachImg,
     },
     {

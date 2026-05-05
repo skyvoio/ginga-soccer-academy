@@ -202,6 +202,23 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
+
+              <div className="border border-white/5 overflow-hidden" data-testid="card-contact-map">
+                <iframe
+                  title="Ginga Soccer Academy Location"
+                  src="https://maps.google.com/maps?q=1197+Union+St,+Kitchener,+ON,+Canada&output=embed"
+                  width="100%"
+                  height="280"
+                  style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.9) contrast(1.1)" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                <div className="bg-[#171717] px-5 py-3 flex items-center gap-2">
+                  <MapPin size={13} className="text-amber-500 flex-shrink-0" />
+                  <span className="text-neutral-400 text-xs font-mono">1197 Union Street, Unit 5 · Kitchener, Ontario</span>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
+import turfRentalImg from "@assets/Turf_Rental_Photo_1778007494522.png";
 
 type ProgramCategory = "TRAINING" | "CAMPS" | "RENTALS";
 
@@ -53,7 +54,7 @@ const programs: Program[] = [
     description:
       "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($60/hr).",
     icon: MapPin,
-    image: justplayImg,
+    image: turfRentalImg,
   },
   {
     id: "private",
@@ -119,7 +120,7 @@ const programs: Program[] = [
     description:
       "Complete turf facility rental for teams, events, or private training sessions. Field 2 available at 20×50.",
     icon: MapPin,
-    image: justplayImg,
+    image: turfRentalImg,
   },
   {
     id: "three-quarter-turf",
@@ -141,7 +142,7 @@ const programs: Program[] = [
     description:
       "Compact turf rental perfect for small group sessions and individual training.",
     icon: MapPin,
-    image: justplayImg,
+    image: turfRentalImg,
   },
 ];
 
