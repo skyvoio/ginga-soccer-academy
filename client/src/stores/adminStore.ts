@@ -62,6 +62,7 @@ interface AdminState {
   updateContentBlock: (key: string, value: string) => void;
 
   addRisingStar: (star: Omit<RisingStar, "id">) => void;
+  updateRisingStar: (id: string, data: Omit<RisingStar, "id">) => void;
   removeRisingStar: (id: string) => void;
 
   addMedia: (item: Omit<MediaItem, "id">) => void;
@@ -96,13 +97,13 @@ export const useAdminStore = create<AdminState>((set) => ({
     })),
 
   risingStars: [
-    { id: "rs1", name: "Petra Bandula", position: "Attacker", club: "Ginga Academy", bio: "Rising star attacker.", image: petraImg },
-    { id: "rs2", name: "Viktoria Brodar", position: "Attacker", club: "Ginga Academy", bio: "Skilled attacker.", image: viktoriaImg },
-    { id: "rs3", name: "Diago Delgado", position: "Attacker", club: "Rio Ave FC Porto", bio: "Rising star attacker.", image: diagoImg },
-    { id: "rs4", name: "Lucas Dias", position: "Attacker", club: "Sporting Portugal", bio: "Technical forward with vision.", image: lucasDiasImg },
-    { id: "rs5", name: "Pol Rivera Lopez", position: "Attacker", club: "RCD Espanyol de Barcelona", bio: "Creative playmaker.", image: polImg },
-    { id: "rs6", name: "Lucas Areco", position: "Attacker", club: "Ginga Academy", bio: "Dynamic young talent.", image: lucasArecoImg },
-    { id: "rs7", name: "Carter Tavares/Roache", position: "Attacker", club: "Italy / AC Perugia Calcio", bio: "Dual-national prospect.", image: carterImg },
+    { id: "rs1", name: "Petra Bandula", position: "Attacker", club: "University of Missouri / Croatia Youth National Team", bio: "Dynamic attacker competing at the college level while representing Croatia at the youth national team level.", image: petraImg },
+    { id: "rs2", name: "Viktoria Brodar", position: "Attacker", club: "Croatia Youth National Team", bio: "Skilled attacker representing Croatia at the youth international level.", image: viktoriaImg },
+    { id: "rs3", name: "Diago Delgado", position: "Attacker", club: "Rio Ave FC", bio: "Rising star attacker developing at Rio Ave FC in Portugal.", image: diagoImg },
+    { id: "rs4", name: "Lucas Dias", position: "Attacker", club: "Sporting Portugal", bio: "Technical forward with vision developing at Sporting CP.", image: lucasDiasImg },
+    { id: "rs5", name: "Pol Rivera Lopez", position: "Attacker", club: "RCD Espanyol de Barcelona", bio: "Creative playmaker developing with Espanyol's academy.", image: polImg },
+    { id: "rs6", name: "Lucas Areco", position: "Attacker", club: "ASDC Gozzano, Italy", bio: "Dynamic young talent competing professionally in Italy with ASDC Gozzano.", image: lucasArecoImg },
+    { id: "rs7", name: "Carter Tavares", position: "Attacker", club: "Creighton University", bio: "Talented attacker competing at the collegiate level with Creighton University.", image: carterImg },
   ],
   media: [
     { id: "m1", title: "Adjusting to Playing Soccer Abroad", category: "Interviews", type: "video", image: "https://img.youtube.com/vi/Fsn6Q_pUzSE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/Fsn6Q_pUzSE" },
@@ -158,6 +159,10 @@ export const useAdminStore = create<AdminState>((set) => ({
   addRisingStar: (star) =>
     set((state) => ({
       risingStars: [...state.risingStars, { ...star, id: `rs${Date.now()}` }],
+    })),
+  updateRisingStar: (id, data) =>
+    set((state) => ({
+      risingStars: state.risingStars.map((s) => (s.id === id ? { ...s, ...data } : s)),
     })),
   removeRisingStar: (id) =>
     set((state) => ({

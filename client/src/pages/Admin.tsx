@@ -19,6 +19,7 @@ import {
   Menu,
   FileText,
   Save,
+  Pencil,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminStore, type MediaItem } from "@/stores/adminStore";
@@ -67,6 +68,7 @@ export default function Admin() {
     toggleRegistrationStatus,
     togglePaymentStatus,
     addRisingStar,
+    updateRisingStar,
     removeRisingStar,
     addMedia,
     removeMedia,
@@ -78,6 +80,8 @@ export default function Admin() {
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
 
   const [newStar, setNewStar] = useState({ name: "", position: "", club: "", bio: "", image: "" });
+  const [editingStarId, setEditingStarId] = useState<string | null>(null);
+  const [editStarData, setEditStarData] = useState({ name: "", position: "", club: "", bio: "", image: "" });
   const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as MediaItem["category"], type: "image" as "image" | "video", image: "", videoUrl: "" });
   const [newPost, setNewPost] = useState({ title: "", date: "", excerpt: "", content: "", image: "" });
 
@@ -400,21 +404,83 @@ export default function Admin() {
 
               <div className="space-y-3">
                 {risingStars.map((star) => (
-                  <div key={star.id} className="bg-[#171717] border border-white/5 p-4 flex items-center justify-between gap-4" data-testid={`row-star-${star.id}`}>
-                    <div className="flex items-center gap-4">
-                      <img src={star.image} alt={star.name} className="w-12 h-12 object-cover flex-shrink-0" />
-                      <div>
-                        <p className="text-white font-bold text-sm">{star.name}</p>
-                        <p className="text-neutral-500 text-xs font-mono">{star.position} — {star.club}</p>
+                  <div key={star.id} data-testid={`row-star-${star.id}`}>
+                    {editingStarId === star.id ? (
+                      <div className="bg-[#171717] border border-amber-500/30 p-5">
+                        <p className="text-[10px] font-bold text-amber-500 uppercase tracking-[0.2em] mb-4 font-display">EDITING — {star.name}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                          <div>
+                            <label className={labelClass}>NAME</label>
+                            <input value={editStarData.name} onChange={(e) => setEditStarData({ ...editStarData, name: e.target.value })} className={inputClass} data-testid={`input-edit-name-${star.id}`} />
+                          </div>
+                          <div>
+                            <label className={labelClass}>POSITION</label>
+                            <input value={editStarData.position} onChange={(e) => setEditStarData({ ...editStarData, position: e.target.value })} className={inputClass} data-testid={`input-edit-position-${star.id}`} />
+                          </div>
+                          <div>
+                            <label className={labelClass}>CLUB / TEAM</label>
+                            <input value={editStarData.club} onChange={(e) => setEditStarData({ ...editStarData, club: e.target.value })} className={inputClass} data-testid={`input-edit-club-${star.id}`} />
+                          </div>
+                          <div>
+                            <label className={labelClass}>IMAGE URL</label>
+                            <input value={editStarData.image} onChange={(e) => setEditStarData({ ...editStarData, image: e.target.value })} className={inputClass} data-testid={`input-edit-image-${star.id}`} />
+                          </div>
+                        </div>
+                        <div className="mb-4">
+                          <label className={labelClass}>BIO</label>
+                          <textarea value={editStarData.bio} onChange={(e) => setEditStarData({ ...editStarData, bio: e.target.value })} rows={2} className={`${inputClass} resize-none`} data-testid={`input-edit-bio-${star.id}`} />
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => {
+                              updateRisingStar(star.id, editStarData);
+                              setEditingStarId(null);
+                            }}
+                            className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
+                            data-testid={`button-save-star-${star.id}`}
+                          >
+                            <Save size={13} /> SAVE
+                          </button>
+                          <button
+                            onClick={() => setEditingStarId(null)}
+                            className="flex items-center gap-2 bg-neutral-800 text-neutral-400 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-neutral-700 transition-colors"
+                            data-testid={`button-cancel-star-${star.id}`}
+                          >
+                            <X size={13} /> CANCEL
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <button
-                      onClick={() => removeRisingStar(star.id)}
-                      className="bg-red-500/10 text-red-400 p-2 hover:bg-red-500/20 transition-colors flex-shrink-0"
-                      data-testid={`button-delete-star-${star.id}`}
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    ) : (
+                      <div className="bg-[#171717] border border-white/5 p-4 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4 min-w-0">
+                          <img src={star.image} alt={star.name} className="w-12 h-12 object-cover flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="text-white font-bold text-sm">{star.name}</p>
+                            <p className="text-neutral-500 text-xs font-mono truncate">{star.position} — {star.club}</p>
+                            {star.bio && <p className="text-neutral-600 text-xs mt-0.5 truncate">{star.bio}</p>}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button
+                            onClick={() => {
+                              setEditingStarId(star.id);
+                              setEditStarData({ name: star.name, position: star.position, club: star.club, bio: star.bio, image: star.image });
+                            }}
+                            className="bg-amber-500/10 text-amber-500 p-2 hover:bg-amber-500/20 transition-colors"
+                            data-testid={`button-edit-star-${star.id}`}
+                          >
+                            <Pencil size={15} />
+                          </button>
+                          <button
+                            onClick={() => removeRisingStar(star.id)}
+                            className="bg-red-500/10 text-red-400 p-2 hover:bg-red-500/20 transition-colors"
+                            data-testid={`button-delete-star-${star.id}`}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
