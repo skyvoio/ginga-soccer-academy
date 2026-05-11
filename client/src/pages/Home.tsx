@@ -485,6 +485,43 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-24 px-6 bg-[#0a0a0a]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-14"
+          >
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">WHAT PARENTS SAY</p>
+            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter font-display" data-testid="text-testimonials-title">
+              TRUSTED BY FAMILIES
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="relative bg-[#171717] border border-white/5 p-10 md:p-14"
+            data-testid="card-testimonial-1"
+          >
+            <div className="absolute top-8 left-10 text-amber-500/20 text-[120px] font-black font-display leading-none select-none">"</div>
+            <blockquote className="relative z-10">
+              <p className="text-neutral-300 text-lg md:text-xl leading-relaxed italic">
+                Good morning Kevin, we want to take the time to say we support your coaching style and are very thankful for your high calibre of expectations. Your passion and love for the game help bring structure and discipline, and your unwillingness to compromise quality is admirable. Most importantly, our son enjoys your training and correction, <span className="text-amber-500 font-semibold not-italic">"because he wants to get better."</span> So thank you.
+              </p>
+              <footer className="mt-8 flex items-center gap-4">
+                <div className="w-10 h-px bg-amber-500/50" />
+                <span className="text-amber-500 text-xs font-bold tracking-[0.2em] uppercase font-display">Ginga Soccer Academy Parent</span>
+              </footer>
+            </blockquote>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-24 px-6 bg-[#0d0d0d]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div

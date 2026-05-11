@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
 const navLinks = [
+  { name: "HOME", path: "/" },
   { name: "PROGRAMS", path: "/programs" },
   { name: "GINGAMAX", path: "/gingamax" },
   { name: "SCHEDULE", path: "/schedule" },

@@ -1,7 +1,75 @@
 import { motion } from "framer-motion";
-import { Instagram, Youtube, Award, Zap, Trophy } from "lucide-react";
+import { Instagram, Youtube, Award, Zap, Trophy, MapPin } from "lucide-react";
 import kevinImg from "@assets/kevin-de-serpa_1772628179833.jpg";
 import kenenImg from "@assets/Kenen_Shadd_1772628402082.jpeg";
+import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
+import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
+import diagoImg from "@assets/Diago_Delgado_1773607422404.jpeg";
+import lucasArecoImg from "@assets/Lucas_Areco_1773607422404.jpeg";
+import carterImg from "@assets/Carter_Tavares_1773607422404.jpeg";
+
+const playerProfiles = [
+  {
+    name: "Lucas Areco",
+    position: "Attacker",
+    image: lucasArecoImg,
+    club: "ASDC Gozzano",
+    country: "Italy",
+    highlights: [
+      "Professional debut in Italian football with ASDC Gozzano",
+      "Trained at Ginga Soccer Academy under Kevin De Serpa",
+      "Dynamic forward with elite technical skills and finishing ability",
+    ],
+  },
+  {
+    name: "Petra Bandula",
+    position: "Attacker",
+    image: petraImg,
+    club: "University of Missouri",
+    country: "Croatia Youth National Team",
+    highlights: [
+      "Competing at the NCAA collegiate level — University of Missouri",
+      "Selected for Croatia Youth National Team",
+      "Developed through Ginga Academy's elite training system",
+    ],
+  },
+  {
+    name: "Viktoria Brodar",
+    position: "Attacker",
+    image: viktoriaImg,
+    club: "Croatia Youth National Team",
+    country: "Croatia",
+    highlights: [
+      "Representing Croatia at the youth international level",
+      "Skilled attacker with strong technical foundation",
+      "Ginga Academy graduate competing on the European stage",
+    ],
+  },
+  {
+    name: "Diago Delgado",
+    position: "Attacker",
+    image: diagoImg,
+    club: "Rio Ave FC",
+    country: "Portugal",
+    highlights: [
+      "Developing professionally at Rio Ave FC in Portugal",
+      "Rising star with exceptional pace and vision",
+      "Ginga Academy product making waves in European football",
+    ],
+  },
+  {
+    name: "Carter Tavares",
+    position: "Attacker",
+    image: carterImg,
+    club: "Creighton University",
+    country: "NCAA",
+    highlights: [
+      "Competing at the collegiate level with Creighton University",
+      "Talented attacker with elite athleticism and finishing",
+      "Trained at Ginga Soccer Academy from a young age",
+    ],
+  },
+];
 
 export default function About() {
   return (
@@ -317,6 +385,85 @@ export default function About() {
               "THE WAY TO PLAY BEAUTIFUL SOCCER"
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 bg-[#0d0d0d]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+              GINGA ACADEMY ALUMNI
+            </p>
+            <h2
+              className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter font-display"
+              data-testid="text-players-title"
+            >
+              RISING STARS
+            </h2>
+            <p className="mt-4 text-neutral-500 text-sm max-w-xl mx-auto">
+              Players developed at Ginga Soccer Academy who have gone on to compete at the highest levels — collegiate, professional, and international.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {playerProfiles.map((player, i) => (
+              <motion.div
+                key={player.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="group bg-[#171717] border border-white/5 overflow-hidden hover:border-amber-500/20 transition-all duration-500"
+                data-testid={`card-player-${i}`}
+              >
+                <div className="relative h-72 overflow-hidden">
+                  <img
+                    src={player.image}
+                    alt={player.name}
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-black/20 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <span className="inline-block bg-amber-500/90 text-black text-[10px] font-black tracking-[0.2em] px-3 py-1 font-display mb-2">
+                      {player.position.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-black text-white uppercase tracking-tight font-display mb-1 group-hover:text-amber-500 transition-colors duration-300">
+                    {player.name}
+                  </h3>
+                  <div className="flex items-center gap-2 mb-5">
+                    <MapPin size={12} className="text-amber-500 flex-shrink-0" />
+                    <span className="text-amber-500 text-xs font-mono">{player.club}</span>
+                    {player.country !== player.club && (
+                      <>
+                        <span className="text-white/20 text-xs">·</span>
+                        <span className="text-neutral-500 text-xs font-mono">{player.country}</span>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="space-y-2.5 border-t border-white/5 pt-5">
+                    {player.highlights.map((point, j) => (
+                      <div key={j} className="flex items-start gap-3">
+                        <div className="w-1 h-1 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                        <p className="text-neutral-400 text-xs leading-relaxed">{point}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
     </div>

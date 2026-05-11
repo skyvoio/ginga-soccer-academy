@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
+import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
 import newsSummerImg from "@assets/Ginga_News_Soccer_Summer_Camp_1773867574216.jpg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
@@ -142,7 +143,7 @@ export const useAdminStore = create<AdminState>((set) => ({
       date: "Feb 10, 2026",
       excerpt: "State-of-the-art turf installation brings FIFA-quality playing surface to Kitchener.",
       content: "Our facility upgrade is complete. The new FIFA-quality turf provides an elite training surface for all our programs.",
-      image: "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=80",
+      image: turfNewsImg,
     },
   ],
   registrations: [
