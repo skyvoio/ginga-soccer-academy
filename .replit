@@ -40,3 +40,9 @@ waitForPort = 5000
 
 [agent]
 integrations = ["github:1.0.0"]
+
+[userenv]
+
+[userenv.shared]
+VITE_SUPABASE_URL = "https://bpvfbvpnuxesydjrhmhj.supabase.co"
+VITE_SUPABASE_ANON_KEY = "sb_publishable_vPJt-vt-_Ix1RCg6cd_j7g_lAg4T7Nz"
