@@ -82,11 +82,11 @@ const programs: Program[] = [
   {
     id: "march-camp",
     category: "CAMPS",
-    title: "March Break Camp",
-    price: "$500 + Tax",
-    details: "March 16–20 | 9am–4pm",
+    title: "PD Day Camps",
+    price: "$150 + Tax",
+    details: "May 29 · Jun 26",
     description:
-      "Five-day intensive training camp during March Break. Full-day programming from 9am to 4pm. Space is limited — register early to secure your spot.",
+      "Full-day PD Day training camps for motivated young players. Available dates: May 29, 2026 and June 26, 2026. Space is limited — register early to secure your spot.",
     icon: Calendar,
     image: marchCampImg,
   },

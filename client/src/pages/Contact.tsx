@@ -198,7 +198,8 @@ export default function Contact() {
                   <div>
                     <h3 className="text-white font-bold text-sm uppercase font-display mb-1">TRAINING HOURS</h3>
                     <p className="text-neutral-300 text-sm">Mon-Fri: 11:00am - 8:00pm</p>
-                    <p className="text-neutral-300 text-sm">Sat-Sun: 3:00pm - 5:00pm</p>
+                    <p className="text-neutral-300 text-sm">Saturday: 3:00pm - 5:00pm</p>
+                    <p className="text-neutral-300 text-sm">Sunday: 11:00am - 5:00pm</p>
                   </div>
                 </div>
               </div>

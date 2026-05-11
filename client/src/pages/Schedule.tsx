@@ -30,6 +30,7 @@ const schedule: DaySchedule[] = [
       { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "5:00 PM - 7:00 PM", program: "Finishing / Shooting", type: "group" },
     ],
   },
   {
@@ -48,6 +49,7 @@ const schedule: DaySchedule[] = [
       { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
+      { time: "5:00 PM - 6:30 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "6:30 PM - 8:00 PM", program: "Group Session", type: "group", notes: "2012–2014" },
     ],
   },
