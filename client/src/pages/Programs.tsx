@@ -47,17 +47,6 @@ const programs: Program[] = [
     image: groupImg,
   },
   {
-    id: "turf-rental",
-    category: "TRAINING",
-    title: "Turf Rental",
-    price: "From $60/hr",
-    details: "1h Session",
-    description:
-      "Rent our premium turf field. Options: Full Field ($150), 3/4 Field ($100), Mini Field ($60/hr).",
-    icon: MapPin,
-    image: turfRentalImg,
-  },
-  {
     id: "private",
     category: "TRAINING",
     title: "Private Session",
