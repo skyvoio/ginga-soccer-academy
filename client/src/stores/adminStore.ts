@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import newsPDCampImg from "@assets/PHOTO-2026-05-20-09-14-27_1779396092879.jpg";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
@@ -113,6 +114,14 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "m4", title: "Public Pannas in Portugal", category: "International", type: "video", image: "https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/jLIM0LSd9PE" },
   ],
   news: [
+    {
+      id: "n5",
+      title: "GiNGA PD Camp — May 29",
+      date: "May 21, 2026",
+      excerpt: "Only 20 spots available. Join us May 29th from 9am–3pm for a full-day PD Day training camp.",
+      content: "Only 20 spots available. Join us May 29th from 9am–3pm for a full-day PD Day training camp. High-intensity coaching, skill development, and competitive play — all in one day. Don't miss your chance to train with the Ginga Academy coaching staff. Register now before spots fill up.",
+      image: newsPDCampImg,
+    },
     {
       id: "n1",
       title: "Summer 2026 Camp Registration Now Open",
