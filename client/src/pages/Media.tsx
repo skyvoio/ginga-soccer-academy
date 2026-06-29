@@ -78,7 +78,7 @@ export default function Media() {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full aspect-video object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    className="w-full aspect-video object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
                   {item.type === "video" && (
