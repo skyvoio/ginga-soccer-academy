@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import newsPDCampImg from "@assets/PHOTO-2026-05-20-09-14-27_1779396092879.jpg";
-import newsDiagoImg from "@assets/WhatsApp_Image_2026-06-23_at_11.48.59_1782776173638.jpeg";
+import newsDiagoImg from "@assets/image_1782771722954.png";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
@@ -32,7 +32,7 @@ export interface MediaItem {
   id: string;
   title: string;
   category: "Training" | "Matches" | "International Trips" | "Interviews" | "International";
-  type: "image" | "video";
+  type: "image" | "video" | "photo";
   image: string;
   videoUrl?: string;
 }
@@ -113,6 +113,7 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "m2", title: "F2FC at Old Trafford", category: "Matches", type: "video", image: "https://img.youtube.com/vi/UViTPSRWKBg/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/UViTPSRWKBg" },
     { id: "m3", title: "Wembley Cup Final 2018", category: "Matches", type: "video", image: "https://img.youtube.com/vi/AjZ_nZuuObo/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/AjZ_nZuuObo" },
     { id: "m4", title: "Public Pannas in Portugal", category: "International", type: "video", image: "https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/jLIM0LSd9PE" },
+    { id: "m5", title: "Diago Delgado Returns Home to Train with Ginga", category: "Interviews", type: "photo", image: newsDiagoImg },
   ],
   news: [
     {
