@@ -32,7 +32,7 @@ export interface MediaItem {
   id: string;
   title: string;
   category: "Training" | "Matches" | "International Trips" | "Interviews" | "International";
-  type: "image" | "video";
+  type: "image" | "video" | "photo";
   image: string;
   videoUrl?: string;
 }
@@ -113,6 +113,7 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "m2", title: "F2FC at Old Trafford", category: "Matches", type: "video", image: "https://img.youtube.com/vi/UViTPSRWKBg/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/UViTPSRWKBg" },
     { id: "m3", title: "Wembley Cup Final 2018", category: "Matches", type: "video", image: "https://img.youtube.com/vi/AjZ_nZuuObo/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/AjZ_nZuuObo" },
     { id: "m4", title: "Public Pannas in Portugal", category: "International", type: "video", image: "https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/jLIM0LSd9PE" },
+    { id: "m5", title: "Diago Delgado Returns Home to Train with Ginga", category: "Interviews", type: "photo", image: newsDiagoImg },
   ],
   news: [
     {
