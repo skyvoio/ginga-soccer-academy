@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import newsPDCampImg from "@assets/PHOTO-2026-05-20-09-14-27_1779396092879.jpg";
-import newsDiagoImg from "@assets/image_1782771722954.png";
+import newsDiagoImg from "@assets/WhatsApp_Image_2026-06-23_at_11.48.59_1782776173638.jpeg";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
