@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import newsPDCampImg from "@assets/PHOTO-2026-05-20-09-14-27_1779396092879.jpg";
+import newsDiagoImg from "@assets/image_1782771722954.png";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
@@ -114,6 +115,14 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "m4", title: "Public Pannas in Portugal", category: "International", type: "video", image: "https://img.youtube.com/vi/jLIM0LSd9PE/maxresdefault.jpg", videoUrl: "https://www.youtube.com/embed/jLIM0LSd9PE" },
   ],
   news: [
+    {
+      id: "n6",
+      title: "Rising Star Returns Home: Diago Delgado Back in Canada to Train with Kevin De Serpa",
+      date: "Jun 29, 2026",
+      excerpt: "Diago Delgado is back on Canadian soil, linking up with coach Kevin De Serpa and inspiring the next generation at Ginga Soccer Academy.",
+      content: "The local soccer community is buzzing with excitement as one of its brightest talents, Diago Delgado, has officially returned to Canadian soil. The rising star is back home for an intensive training stint, linking up with renowned elite coach and former professional player Kevin De Serpa, while also taking time to give back to the grassroots community that helped shape his journey.\n\nDelgado, whose career has been skyrocketing overseas, is using this return home to sharpen his tools and refine his game. Known for his tactical acumen and high-intensity player development programs, De Serpa's training sessions are designed to push top-tier athletes to their absolute limits.\n\n\"It's great to be back home where it all started,\" Delgado said during a break between training sessions. \"Working with Kevin is always intense, but it's exactly what I need to stay sharp and keep pushing my boundaries.\"\n\nDelgado also made a special guest appearance at Ginga Soccer, surprising a group of young aspiring players. He spent hours speaking with the youth players, sharing invaluable insights about the discipline required to play at the highest levels, and jumping into a few skill drills. For the kids at Ginga, seeing someone who walked the same paths they are currently on achieve such success was nothing short of monumental.",
+      image: newsDiagoImg,
+    },
     {
       id: "n5",
       title: "GiNGA PD Camp — May 29",
