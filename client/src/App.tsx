@@ -16,6 +16,7 @@ import Admin from "@/pages/Admin";
 import About from "@/pages/About";
 import Media from "@/pages/Media";
 import Contact from "@/pages/Contact";
+import BookingSuccess from "@/pages/BookingSuccess";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/gingamax" component={GingaMax} />
       <Route path="/schedule" component={Schedule} />
       <Route path="/booking" component={Booking} />
+      <Route path="/booking/success" component={BookingSuccess} />
       <Route path="/about" component={About} />
       <Route path="/media" component={Media} />
       <Route path="/contact" component={Contact} />

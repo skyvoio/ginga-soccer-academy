@@ -7,6 +7,8 @@ import MemoryStore from "memorystore";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import crypto from "crypto";
+import { isStripeConnected, getUncachableStripeClient } from "./stripeClient";
+import { WebhookHandlers } from "./webhookHandlers";
 
 const MemoryStoreSession = MemoryStore(session);
 
@@ -32,6 +34,11 @@ async function seedAdminUser() {
   }
 }
 
+function requireAuth(req: any, res: any, next: any) {
+  if (!req.user) return res.status(401).json({ message: "Not authenticated" });
+  next();
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -39,6 +46,28 @@ export async function registerRoutes(
   if (!process.env.SESSION_SECRET) {
     throw new Error("SESSION_SECRET environment variable is required");
   }
+
+  // Stripe webhook — must be BEFORE express.json()
+  app.post(
+    "/api/stripe/webhook",
+    (req: any, res: any, next: any) => {
+      // Use raw body stored by index.ts
+      next();
+    },
+    async (req: any, res: any) => {
+      const signature = req.headers["stripe-signature"];
+      if (!signature) return res.status(400).json({ error: "Missing stripe-signature" });
+      try {
+        const sig = Array.isArray(signature) ? signature[0] : signature;
+        const payload = (req as any).rawBody as Buffer;
+        await WebhookHandlers.processWebhook(payload, sig);
+        res.status(200).json({ received: true });
+      } catch (error: any) {
+        console.error("Webhook error:", error.message);
+        res.status(400).json({ error: "Webhook processing error" });
+      }
+    }
+  );
 
   app.use(
     session({
@@ -82,13 +111,15 @@ export async function registerRoutes(
 
   await seedAdminUser();
 
+  // ── Auth Routes ──────────────────────────────────────────────────────────────
+
   app.post("/api/auth/register", async (req, res) => {
     try {
       const parsed = insertUserSchema.safeParse(req.body);
       if (!parsed.success) {
         return res.status(400).json({ message: "Username and password are required" });
       }
-      const { username, password } = parsed.data;
+      const { username, password, email } = parsed.data;
 
       if (username.toLowerCase() === "admin") {
         return res.status(400).json({ message: "Username not available" });
@@ -98,15 +129,16 @@ export async function registerRoutes(
       if (existing) {
         return res.status(400).json({ message: "Username already taken" });
       }
+
       const hashedPassword = hashPassword(password);
-      const user = await storage.createUser({ username, password: hashedPassword });
+      const user = await storage.createUser({ username, password: hashedPassword, email });
+
       req.login(user, (err) => {
-        if (err) {
-          return res.status(500).json({ message: "Login failed after registration" });
-        }
+        if (err) return res.status(500).json({ message: "Login failed after registration" });
         return res.json({ id: user.id, username: user.username });
       });
     } catch (error) {
+      console.error("Registration error:", error);
       return res.status(500).json({ message: "Registration failed" });
     }
   });
@@ -130,11 +162,106 @@ export async function registerRoutes(
   });
 
   app.get("/api/auth/user", (req, res) => {
-    if (!req.user) {
-      return res.status(401).json({ message: "Not authenticated" });
-    }
+    if (!req.user) return res.status(401).json({ message: "Not authenticated" });
     const user = req.user as any;
-    return res.json({ id: user.id, username: user.username });
+    return res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email ?? null,
+      enrolledProgram: user.enrolledProgram ?? null,
+    });
+  });
+
+  // ── Stripe / Checkout Routes ─────────────────────────────────────────────────
+
+  app.get("/api/stripe/status", async (_req, res) => {
+    const connected = await isStripeConnected();
+    res.json({ connected });
+  });
+
+  app.post("/api/checkout", requireAuth, async (req: any, res) => {
+    try {
+      const { programId, programName, priceId } = req.body;
+      if (!programId || !programName) {
+        return res.status(400).json({ message: "programId and programName are required" });
+      }
+
+      const connected = await isStripeConnected();
+      if (!connected) {
+        return res.status(503).json({ message: "Payment system not yet configured. Please contact info@gingasoccer.ca to register." });
+      }
+
+      const stripe = await getUncachableStripeClient();
+      const user = req.user as any;
+
+      let customerId: string = user.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          name: user.username,
+          email: user.email ?? undefined,
+          metadata: { userId: user.id, academy: "ginga_soccer" },
+        });
+        await storage.updateUserStripeCustomerId(user.id, customer.id);
+        customerId = customer.id;
+      }
+
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+      const session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        payment_method_types: ["card"],
+        line_items: priceId
+          ? [{ price: priceId, quantity: 1 }]
+          : [{
+              price_data: {
+                currency: "cad",
+                product_data: {
+                  name: programName,
+                  metadata: { academy: "ginga_soccer", programId },
+                },
+                unit_amount: req.body.unitAmount ?? 0,
+              },
+              quantity: 1,
+            }],
+        mode: "payment",
+        success_url: `${baseUrl}/booking/success?session_id={CHECKOUT_SESSION_ID}&program=${encodeURIComponent(programName)}`,
+        cancel_url: `${baseUrl}/booking`,
+        metadata: { userId: user.id, programId, programName, academy: "ginga_soccer" },
+      });
+
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error("Checkout error:", error.message);
+      res.status(500).json({ message: "Failed to create checkout session" });
+    }
+  });
+
+  app.get("/api/checkout/confirm", requireAuth, async (req: any, res) => {
+    try {
+      const { session_id, program } = req.query as { session_id: string; program: string };
+      if (!session_id || !program) {
+        return res.status(400).json({ message: "Missing session_id or program" });
+      }
+
+      const connected = await isStripeConnected();
+      if (!connected) {
+        return res.status(503).json({ message: "Payment system not configured" });
+      }
+
+      const stripe = await getUncachableStripeClient();
+      const session = await stripe.checkout.sessions.retrieve(session_id);
+
+      if (session.payment_status !== "paid") {
+        return res.status(400).json({ message: "Payment not completed" });
+      }
+
+      const user = req.user as any;
+      const updated = await storage.updateUserEnrollment(user.id, program);
+      res.json({ success: true, enrolledProgram: updated.enrolledProgram });
+    } catch (error: any) {
+      console.error("Confirm error:", error.message);
+      res.status(500).json({ message: "Failed to confirm enrollment" });
+    }
   });
 
   return httpServer;
