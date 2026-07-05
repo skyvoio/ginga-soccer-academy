@@ -117,6 +117,14 @@ export const useAdminStore = create<AdminState>((set) => ({
   ],
   news: [
     {
+      id: "n7",
+      title: "Portugal or Croatia? Coach Kevin De Serpa Caught in a World Cup Family Rivalry!",
+      date: "Jul 2, 2026",
+      excerpt: "When Croatia faced Portugal in a high-stakes World Cup knockout clash right here in Toronto, Ginga Soccer founder Kevin De Serpa found the ultimate football rivalry right at his own dinner table.",
+      content: "### A House Divided for the World Cup\n\nThe atmosphere in Toronto was electric as Portugal and Croatia clashed in a massive World Cup knockout game. But while thousands of fans filled the streets waving flags, the real tension was brewing inside the household of Ginga Soccer Academy founder, Kevin De Serpa.\n\nKevin—a former Canadian youth international with deep Portuguese roots who played professionally across Brazil, Portugal, and Norway—found himself caught directly in the middle of a friendly domestic standoff. The reason? His wife, Nancy, is a proud Croat from Bosnia and Herzegovina!\n\n### \"We Might Have to Watch in Separate Rooms!\"\n\nInterviewed by journalist Vedran Babić for Sportklub ahead of the monumental fixture, Kevin laughed about the lighthearted family dynamic and the playful banter taking over their home. With his parents fiercely supporting Portugal and his wife standing firm behind the Vatreni, keeping the peace meant navigating some serious football diplomacy.\n\n\"We might have to watch the game in separate rooms,\" Kevin joked during the interview. \"It's easier that way—keeps the peace!\"\n\n### Bringing Global Experience Home\n\nBeyond the household banter, the match highlighted the incredible intersection of football cultures that defines Ginga Soccer Academy. Having trained and played within both South American and European elite environments, Kevin continues to infuse that multicultural, world-class tactical eye into coaching the rising stars of the Kitchener-Waterloo region.\n\nNo matter the final score on the pitch, the De Serpa household experienced a true World Cup spectacle to remember!\n\n---\n*Who were you rooting for in the big match? Drop your predictions and thoughts below! ⚽🇵🇹🇭🇷*",
+      image: "/kevin-worldcup-sportklub.png",
+    },
+    {
       id: "n6",
       title: "Rising Star Returns Home: Diago Delgado Back in Canada to Train with Kevin De Serpa",
       date: "Jun 29, 2026",
