@@ -118,6 +118,14 @@ export const useAdminStore = create<AdminState>((set) => ({
   ],
   news: [
     {
+      id: "n8",
+      title: "A New King of the Pitch: Theo Clarke Crowned Ginga 1v1 Champion",
+      date: "Aug 6, 2026",
+      excerpt: "After a grueling series of intense matchups, Theo Clarke has emerged as the winner of the latest Ginga 1v1 Tournament — showcasing the relentless work rate, technical mastery, and ice-cold finishing that define the Ginga way.",
+      content: "The dust has settled, the lights have dimmed, and after a grueling series of intense matchups, a new champion has emerged at the Ginga Elite Training Grounds.\n\nWe are thrilled to officially announce Theo Clarke as the winner of the latest Ginga 1v1 Tournament!\n\n### The Path to Glory\n\nThe Ginga 1v1 Tournament was designed to test everything a player has in their locker: raw technical ability, defensive resilience, quick decision-making, and most importantly, the Ginga—that creative rhythm and sway that separates good players from elite ones.\n\nThis weekend's showdown brought together some of the most technically gifted athletes in the region. Every match was a high-stakes battle of wits and footwork, with zero room to hide on the pitch.\n\nThrough every round, Theo showcased an incredible blend of tactical patience and explosive attacking flair. Whether it was shutting down opponents in tight spaces or executing flawless finishes under pressure, Theo proved exactly what it means to train and play the Ginga way.\n\n### What Makes a 1v1 Champion?\n\nWinning a 1v1 tournament requires a unique mentality. It's just you and your opponent.\n\nTheo's performance stood out because of his:\n\n• **Relentless Work Rate** — Never giving up on a 50/50 ball.\n• **Technical Mastery** — Keeping the ball glued to his feet in the most high-pressure situations.\n• **Ice-Cold Finishing** — Making the most of every single attacking opportunity.\n\nCongratulations, Theo, on an absolutely well-deserved victory. You've set the standard for the next generation of competitors coming through our doors!\n\n### Are You Ready to Step Up?\n\nDo you have what it takes to challenge the champion? The Ginga 1v1 Tournament will return soon, and we are always looking for the next player ready to prove themselves on the pitch.\n\n• **Stay Connected** — Follow us on Instagram @gingasoccerinc for highlights of Theo's winning run and updates on our next tournament dates.\n• **Train Like a Pro** — Want to sharpen your skills before the next showdown? Check out our elite training programs at gingasoccer.ca.\n\nWelcome to the club, Theo. The pitch is yours!",
+      image: "/theo-1v1-champion.jpeg",
+    },
+    {
       id: "n7",
       title: "Portugal or Croatia? Coach Kevin De Serpa Caught in a World Cup Family Rivalry!",
       date: "Jul 2, 2026",
