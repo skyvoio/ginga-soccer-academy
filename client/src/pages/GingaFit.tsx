@@ -62,9 +62,9 @@ export default function GingaFit() {
       {/* HERO */}
       <section className="relative py-32 px-6 overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-15"
+          className="absolute inset-0 bg-cover bg-center opacity-25"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&q=80')`,
+            backgroundImage: `url('/gingafit-hero.jpg')`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
