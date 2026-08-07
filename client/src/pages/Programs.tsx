@@ -58,13 +58,13 @@ const programs: Program[] = [
     image: privateSessionImg,
   },
   {
-    id: "gingamax",
+    id: "gingafit",
     category: "TRAINING",
-    title: "GingaMax Speed",
-    price: "$50 + Tax",
-    details: "Powered by Maximus",
+    title: "GingaFit",
+    price: "$40 + Tax",
+    details: "Tuesdays · 7–8 PM",
     description:
-      "Data-driven speed, agility, and acceleration training using elite performance science.",
+      "Youth athletic conditioning designed to build speed, power & agility. Starts Jul 28 — Dec 15. Max 24 athletes.",
     icon: Dumbbell,
     image: agilityImg,
   },

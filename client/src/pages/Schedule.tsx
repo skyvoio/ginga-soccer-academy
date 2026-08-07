@@ -4,7 +4,7 @@ import { Clock, MapPin, AlertCircle } from "lucide-react";
 interface ScheduleSlot {
   time: string;
   program: string;
-  type: "private" | "group" | "justplay" | "gingamax" | "camp" | "open";
+  type: "private" | "group" | "justplay" | "gingafit" | "camp" | "open";
   notes?: string;
 }
 
@@ -31,6 +31,7 @@ const schedule: DaySchedule[] = [
       { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "3:00 PM - 5:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "5:00 PM - 7:00 PM", program: "Finishing / Shooting", type: "group" },
+      { time: "7:00 PM - 8:00 PM", program: "GingaFit", type: "gingafit", notes: "Youth Athletic Conditioning" },
     ],
   },
   {
@@ -84,7 +85,7 @@ const typeColors: Record<string, string> = {
   private: "border-amber-500/50 bg-amber-500/5 text-amber-500",
   group: "border-blue-500/50 bg-blue-500/5 text-blue-400",
   justplay: "border-green-500/50 bg-green-500/5 text-green-400",
-  gingamax: "border-orange-500/50 bg-orange-500/5 text-orange-400",
+  gingafit: "border-[#C5A059]/50 bg-[#C5A059]/5 text-[#C5A059]",
   camp: "border-purple-500/50 bg-purple-500/5 text-purple-400",
   open: "border-neutral-500/50 bg-neutral-500/5 text-neutral-400",
 };
@@ -93,7 +94,7 @@ const typeDots: Record<string, string> = {
   private: "bg-amber-500",
   group: "bg-blue-500",
   justplay: "bg-green-500",
-  gingamax: "bg-orange-500",
+  gingafit: "bg-[#C5A059]",
   camp: "bg-purple-500",
   open: "bg-neutral-500",
 };

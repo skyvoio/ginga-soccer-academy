@@ -36,7 +36,7 @@ const PROGRAMS: Program[] = [
   { id: "p1", category: "TRAINING", title: "Justplay", price: "$50 + Tax", unitAmount: 5650, details: "120m Session", isCamp: false },
   { id: "p2", category: "TRAINING", title: "Group Session", price: "$50 + Tax", unitAmount: 5650, details: "90m Session", isCamp: false },
   { id: "p3", category: "TRAINING", title: "Private Session", price: "$175 + Tax", unitAmount: 19775, details: "2h Session", isCamp: false },
-  { id: "p4", category: "TRAINING", title: "GingaMax Speed", price: "$50 + Tax", unitAmount: 5650, details: "Powered by Maximus", isCamp: false },
+  { id: "p4", category: "TRAINING", title: "GingaFit", price: "$40 + Tax", unitAmount: 4520, details: "Tuesdays · 7–8 PM", isCamp: false },
   { id: "c1", category: "CAMPS", title: "PD Day Camp", price: "$150 + Tax", unitAmount: 16950, details: "May 29 & Jun 26", isCamp: true },
   { id: "c2", category: "CAMPS", title: "Summer Camp", price: "$500/wk + Tax", unitAmount: 56500, details: "August Weekly Sessions", isCamp: true },
   { id: "c3", category: "CAMPS", title: "Christmas Camp", price: "$300 + Tax", unitAmount: 33900, details: "Dec 28-30 | 3 Days", isCamp: true },

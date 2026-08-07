@@ -10,7 +10,7 @@ Premium soccer training academy website with a "Midnight Pitch" dark design aest
 - **Styling**: Dark theme with amber/gold (#F5B041) accent, Montserrat for display text, Inter for body
 
 ## Architecture
-- `client/src/pages/` — Home, Programs, GingaMax, Schedule, Booking, Login, Admin, About, Media, Contact
+- `client/src/pages/` — Home, Programs, GingaFit, Schedule, Booking, Login, Admin, About, Media, Contact
 - `client/src/components/` — Navbar, Footer, shadcn UI components
 - `client/src/stores/adminStore.ts` — Zustand store for Rising Stars, Media, News, Registrations
 - `client/src/hooks/useAuth.ts` — Authentication hook using TanStack Query
@@ -20,7 +20,7 @@ Premium soccer training academy website with a "Midnight Pitch" dark design aest
 ## Pages
 - **Home** (`/`) — Hero with YouTube video (plays once, cross-fades to still image), Rising Stars infinite carousel, Programs grid, News section
 - **Programs** (`/programs`) — Training programs, camps, turf rentals
-- **GingaMax** (`/gingamax`) — Speed & agility training page
+- **GingaFit** (`/gingafit`) — Youth athletic conditioning page (speed, power & agility; Tuesdays 7–8 PM, Jul 28–Dec 15, max 24 athletes, $40+tax)
 - **Schedule** (`/schedule`) — Weekly schedule grid
 - **About** (`/about`) — Kevin De Serpa (CEO) + Kenen Shadd (Co-Founder) profiles
 - **Media** (`/media`) — Masonry gallery with category filters and lightbox

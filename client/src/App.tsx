@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import FloatingAdminButton from "@/components/FloatingAdminButton";
 import Home from "@/pages/Home";
 import Programs from "@/pages/Programs";
-import GingaMax from "@/pages/GingaMax";
+import GingaFit from "@/pages/GingaFit";
 import Schedule from "@/pages/Schedule";
 import Booking from "@/pages/Booking";
 import Login from "@/pages/Login";
@@ -23,7 +23,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/programs" component={Programs} />
-      <Route path="/gingamax" component={GingaMax} />
+      <Route path="/gingafit" component={GingaFit} />
       <Route path="/schedule" component={Schedule} />
       <Route path="/booking" component={Booking} />
       <Route path="/booking/success" component={BookingSuccess} />

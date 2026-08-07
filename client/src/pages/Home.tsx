@@ -41,12 +41,12 @@ const programCards = [
   },
   {
     icon: Dumbbell,
-    title: "GINGAMAX SPEED & AGILITY",
-    price: "$50 + Tax",
+    title: "GINGAFIT — YOUTH ATHLETIC CONDITIONING",
+    price: "$40 + Tax",
     label: "Per Session",
     description:
-      "Elite speed and agility training powered by Maximus Performance methodology.",
-    link: "/gingamax",
+      "Build speed, power & agility. Tuesdays 7–8 PM, July 28 – Dec 15. Limited to 24 athletes.",
+    link: "/gingafit",
     image: agilityImg,
   },
   {

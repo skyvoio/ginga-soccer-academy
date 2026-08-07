@@ -4,7 +4,7 @@ const GINGA_PROGRAMS = [
   { name: "Justplay", description: "120-minute open play session for all levels.", price: 5650, category: "TRAINING" },
   { name: "Group Session", description: "90-minute small group training session.", price: 5650, category: "TRAINING" },
   { name: "Private Session", description: "2-hour private 1-on-1 training with elite coaching.", price: 19775, category: "TRAINING" },
-  { name: "GingaMax Speed", description: "Speed & agility training powered by Maximus Performance.", price: 5650, category: "TRAINING" },
+  { name: "GingaFit", description: "Youth athletic conditioning — speed, power & agility. Tuesdays 7–8 PM, Jul 28–Dec 15. Max 24 athletes.", price: 4520, category: "TRAINING" },
   { name: "PD Day Camp", description: "Full-day PD Day training camp. Available: May 29 & Jun 26, 2026.", price: 16950, category: "CAMPS" },
   { name: "Summer Camp", description: "Weekly intensive summer camps throughout August 2026.", price: 56500, category: "CAMPS" },
   { name: "Christmas Camp", description: "3-day Christmas holiday camp, Dec 28-30.", price: 33900, category: "CAMPS" },

@@ -160,10 +160,10 @@ export const useAdminStore = create<AdminState>((set) => ({
     },
     {
       id: "n2",
-      title: "GingaMax Program Launches New Speed Module",
+      title: "GingaFit Is Here: Youth Athletic Conditioning Every Tuesday",
       date: "Feb 20, 2026",
-      excerpt: "Our partnership with Maximus Performance brings cutting-edge speed training technology.",
-      content: "Our partnership with Maximus Performance brings cutting-edge speed training technology to Ginga Soccer Academy.",
+      excerpt: "Build speed, power & agility with GingaFit — our new youth athletic conditioning program starting July 28.",
+      content: "GingaFit is the newest addition to the Ginga Soccer Academy program lineup. Designed to elevate every player's athleticism, overall fitness, and confidence on and off the pitch, GingaFit runs every Tuesday from 7:00 PM to 8:00 PM. Sessions start July 28 and run through December 15 (August excluded). Spots are strictly limited to 24 athletes — contact info@gingasoccer.ca to register.",
       image: newsHolidayImg,
     },
     {
@@ -191,7 +191,7 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "r5", name: "Sofia Chen", program: "Justplay", status: "Confirmed", payment: "Paid", date: "2026-02-25" },
     { id: "r6", name: "Amir Hassan", program: "Summer Camp", status: "Pending", payment: "Unpaid", date: "2026-02-28" },
     { id: "r7", name: "Emma Wilson", program: "Private Session", status: "Confirmed", payment: "Unpaid", date: "2026-03-01" },
-    { id: "r8", name: "Kai Nakamura", program: "GingaMax Speed", status: "Pending", payment: "Unpaid", date: "2026-03-02" },
+    { id: "r8", name: "Kai Nakamura", program: "GingaFit", status: "Pending", payment: "Unpaid", date: "2026-03-02" },
   ],
 
   addRisingStar: (star) =>
