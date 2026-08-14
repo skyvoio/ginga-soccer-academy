@@ -1,0 +1,66 @@
+Here is a blog article tailored for your website news page, followed by a ready-to-use Replit prompt to add it to **gingasoccer.ca**.
+
+---
+
+## 📰 Blog Article Draft
+
+**Title:** Historic Opportunity: Ginga Soccer Academy Announces Exclusive Partnership with European Football Club
+
+It is with great pride and excitement that we officially announce a massive milestone for Ginga Soccer Academy. My longtime friend and trusted partner in Portugal has officially become the **owner of a football club in the Porto region of Portugal**!
+
+### What is Ginga’s Role?
+
+Ginga Soccer Academy is now the **EXCLUSIVE PARTNER** of the club.
+
+Think of this like Cesc Fàbregas’ journey with Como 1907 in Italy—taking over a 5th-division club with a bold vision, building from the ground up, and creating something truly special in European football.
+
+---
+
+### What Does This Mean for Our Players & Families?
+
+This partnership opens direct, legitimate pathways into European football for our athletes. Moving forward, Ginga players will benefit from:
+
+* **International Training Camps:** Direct access to elite European coaching methodologies and high-level training environments in Portugal.
+* **Official European Trials:** Authentic trial opportunities for standout players looking to take the next step in their development.
+* **A Direct Pathway to Europe:** We are working hand-in-hand with the club to bring our kids over exclusively for player growth, exposure, and career opportunities.
+
+> *"Our mission has always been to elevate our players to their highest potential. Having a direct, exclusive connection to a club owner in Europe gives our athletes a genuine bridge to international football that few academies can offer."* — **Coach Kevin**
+
+Stay tuned as we reveal more details on upcoming trip dates, camp schedules, and trial opportunities in the Porto region!
+
+---
+
+---
+
+## 💻 Replit Prompt to Add to Website
+
+Copy and paste this into **Replit Agent / Replit AI** to automatically add the article to your website's news/blog section:
+
+```text
+Please add a new news blog post to gingasoccer.ca with the following content:
+
+Title: Historic Opportunity: Ginga Soccer Academy Announces Exclusive Partnership with European Football Club
+Date: August 2026
+Category: News / Announcements
+
+Content:
+It is with great pride and excitement that we officially announce a massive milestone for Ginga Soccer Academy. My longtime friend and trusted partner in Portugal has officially become the owner of a football club in the Porto region of Portugal!
+
+Ginga Soccer Academy is now the EXCLUSIVE PARTNER of the club.
+
+Think of this like Cesc Fàbregas’ journey with Como 1907 in Italy—taking over a 5th-division club with a bold vision, building from the ground up, and creating something truly special in European football.
+
+What Does This Mean for Our Players & Families?
+This partnership opens direct, legitimate pathways into European football for our athletes. Moving forward, Ginga players will benefit from:
+- International Training Camps in Portugal
+- Official European Trials for standout players
+- A Direct Pathway to Europe to bring our kids over exclusively for growth and opportunities
+
+"Our mission has always been to elevate our players to their highest potential. Having a direct, exclusive connection to a club owner in Europe gives our athletes a genuine bridge to international football that few academies can offer." — Coach Kevin
+
+Design Requirements:
+1. Format as a clean, responsive news card / blog article component on the site.
+2. Use dark background accents with gold (#C5A059) typography and borders matching the Ginga Soccer visual brand.
+3. Include a call-to-action button at the bottom: "Contact Us for More Info" linking to info@gingasoccer.ca.
+
+```

@@ -118,6 +118,14 @@ export const useAdminStore = create<AdminState>((set) => ({
   ],
   news: [
     {
+      id: "n9",
+      title: "Historic Opportunity: Ginga Soccer Academy Announces Exclusive Partnership with European Football Club",
+      date: "Aug 10, 2026",
+      excerpt: "Ginga Soccer Academy is now the EXCLUSIVE PARTNER of a football club in the Porto region of Portugal — opening direct, legitimate pathways into European football for our athletes.",
+      content: "It is with great pride and excitement that we officially announce a massive milestone for Ginga Soccer Academy. My longtime friend and trusted partner in Portugal has officially become the owner of a football club in the Porto region of Portugal!\n\nGinga Soccer Academy is now the EXCLUSIVE PARTNER of the club.\n\nThink of this like Cesc Fàbregas' journey with Como 1907 in Italy — taking over a 5th-division club with a bold vision, building from the ground up, and creating something truly special in European football.\n\n### What Does This Mean for Our Players & Families?\n\nThis partnership opens direct, legitimate pathways into European football for our athletes. Moving forward, Ginga players will benefit from:\n\n• **International Training Camps in Portugal** — Train in Europe and experience elite football culture firsthand.\n• **Official European Trials for standout players** — Get seen by coaches and scouts on the other side of the Atlantic.\n• **A Direct Pathway to Europe** — We will bring our kids over exclusively for growth and opportunities.\n\n*\"Our mission has always been to elevate our players to their highest potential. Having a direct, exclusive connection to a club owner in Europe gives our athletes a genuine bridge to international football that few academies can offer.\"* — Coach Kevin\n\nThis is only the beginning. Stay tuned for more details on how your athlete can be part of this historic opportunity.",
+      image: "/pedroucos-partnership.jpeg",
+    },
+    {
       id: "n8",
       title: "A New King of the Pitch: Theo Clarke Crowned Ginga 1v1 Champion",
       date: "Aug 6, 2026",
