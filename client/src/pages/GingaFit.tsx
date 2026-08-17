@@ -1,56 +1,54 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ChevronRight, Zap, Shield, Dumbbell, Flame, Calendar, Users, Clock, Mail } from "lucide-react";
+import {
+  ChevronRight,
+  Zap,
+  Shield,
+  Dumbbell,
+  Flame,
+  Calendar,
+  Users,
+  Clock,
+  Mail,
+  Activity,
+  Wind,
+  Heart,
+  Star,
+} from "lucide-react";
 
 const pillars = [
   {
     icon: Zap,
     label: "SPEED",
-    title: "Fast Feet & Sprinting Speed",
+    title: "Speed & Sprinting",
     description:
-      "Explosive sprint mechanics, acceleration drills, and fast-twitch muscle activation to make every player faster on the pitch.",
+      "Explosive sprint mechanics, fast feet drills, and acceleration work to make every athlete faster — on the pitch and beyond.",
   },
   {
     icon: Shield,
-    label: "AGILITY",
-    title: "Agility, Balance & Coordination",
+    label: "AGILITY & CO-ORDINATION",
+    title: "Agility, Balance & Co-ordination",
     description:
-      "Ladder work, cone patterns, and reactive agility training that sharpens footwork and body control under pressure.",
+      "Multi-directional movement, balance challenges, and co-ordination patterns that sharpen body control and reaction time.",
   },
   {
     icon: Dumbbell,
-    label: "POWER",
-    title: "Core Strength, Power & Flexibility",
+    label: "STRENGTH & FLEXIBILITY",
+    title: "Strength, Core & Flexibility",
     description:
-      "Functional strength circuits and mobility routines that build athletic power and keep players injury-free all season.",
+      "Push-ups, sit-ups, squats, core circuits, and mobility work that build athletic power and keep athletes injury-free all season.",
   },
 ];
 
-const features = [
-  {
-    icon: Flame,
-    title: "HIGH-ENERGY GAMES",
-    description:
-      "Fun, competitive games woven into every session — with occasional ball work to make conditioning feel like play.",
-  },
-  {
-    icon: Calendar,
-    title: "15–16 SESSIONS",
-    description:
-      "Tuesdays, July 28 – Dec 15. August is excluded. Consistent weekly programming that builds compounding results.",
-  },
-  {
-    icon: Users,
-    title: "MAX 24 ATHLETES",
-    description:
-      "Strictly limited capacity ensures every player gets meaningful coaching attention and personalized feedback.",
-  },
-  {
-    icon: Clock,
-    title: "ONE HOUR, FULL EFFORT",
-    description:
-      "7:00 PM – 8:00 PM every Tuesday. Designed to be intense, efficient, and incomparably effective.",
-  },
+const activities = [
+  { icon: Wind, label: "Fast Feet Work" },
+  { icon: Activity, label: "Agility" },
+  { icon: Star, label: "Co-ordination" },
+  { icon: Heart, label: "Flexibility" },
+  { icon: Zap, label: "Sprinting" },
+  { icon: Dumbbell, label: "Push-ups / Sit-ups / Core Work / Squats" },
+  { icon: Shield, label: "Balance Work" },
+  { icon: Flame, label: "Fun Games" },
 ];
 
 export default function GingaFit() {
@@ -89,18 +87,18 @@ export default function GingaFit() {
             </h1>
 
             <p className="mt-4 text-2xl md:text-3xl font-bold uppercase tracking-wide font-display text-amber-500">
-              Build Speed, Power &amp; Agility
+              Speed · Strength · Co-ordination · Power · Flexibility
             </p>
 
             <p className="mt-6 text-neutral-400 text-lg md:text-xl max-w-2xl leading-relaxed">
-              Designed to elevate every player's athleticism, overall fitness,
-              and confidence on and off the pitch.
+              Built to improve the overall level of speed, strength, co-ordination,
+              power, flexibility and confidence — for the first 24 athletes who sign up.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm font-mono">
               <span className="flex items-center gap-2 text-neutral-500">
                 <div className="w-2 h-2 bg-amber-500 rounded-full" />
-                $40 + tax per session
+                $40 + tax
               </span>
               <span className="flex items-center gap-2 text-neutral-500">
                 <div className="w-2 h-2 bg-amber-500 rounded-full" />
@@ -139,8 +137,8 @@ export default function GingaFit() {
             {[
               { label: "DAY", value: "Tuesday" },
               { label: "TIME", value: "7:00 – 8:00 PM" },
-              { label: "STARTS", value: "Jul 28, 2025" },
-              { label: "ENDS", value: "Dec 15, 2025" },
+              { label: "STARTS", value: "Jul 28, 2026" },
+              { label: "ENDS", value: "Dec 15, 2026" },
               { label: "SESSIONS", value: "15–16 total" },
               { label: "CAPACITY", value: "24 athletes" },
             ].map((item) => (
@@ -184,7 +182,7 @@ export default function GingaFit() {
                 transition={{ duration: 0.6, delay: i * 0.15 }}
                 className="group"
               >
-                <div className="relative bg-[#171717] border border-white/5 p-10 transition-all duration-500 hover:border-amber-500/30">
+                <div className="relative bg-[#171717] border border-white/5 p-10 transition-all duration-500 hover:border-amber-500/30 h-full">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-amber-500 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
                   <pillar.icon
                     size={36}
@@ -207,7 +205,7 @@ export default function GingaFit() {
         </div>
       </section>
 
-      {/* FEATURES GRID */}
+      {/* WHAT'S IN EVERY SESSION */}
       <section className="py-24 px-6 bg-[#0d0d0d]">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -217,34 +215,115 @@ export default function GingaFit() {
             className="mb-16"
           >
             <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
-              HOW IT WORKS
+              EVERY TUESDAY
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-display">
-              WHAT TO EXPECT
+              WHAT'S IN EVERY SESSION
             </h2>
+            <p className="mt-4 text-neutral-500 text-sm max-w-xl leading-relaxed">
+              Each 60-minute session is packed with purposeful work. The ball may make
+              occasional appearances — but this is pure athletic conditioning first.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {activities.map((activity, i) => (
               <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
+                key={activity.label}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
               >
-                <div className="bg-[#141414] border border-white/5 p-8 h-full">
-                  <div className="w-10 h-10 bg-amber-500/10 flex items-center justify-center mb-6">
-                    <feature.icon size={20} className="text-amber-500" />
+                <div className="group flex items-center gap-4 bg-[#141414] border border-white/5 px-6 py-5 hover:border-amber-500/25 transition-all duration-300">
+                  <div className="w-8 h-8 bg-amber-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/20 transition-colors duration-300">
+                    <activity.icon size={16} className="text-amber-500" />
                   </div>
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wide font-display mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-neutral-400 text-sm leading-relaxed">
-                    {feature.description}
+                  <p className="text-white text-sm font-semibold font-display uppercase tracking-wide leading-tight">
+                    {activity.label}
                   </p>
                 </div>
               </motion.div>
+            ))}
+
+            {/* Ball note card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: activities.length * 0.08 }}
+              className="sm:col-span-2 lg:col-span-4"
+            >
+              <div className="flex items-start gap-4 bg-amber-500/5 border border-amber-500/15 px-6 py-5">
+                <div className="w-1 self-stretch bg-amber-500 rounded-full flex-shrink-0" />
+                <p className="text-neutral-400 text-sm leading-relaxed">
+                  <span className="text-amber-400 font-semibold">Note on the ball:</span>{" "}
+                  The ball will be introduced occasionally but not often — the focus is
+                  pure athleticism. Players who improve their speed, strength, and
+                  co-ordination become better footballers automatically.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROGRAM BASIS */}
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+                THE FOUNDATION
+              </p>
+              <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-display leading-tight">
+                THE BASIS OF<br />GINGAFIT
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-neutral-300 text-lg leading-relaxed mb-6">
+                The basis is to{" "}
+                <span className="text-amber-400 font-semibold">
+                  improve the level of overall speed, strength, co-ordination,
+                  power, flexibility and confidence.
+                </span>
+              </p>
+              <p className="text-neutral-400 text-base leading-relaxed">
+                The program will take the first <span className="text-white font-semibold">24 kids</span> interested.
+                Sessions run every Tuesday from <span className="text-white font-semibold">July 28</span> through{" "}
+                <span className="text-white font-semibold">December 15, 2026</span> — with August fully excluded.
+                That's <span className="text-white font-semibold">15–16 sessions</span> of focused athletic development.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Stats row */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
+            {[
+              { value: "24", label: "Max Athletes" },
+              { value: "15–16", label: "Total Sessions" },
+              { value: "60", label: "Minutes Per Session" },
+              { value: "$40", label: "Per Session + Tax" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-[#0a0a0a] px-8 py-10 text-center">
+                <p className="text-4xl font-black text-amber-500 font-display mb-2">
+                  {stat.value}
+                </p>
+                <p className="text-xs font-bold tracking-[0.15em] text-neutral-500 font-display uppercase">
+                  {stat.label}
+                </p>
+              </div>
             ))}
           </div>
         </div>
@@ -256,7 +335,7 @@ export default function GingaFit() {
           <div className="w-1 self-stretch bg-amber-500 rounded-full flex-shrink-0" />
           <p className="text-neutral-500 text-sm leading-relaxed">
             <span className="text-white font-semibold">Note on schedule:</span>{" "}
-            Sessions run every Tuesday from July 28 through December 15. August
+            Sessions run every Tuesday from July 28 through December 15, 2026. August
             is fully excluded — the program resumes in September and continues
             through to the end of the fall season. Total of 15–16 sessions.
           </p>
