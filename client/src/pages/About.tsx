@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Instagram, Youtube, Award, Zap, Trophy, MapPin } from "lucide-react";
 import kevinImg from "@assets/kevin-de-serpa_1772628179833.jpg";
-import kenenImg from "@assets/Kenen_Shadd_1772628402082.jpeg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
 import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
 import diagoImg from "@assets/Diago_Delgado_1773607422404.jpeg";
@@ -231,75 +230,6 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-24 px-6 bg-[#0d0d0d]">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="order-2 lg:order-1"
-            >
-              <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
-                CO-FOUNDER | SPEED & AGILITY
-              </p>
-              <h2
-                className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter font-display mb-4"
-                data-testid="text-kenen-name"
-              >
-                KENEN SHADD
-              </h2>
-              <p className="text-neutral-400 text-lg mb-8">
-                Maximus Performance background. Elite agility training.
-              </p>
-
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                {[
-                  { icon: Award, label: "NCAA D1 Athlete" },
-                  { icon: Trophy, label: "5x Triple Jump Champ" },
-                  { icon: Zap, label: "NJCAA National Champion" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="bg-[#171717] border border-white/5 p-5 text-center"
-                    data-testid={`stat-kenen-${i}`}
-                  >
-                    <stat.icon size={24} className="text-amber-500 mx-auto mb-3" />
-                    <p className="text-white text-xs font-bold uppercase tracking-wide font-display">
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-
-              <p className="text-neutral-400 text-sm leading-relaxed">
-                Kenen brings an elite athletic background to the Ginga coaching staff. As an NCAA Division 1 athlete and 5-time Triple Jump champion, he understands what it takes to perform at the highest levels. His Maximus Performance methodology focuses on developing explosive speed, agility, and acceleration — the physical attributes that separate good players from great ones.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-[3/4] overflow-hidden order-1 lg:order-2"
-            >
-              <img
-                src={kenenImg}
-                alt="Kenen Shadd"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       <section className="py-24 px-6 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto">
