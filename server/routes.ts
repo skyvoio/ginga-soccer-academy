@@ -1,7 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, updateProfileSchema, insertRegistrationSchema, updateRegistrationSchema } from "@shared/schema";
+import {
+  insertUserSchema,
+  updateProfileSchema,
+  insertRegistrationSchema,
+  updateRegistrationSchema,
+  contactMessageSchema,
+} from "@shared/schema";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import passport from "passport";
@@ -10,6 +16,7 @@ import { getAuth } from "@clerk/express";
 import crypto from "crypto";
 import { isStripeConnected, getUncachableStripeClient } from "./stripeClient";
 import { WebhookHandlers } from "./webhookHandlers";
+import { logEmailFailure, sendNotificationEmail } from "./email";
 
 const MemoryStoreSession = MemoryStore(session);
 
@@ -223,6 +230,88 @@ export async function registerRoutes(
       isAdmin: user.isAdmin,
       enrolledProgram: user.enrolledProgram ?? null,
     });
+  });
+
+  // ── User Registration and Contact Notifications ─────────────────────────────
+
+  app.post("/api/registrations", requireAuth, async (req: any, res) => {
+    try {
+      const parsed = insertRegistrationSchema.safeParse({
+        ...req.body,
+        userId: (req.user as any).id,
+        date: req.body?.date || new Date().toISOString().slice(0, 10),
+      });
+      if (!parsed.success) {
+        return res.status(400).json({
+          message: "Invalid registration data",
+          errors: parsed.error.flatten().fieldErrors,
+        });
+      }
+
+      const registration = await storage.createRegistration(parsed.data);
+      const user = req.user as any;
+
+      try {
+        await sendNotificationEmail({
+          subject: `New registration: ${registration.program}`,
+          replyTo: user.email || undefined,
+          text: [
+            "A new registration was submitted through gingasoccer.ca.",
+            "",
+            `Player name: ${registration.name}`,
+            `Program: ${registration.program}`,
+            `Date submitted: ${registration.date}`,
+            `Parent/account name: ${user.name || user.username}`,
+            `Parent email: ${user.email || "Not provided"}`,
+            `Parent phone: ${user.phone || "Not provided"}`,
+            `Emergency contact: ${user.emergencyContact || "Not provided"}`,
+            `Notes: ${registration.notes || "None"}`,
+          ].join("\n"),
+        });
+      } catch (error) {
+        logEmailFailure("registration", error);
+      }
+
+      return res.status(201).json(registration);
+    } catch (error: any) {
+      console.error("Registration submission error:", error);
+      return res.status(500).json({ message: "Failed to submit registration" });
+    }
+  });
+
+  app.post("/api/contact", async (req, res) => {
+    const parsed = contactMessageSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        message: "Please provide your name, a valid email, and a message",
+        errors: parsed.error.flatten().fieldErrors,
+      });
+    }
+
+    const { name, email, subject, message } = parsed.data;
+    try {
+      await sendNotificationEmail({
+        subject: `Contact form: ${subject}`,
+        replyTo: email,
+        text: [
+          "A new contact form message was submitted through gingasoccer.ca.",
+          "",
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Subject: ${subject}`,
+          "",
+          "Message:",
+          message,
+        ].join("\n"),
+      });
+      return res.status(201).json({ success: true });
+    } catch (error) {
+      logEmailFailure("contact", error);
+      return res.status(503).json({
+        message:
+          "Your message could not be sent right now. Please email info@gingasoccer.ca directly.",
+      });
+    }
   });
 
   // ── Admin User Management ───────────────────────────────────────────────────

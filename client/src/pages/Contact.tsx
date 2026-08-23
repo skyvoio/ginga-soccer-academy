@@ -1,20 +1,27 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Clock, Send, Check } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    setError("");
+    try {
+      await apiRequest("POST", "/api/contact", formData);
       setSubmitted(true);
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message || "Unable to send your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -54,6 +61,12 @@ export default function Contact() {
                   <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8">
                     SEND A MESSAGE
                   </h2>
+
+                  {error && (
+                    <p className="mb-5 border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400" data-testid="text-contact-error">
+                      {error}
+                    </p>
+                  )}
 
                   <div className="space-y-5">
                     <div>

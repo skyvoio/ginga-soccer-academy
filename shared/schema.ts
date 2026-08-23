@@ -54,9 +54,17 @@ export const insertRegistrationSchema = z.object({
 
 export const updateRegistrationSchema = insertRegistrationSchema.partial();
 
+export const contactMessageSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  email: z.string().trim().email(),
+  subject: z.string().trim().max(150).optional().default("General inquiry"),
+  message: z.string().trim().min(1).max(5000),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpdateProfile = z.infer<typeof updateProfileSchema>;
 export type InsertRegistration = z.infer<typeof insertRegistrationSchema>;
 export type UpdateRegistration = z.infer<typeof updateRegistrationSchema>;
+export type ContactMessage = z.infer<typeof contactMessageSchema>;
 export type User = typeof users.$inferSelect;
 export type Registration = typeof registrations.$inferSelect;
