@@ -30,13 +30,21 @@ async function seedAdminUser() {
   const existing = await storage.getUserByUsername("admin");
   if (!existing) {
     const hashedPassword = hashPassword("ginga2026");
-    await storage.createUser({ username: "admin", password: hashedPassword });
+    await storage.createUser({ username: "admin", password: hashedPassword, isAdmin: true });
     console.log("Admin user seeded: username=admin");
   }
 }
 
 function requireAuth(req: any, res: any, next: any) {
   if (!req.user) return res.status(401).json({ message: "Not authenticated" });
+  next();
+}
+
+function requireAdmin(req: any, res: any, next: any) {
+  if (!req.user) return res.status(401).json({ message: "Not authenticated" });
+  if (!(req.user as any).isAdmin) {
+    return res.status(403).json({ message: "Administrator access required" });
+  }
   next();
 }
 
@@ -145,7 +153,7 @@ export async function registerRoutes(
       }
 
       const hashedPassword = hashPassword(password);
-      const user = await storage.createUser({ username, password: hashedPassword, email });
+      const user = await storage.createUser({ username, password: hashedPassword, email, isAdmin: false });
 
       req.login(user, (err) => {
         if (err) return res.status(500).json({ message: "Login failed after registration" });
@@ -170,6 +178,7 @@ export async function registerRoutes(
         user = await storage.createUser({
           username,
           password: hashPassword(crypto.randomBytes(32).toString("hex")),
+          isAdmin: false,
         });
       }
 
@@ -208,11 +217,59 @@ export async function registerRoutes(
       id: user.id,
       username: user.username,
       email: user.email ?? null,
+      isAdmin: user.isAdmin,
       enrolledProgram: user.enrolledProgram ?? null,
     });
   });
 
+  // ── Admin User Management ───────────────────────────────────────────────────
+
+  app.get("/api/admin/users", requireAdmin, async (_req, res) => {
+    const users = await storage.getUsers();
+    res.json(users.map(({ password: _password, ...user }) => user));
+  });
+
+  app.delete("/api/admin/users/:id", requireAdmin, async (req: any, res) => {
+    try {
+      const target = await storage.getUser(req.params.id);
+      if (!target) return res.status(404).json({ message: "User not found" });
+      if (target.isAdmin) return res.status(400).json({ message: "Admin users cannot be removed" });
+      await storage.deleteUser(target.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to remove user" });
+    }
+  });
+
+  app.post("/api/admin/users/:id/reset-password", requireAdmin, async (req: any, res) => {
+    try {
+      const password = typeof req.body?.password === "string" ? req.body.password : "";
+      if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
+      const target = await storage.getUser(req.params.id);
+      if (!target) return res.status(404).json({ message: "User not found" });
+      await storage.updateUserPassword(target.id, hashPassword(password));
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to reset password" });
+    }
+  });
+
   // ── Stripe / Checkout Routes ─────────────────────────────────────────────────
+
+  const programPrices: Record<string, { name: string; unitAmount: number }> = {
+    p1: { name: "Justplay", unitAmount: 5650 },
+    p2: { name: "Group Session", unitAmount: 5650 },
+    p3: { name: "Private Session", unitAmount: 19775 },
+    p4: { name: "GingaFit", unitAmount: 4520 },
+    c1: { name: "PD Day Camp", unitAmount: 16950 },
+    c2: { name: "Summer Camp", unitAmount: 56500 },
+    c3: { name: "Christmas Camp", unitAmount: 33900 },
+    r1: { name: "Full Turf Rental", unitAmount: 15000 },
+    r2: { name: "3/4 Turf Rental", unitAmount: 10000 },
+    r3: { name: "Mini Turf Rental", unitAmount: 7000 },
+  };
 
   app.get("/api/stripe/status", async (_req, res) => {
     const connected = await isStripeConnected();
@@ -221,9 +278,10 @@ export async function registerRoutes(
 
   app.post("/api/checkout", requireAuth, async (req: any, res) => {
     try {
-      const { programId, programName, priceId } = req.body;
-      if (!programId || !programName) {
-        return res.status(400).json({ message: "programId and programName are required" });
+      const { programId, priceId } = req.body;
+      const program = programPrices[programId];
+      if (!program) {
+        return res.status(400).json({ message: "Invalid program selected" });
       }
 
       const connected = await isStripeConnected();
@@ -256,17 +314,22 @@ export async function registerRoutes(
               price_data: {
                 currency: "cad",
                 product_data: {
-                  name: programName,
+                   name: program.name,
                   metadata: { academy: "ginga_soccer", programId },
                 },
-                unit_amount: req.body.unitAmount ?? 0,
+                 unit_amount: program.unitAmount,
               },
               quantity: 1,
             }],
         mode: "payment",
-        success_url: `${baseUrl}/booking/success?session_id={CHECKOUT_SESSION_ID}&program=${encodeURIComponent(programName)}`,
+        success_url: `${baseUrl}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${baseUrl}/booking`,
-        metadata: { userId: user.id, programId, programName, academy: "ginga_soccer" },
+        metadata: {
+          userId: user.id,
+          programId,
+          programName: program.name,
+          academy: "ginga_soccer",
+        },
       });
 
       res.json({ url: session.url });
@@ -279,8 +342,8 @@ export async function registerRoutes(
   app.get("/api/checkout/confirm", requireAuth, async (req: any, res) => {
     try {
       const { session_id, program } = req.query as { session_id: string; program: string };
-      if (!session_id || !program) {
-        return res.status(400).json({ message: "Missing session_id or program" });
+      if (!session_id) {
+        return res.status(400).json({ message: "Missing session_id" });
       }
 
       const connected = await isStripeConnected();
@@ -291,12 +354,19 @@ export async function registerRoutes(
       const stripe = await getUncachableStripeClient();
       const session = await stripe.checkout.sessions.retrieve(session_id);
 
-      if (session.payment_status !== "paid") {
+       const user = req.user as any;
+       if (
+         session.payment_status !== "paid" ||
+         session.metadata?.userId !== user.id ||
+         !session.metadata?.programName
+       ) {
         return res.status(400).json({ message: "Payment not completed" });
       }
 
-      const user = req.user as any;
-      const updated = await storage.updateUserEnrollment(user.id, program);
+       const updated = await storage.updateUserEnrollment(
+         user.id,
+         session.metadata.programName,
+       );
       res.json({ success: true, enrolledProgram: updated.enrolledProgram });
     } catch (error: any) {
       console.error("Confirm error:", error.message);

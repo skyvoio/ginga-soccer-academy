@@ -1,0 +1,21 @@
+Please update the backend code to fix current authentication crashes, add admin features, and implement payment processing. 
+
+CRITICAL INSTRUCTION: You must complete this in 3 sequential steps. After completing each step, you must run the server, check the console for errors, and ensure the build passes before moving on to the next step. Do not proceed if there are any errors.
+
+Step 1: Fix Authentication & Session Crashes
+The registration and login routes in `server/routes.ts` use `req.login` and `passport.authenticate`, but `express-session` and `passport` are not initialized in `server/index.ts`, causing 500 errors. Please install and configure `express-session` and `passport` in `server/index.ts`. Ensure this local session management works correctly alongside the existing Clerk proxy middleware without causing redirect loops. 
+*→ Stop and verify the server starts and auth routes work without 500 errors before continuing.*
+
+Step 2: Add Admin Capabilities
+Update `shared/schema.ts` to include an `isAdmin` boolean (default false). Then, create protected admin routes in `server/routes.ts` that allow an admin user to:
+*   Fetch a list of all registered users/players.
+*   Add or remove users from the database.
+*   Manually reset a user's password.
+Make sure these routes check that the requester has admin privileges before executing.
+*→ Stop and verify there are no TypeScript errors and the new routes compile successfully before continuing.*
+
+Step 3: Enable Stripe Payments for Programs
+Customers need to pay when registering for a program. Please integrate Stripe. 
+*   Create an endpoint (e.g., `/api/checkout`) that generates a Stripe Checkout Session for a selected program (JustPlay, Summer Camp, GingaFit, Private Session). 
+*   Once payment is successful, update the user's `stripeCustomerId`, `enrolledProgram`, and `enrolledAt` fields in the database via a Stripe webhook or success route.
+*→ Final check: verify the server runs smoothly with all new Stripe endpoints integrated.
