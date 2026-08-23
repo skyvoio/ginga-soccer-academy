@@ -12,6 +12,7 @@ import GingaFit from "@/pages/GingaFit";
 import Schedule from "@/pages/Schedule";
 import Booking from "@/pages/Booking";
 import Login from "@/pages/Login";
+import Profile from "@/pages/Profile";
 import Admin from "@/pages/Admin";
 import About from "@/pages/About";
 import Media from "@/pages/Media";
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/news/:id" component={NewsArticle} />
       <Route path="/login" component={Login} />
+      <Route path="/profile" component={Profile} />
       <Route path="/admin" component={Admin} />
       <Route>
         <div className="min-h-screen pt-32 text-center px-6">

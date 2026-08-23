@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema } from "@shared/schema";
+import { insertUserSchema, updateProfileSchema, insertRegistrationSchema, updateRegistrationSchema } from "@shared/schema";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import passport from "passport";
@@ -217,6 +217,9 @@ export async function registerRoutes(
       id: user.id,
       username: user.username,
       email: user.email ?? null,
+      name: user.name ?? null,
+      phone: user.phone ?? null,
+      emergencyContact: user.emergencyContact ?? null,
       isAdmin: user.isAdmin,
       enrolledProgram: user.enrolledProgram ?? null,
     });
@@ -253,6 +256,97 @@ export async function registerRoutes(
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ message: error.message || "Failed to reset password" });
+    }
+  });
+
+  // ── Profile Update ───────────────────────────────────────────────────────────
+
+  app.put("/api/auth/user", requireAuth, async (req: any, res) => {
+    try {
+      const parsed = updateProfileSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid profile data", errors: parsed.error.flatten().fieldErrors });
+      }
+
+      const user = req.user as any;
+
+      // If email is being changed, check it isn't already taken by someone else
+      if (parsed.data.email && parsed.data.email.toLowerCase() !== (user.email ?? "").toLowerCase()) {
+        const existing = await storage.getUserByEmail(parsed.data.email);
+        if (existing && existing.id !== user.id) {
+          return res.status(400).json({ message: "An account with that email already exists" });
+        }
+      }
+
+      const updated = await storage.updateUserProfile(user.id, parsed.data);
+
+      // Refresh passport session so subsequent /api/auth/user reads the new data
+      req.login(updated, (err: any) => {
+        if (err) return res.status(500).json({ message: "Profile updated but session refresh failed" });
+        return res.json({
+          id: updated.id,
+          username: updated.username,
+          email: updated.email ?? null,
+          name: updated.name ?? null,
+          phone: updated.phone ?? null,
+          emergencyContact: updated.emergencyContact ?? null,
+          isAdmin: updated.isAdmin,
+          enrolledProgram: updated.enrolledProgram ?? null,
+        });
+      });
+    } catch (error: any) {
+      console.error("Profile update error:", error);
+      return res.status(500).json({ message: "Failed to update profile" });
+    }
+  });
+
+  // ── Admin Registration Management ────────────────────────────────────────────
+
+  app.get("/api/admin/registrations", requireAdmin, async (_req, res) => {
+    try {
+      const regs = await storage.getRegistrations();
+      res.json(regs);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to fetch registrations" });
+    }
+  });
+
+  app.post("/api/admin/registrations", requireAdmin, async (req, res) => {
+    try {
+      const parsed = insertRegistrationSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid registration data", errors: parsed.error.flatten().fieldErrors });
+      }
+      const reg = await storage.createRegistration(parsed.data);
+      res.status(201).json(reg);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to create registration" });
+    }
+  });
+
+  app.put("/api/admin/registrations/:id", requireAdmin, async (req: any, res) => {
+    try {
+      const parsed = updateRegistrationSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid data", errors: parsed.error.flatten().fieldErrors });
+      }
+      const existing = await storage.getRegistration(req.params.id);
+      if (!existing) return res.status(404).json({ message: "Registration not found" });
+      const updated = await storage.updateRegistration(req.params.id, parsed.data);
+      res.json(updated);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to update registration" });
+    }
+  });
+
+  app.delete("/api/admin/registrations/:id", requireAdmin, async (req: any, res) => {
+    try {
+      const existing = await storage.getRegistration(req.params.id);
+      if (!existing) return res.status(404).json({ message: "Registration not found" });
+      await storage.deleteRegistration(req.params.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to delete registration" });
     }
   });
 

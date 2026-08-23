@@ -21,8 +21,11 @@ import {
   Save,
   Pencil,
 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminStore, type MediaItem } from "@/stores/adminStore";
+import type { Registration } from "@shared/schema";
 import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 
 type Tab = "dashboard" | "content" | "registrations" | "risingstars" | "media" | "news";
@@ -36,7 +39,13 @@ const sidebarItems: { key: Tab; label: string; icon: typeof LayoutDashboard }[] 
   { key: "registrations", label: "Registrations", icon: UserCheck },
 ];
 
-function exportToCSV(registrations: { id: string; name: string; program: string; status: string; payment: string; date: string }[]) {
+const PROGRAMS = [
+  "Justplay", "Group Session", "Private Session", "GingaFit",
+  "PD Day Camp", "Summer Camp", "Christmas Camp",
+  "Full Turf Rental", "3/4 Turf Rental", "Mini Turf Rental",
+];
+
+function exportToCSV(registrations: Registration[]) {
   const confirmed = registrations.filter((r) => r.status === "Confirmed");
   const headers = ["Name", "Program", "Status", "Payment", "Date"];
   const rows = confirmed.map((r) => [r.name, r.program, r.status, r.payment, r.date]);
@@ -52,21 +61,21 @@ function exportToCSV(registrations: { id: string; name: string; program: string;
   URL.revokeObjectURL(url);
 }
 
+const blankRegForm = { name: "", program: PROGRAMS[0], status: "Pending" as "Pending" | "Confirmed", payment: "Unpaid" as "Unpaid" | "Paid", date: new Date().toISOString().slice(0, 10), notes: "" };
+
 export default function Admin() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const qc = useQueryClient();
 
   const {
     contentBlocks,
     updateContentBlock,
-    registrations,
     risingStars,
     media,
     news,
-    toggleRegistrationStatus,
-    togglePaymentStatus,
     addRisingStar,
     updateRisingStar,
     removeRisingStar,
@@ -78,13 +87,65 @@ export default function Admin() {
 
   const [editedBlocks, setEditedBlocks] = useState<Record<string, string>>({});
   const [savedKeys, setSavedKeys] = useState<Set<string>>(new Set());
-
   const [newStar, setNewStar] = useState({ name: "", position: "", club: "", bio: "", image: "" });
   const [editingStarId, setEditingStarId] = useState<string | null>(null);
   const [editStarData, setEditStarData] = useState({ name: "", position: "", club: "", bio: "", image: "" });
   const [newMediaItem, setNewMediaItem] = useState({ title: "", category: "Training" as MediaItem["category"], type: "image" as "image" | "video", image: "", videoUrl: "" });
   const [newPost, setNewPost] = useState({ title: "", date: "", excerpt: "", content: "", image: "" });
 
+  // ── Registration state ───────────────────────────────────────────────────────
+  const [showAddReg, setShowAddReg] = useState(false);
+  const [newReg, setNewReg] = useState(blankRegForm);
+  const [editingRegId, setEditingRegId] = useState<string | null>(null);
+  const [editRegData, setEditRegData] = useState(blankRegForm);
+  const [regError, setRegError] = useState<string | null>(null);
+
+  // ── Registrations API ────────────────────────────────────────────────────────
+  const { data: registrations = [] } = useQuery<Registration[]>({
+    queryKey: ["/api/admin/registrations"],
+    queryFn: async () => {
+      const res = await apiRequest("GET", "/api/admin/registrations");
+      if (!res.ok) throw new Error("Failed to fetch registrations");
+      return res.json();
+    },
+    enabled: !!user?.isAdmin,
+  });
+
+  const createReg = useMutation({
+    mutationFn: async (data: typeof newReg) => {
+      const res = await apiRequest("POST", "/api/admin/registrations", data);
+      if (!res.ok) { const b = await res.json(); throw new Error(b.message || "Failed"); }
+      return res.json();
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["/api/admin/registrations"] }); setShowAddReg(false); setNewReg(blankRegForm); setRegError(null); },
+    onError: (e: any) => setRegError(e.message),
+  });
+
+  const updateReg = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<typeof editRegData> }) => {
+      const res = await apiRequest("PUT", `/api/admin/registrations/${id}`, data);
+      if (!res.ok) { const b = await res.json(); throw new Error(b.message || "Failed"); }
+      return res.json();
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["/api/admin/registrations"] }); setEditingRegId(null); setRegError(null); },
+    onError: (e: any) => setRegError(e.message),
+  });
+
+  const deleteReg = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await apiRequest("DELETE", `/api/admin/registrations/${id}`);
+      if (!res.ok) throw new Error("Failed to delete");
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/admin/registrations"] }),
+  });
+
+  const toggleStatus = (r: Registration) =>
+    updateReg.mutate({ id: r.id, data: { status: r.status === "Confirmed" ? "Pending" : "Confirmed" } });
+
+  const togglePayment = (r: Registration) =>
+    updateReg.mutate({ id: r.id, data: { payment: r.payment === "Paid" ? "Unpaid" : "Paid" } });
+
+  // ── Guards ───────────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -156,6 +217,7 @@ export default function Admin() {
 
   const inputClass = "w-full bg-[#0a0a0a] border border-neutral-700 px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors placeholder:text-neutral-600";
   const labelClass = "text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] block mb-2 font-display";
+  const selectClass = `${inputClass} cursor-pointer`;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex">
@@ -209,6 +271,7 @@ export default function Admin() {
         </header>
 
         <main className="p-6 md:p-8">
+          {/* ── DASHBOARD ────────────────────────────────────────────────────────── */}
           {activeTab === "dashboard" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-dashboard-heading">OVERVIEW</h2>
@@ -255,6 +318,7 @@ export default function Admin() {
             </motion.div>
           )}
 
+          {/* ── CONTENT ──────────────────────────────────────────────────────────── */}
           {activeTab === "content" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="mb-8">
@@ -286,11 +350,7 @@ export default function Admin() {
                         <button
                           onClick={() => {
                             updateContentBlock(block.key, draft);
-                            setSavedKeys((prev) => {
-                              const next = new Set(prev);
-                              next.add(block.key);
-                              return next;
-                            });
+                            setSavedKeys((prev) => { const next = new Set(prev); next.add(block.key); return next; });
                           }}
                           disabled={!isDirty && !isSaved}
                           className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] transition-all duration-200 ${
@@ -312,21 +372,93 @@ export default function Admin() {
             </motion.div>
           )}
 
+          {/* ── REGISTRATIONS ────────────────────────────────────────────────────── */}
           {activeTab === "registrations" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
                 <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display" data-testid="text-registrations-heading">REGISTRATIONS</h2>
-                <button
-                  onClick={() => exportToCSV(registrations)}
-                  className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
-                  data-testid="button-export-csv"
-                >
-                  <Download size={14} /> EXPORT TO CSV
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { setShowAddReg(!showAddReg); setRegError(null); }}
+                    className="flex items-center gap-2 bg-[#171717] border border-white/10 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:border-amber-500/50 transition-colors"
+                    data-testid="button-add-registration"
+                  >
+                    <Plus size={14} /> ADD REGISTRATION
+                  </button>
+                  <button
+                    onClick={() => exportToCSV(registrations)}
+                    className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
+                    data-testid="button-export-csv"
+                  >
+                    <Download size={14} /> EXPORT CSV
+                  </button>
+                </div>
               </div>
+
+              {/* Add registration form */}
+              {showAddReg && (
+                <div className="bg-[#171717] border border-amber-500/20 p-6 mb-6">
+                  <h3 className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase mb-5 font-display">NEW REGISTRATION</h3>
+                  {regError && (
+                    <p className="text-red-400 text-xs font-mono mb-4 bg-red-500/10 px-3 py-2 border border-red-500/20">{regError}</p>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <label className={labelClass}>ATHLETE NAME</label>
+                      <input value={newReg.name} onChange={(e) => setNewReg({ ...newReg, name: e.target.value })} className={inputClass} placeholder="Full name" data-testid="input-new-reg-name" />
+                    </div>
+                    <div>
+                      <label className={labelClass}>PROGRAM</label>
+                      <select value={newReg.program} onChange={(e) => setNewReg({ ...newReg, program: e.target.value })} className={selectClass} data-testid="select-new-reg-program">
+                        {PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className={labelClass}>DATE</label>
+                      <input type="date" value={newReg.date} onChange={(e) => setNewReg({ ...newReg, date: e.target.value })} className={inputClass} data-testid="input-new-reg-date" />
+                    </div>
+                    <div>
+                      <label className={labelClass}>STATUS</label>
+                      <select value={newReg.status} onChange={(e) => setNewReg({ ...newReg, status: e.target.value as "Pending" | "Confirmed" })} className={selectClass} data-testid="select-new-reg-status">
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className={labelClass}>PAYMENT</label>
+                      <select value={newReg.payment} onChange={(e) => setNewReg({ ...newReg, payment: e.target.value as "Unpaid" | "Paid" })} className={selectClass} data-testid="select-new-reg-payment">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className={labelClass}>NOTES</label>
+                      <input value={newReg.notes} onChange={(e) => setNewReg({ ...newReg, notes: e.target.value })} className={inputClass} placeholder="Optional notes" data-testid="input-new-reg-notes" />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => createReg.mutate(newReg)}
+                      disabled={!newReg.name || createReg.isPending}
+                      className="flex items-center gap-2 bg-amber-500 text-black px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      data-testid="button-save-new-reg"
+                    >
+                      {createReg.isPending ? <><div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" /> SAVING…</> : <><Check size={13} /> CREATE</>}
+                    </button>
+                    <button onClick={() => { setShowAddReg(false); setNewReg(blankRegForm); setRegError(null); }} className="flex items-center gap-2 bg-neutral-800 text-neutral-400 px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] hover:bg-neutral-700 transition-colors">
+                      <X size={13} /> CANCEL
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {regError && !showAddReg && (
+                <p className="text-red-400 text-xs font-mono mb-4 bg-red-500/10 px-3 py-2 border border-red-500/20">{regError}</p>
+              )}
+
               <div className="bg-[#171717] border border-white/5 overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[700px]">
+                  <table className="w-full min-w-[820px]">
                     <thead>
                       <tr className="border-b border-white/5">
                         {["NAME", "PROGRAM", "STATUS", "PAYMENT", "DATE", "ACTIONS"].map((h) => (
@@ -336,40 +468,121 @@ export default function Admin() {
                     </thead>
                     <tbody>
                       {registrations.map((r) => (
-                        <tr key={r.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors" data-testid={`row-registration-${r.id}`}>
-                          <td className="px-6 py-4 text-white text-sm font-bold">{r.name}</td>
-                          <td className="px-6 py-4 text-neutral-400 text-sm font-mono">{r.program}</td>
-                          <td className="px-6 py-4">
-                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"}`}>
-                              {r.status.toUpperCase()}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.payment === "Paid" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>
-                              {r.payment.toUpperCase()}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-neutral-500 text-xs font-mono">{r.date}</td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() => toggleRegistrationStatus(r.id)}
-                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${r.status === "Confirmed" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-green-500/20 text-green-400 hover:bg-green-500/30"}`}
-                                data-testid={`button-confirm-${r.id}`}
-                              >
-                                {r.status === "Confirmed" ? "REVOKE" : "CONFIRM"}
-                              </button>
-                              <button
-                                onClick={() => togglePaymentStatus(r.id)}
-                                className={`text-[10px] font-bold tracking-wider px-3 py-1.5 transition-colors ${r.payment === "Paid" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"}`}
-                                data-testid={`button-payment-${r.id}`}
-                              >
-                                {r.payment === "Paid" ? "UNPAY" : "MARK PAID"}
-                              </button>
-                            </div>
-                          </td>
+                        <tr key={r.id} className="border-b border-white/5 last:border-0" data-testid={`row-registration-${r.id}`}>
+                          {editingRegId === r.id ? (
+                            <td colSpan={6} className="px-4 py-4">
+                              <div className="bg-[#0a0a0a] border border-amber-500/20 p-4">
+                                <p className="text-[10px] font-bold text-amber-500 uppercase tracking-[0.2em] mb-4 font-display">EDITING — {r.name}</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
+                                  <div>
+                                    <label className={labelClass}>NAME</label>
+                                    <input value={editRegData.name} onChange={(e) => setEditRegData({ ...editRegData, name: e.target.value })} className={inputClass} data-testid={`input-edit-reg-name-${r.id}`} />
+                                  </div>
+                                  <div>
+                                    <label className={labelClass}>PROGRAM</label>
+                                    <select value={editRegData.program} onChange={(e) => setEditRegData({ ...editRegData, program: e.target.value })} className={selectClass} data-testid={`select-edit-reg-program-${r.id}`}>
+                                      {PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className={labelClass}>DATE</label>
+                                    <input type="date" value={editRegData.date} onChange={(e) => setEditRegData({ ...editRegData, date: e.target.value })} className={inputClass} data-testid={`input-edit-reg-date-${r.id}`} />
+                                  </div>
+                                  <div>
+                                    <label className={labelClass}>STATUS</label>
+                                    <select value={editRegData.status} onChange={(e) => setEditRegData({ ...editRegData, status: e.target.value as "Pending" | "Confirmed" })} className={selectClass} data-testid={`select-edit-reg-status-${r.id}`}>
+                                      <option value="Pending">Pending</option>
+                                      <option value="Confirmed">Confirmed</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className={labelClass}>PAYMENT</label>
+                                    <select value={editRegData.payment} onChange={(e) => setEditRegData({ ...editRegData, payment: e.target.value as "Unpaid" | "Paid" })} className={selectClass} data-testid={`select-edit-reg-payment-${r.id}`}>
+                                      <option value="Unpaid">Unpaid</option>
+                                      <option value="Paid">Paid</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className={labelClass}>NOTES</label>
+                                    <input value={editRegData.notes} onChange={(e) => setEditRegData({ ...editRegData, notes: e.target.value })} className={inputClass} data-testid={`input-edit-reg-notes-${r.id}`} />
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <button
+                                    onClick={() => updateReg.mutate({ id: r.id, data: editRegData })}
+                                    disabled={updateReg.isPending}
+                                    className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors disabled:opacity-50"
+                                    data-testid={`button-save-reg-${r.id}`}
+                                  >
+                                    <Save size={13} /> SAVE
+                                  </button>
+                                  <button onClick={() => { setEditingRegId(null); setRegError(null); }} className="flex items-center gap-2 bg-neutral-800 text-neutral-400 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-neutral-700 transition-colors" data-testid={`button-cancel-reg-${r.id}`}>
+                                    <X size={13} /> CANCEL
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          ) : (
+                            <>
+                              <td className="px-6 py-4 text-white text-sm font-bold">
+                                {r.name}
+                                {r.notes && <p className="text-neutral-600 text-[11px] font-normal font-mono mt-0.5 truncate max-w-[160px]">{r.notes}</p>}
+                              </td>
+                              <td className="px-6 py-4 text-neutral-400 text-sm font-mono">{r.program}</td>
+                              <td className="px-6 py-4">
+                                <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.status === "Confirmed" ? "bg-green-500/10 text-green-400" : "bg-yellow-500/10 text-yellow-400"}`}>
+                                  {r.status.toUpperCase()}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4">
+                                <span className={`text-[10px] font-bold tracking-wider px-2 py-1 ${r.payment === "Paid" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>
+                                  {r.payment.toUpperCase()}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 text-neutral-500 text-xs font-mono">{r.date}</td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <button
+                                    onClick={() => toggleStatus(r)}
+                                    className={`text-[10px] font-bold tracking-wider px-2.5 py-1.5 transition-colors ${r.status === "Confirmed" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-green-500/20 text-green-400 hover:bg-green-500/30"}`}
+                                    data-testid={`button-confirm-${r.id}`}
+                                  >
+                                    {r.status === "Confirmed" ? "REVOKE" : "CONFIRM"}
+                                  </button>
+                                  <button
+                                    onClick={() => togglePayment(r)}
+                                    className={`text-[10px] font-bold tracking-wider px-2.5 py-1.5 transition-colors ${r.payment === "Paid" ? "bg-neutral-800 text-neutral-400 hover:bg-neutral-700" : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"}`}
+                                    data-testid={`button-payment-${r.id}`}
+                                  >
+                                    {r.payment === "Paid" ? "UNPAY" : "MARK PAID"}
+                                  </button>
+                                  <button
+                                    onClick={() => { setEditingRegId(r.id); setEditRegData({ name: r.name, program: r.program, status: r.status as "Pending" | "Confirmed", payment: r.payment as "Unpaid" | "Paid", date: r.date, notes: r.notes ?? "" }); setRegError(null); }}
+                                    className="bg-amber-500/10 text-amber-500 p-1.5 hover:bg-amber-500/20 transition-colors"
+                                    data-testid={`button-edit-reg-${r.id}`}
+                                  >
+                                    <Pencil size={13} />
+                                  </button>
+                                  <button
+                                    onClick={() => deleteReg.mutate(r.id)}
+                                    className="bg-red-500/10 text-red-400 p-1.5 hover:bg-red-500/20 transition-colors"
+                                    data-testid={`button-delete-reg-${r.id}`}
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                </div>
+                              </td>
+                            </>
+                          )}
                         </tr>
                       ))}
+                      {registrations.length === 0 && (
+                        <tr>
+                          <td colSpan={6} className="px-6 py-12 text-center text-neutral-600 text-sm font-mono">
+                            No registrations yet. Use ADD REGISTRATION to create one.
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -377,6 +590,7 @@ export default function Admin() {
             </motion.div>
           )}
 
+          {/* ── RISING STARS ─────────────────────────────────────────────────────── */}
           {activeTab === "risingstars" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-risingstars-heading">RISING STARS</h2>
@@ -436,10 +650,7 @@ export default function Admin() {
                         </div>
                         <div className="flex items-center gap-3">
                           <button
-                            onClick={() => {
-                              updateRisingStar(star.id, editStarData);
-                              setEditingStarId(null);
-                            }}
+                            onClick={() => { updateRisingStar(star.id, editStarData); setEditingStarId(null); }}
                             className="flex items-center gap-2 bg-amber-500 text-black px-5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] hover:bg-amber-400 transition-colors"
                             data-testid={`button-save-star-${star.id}`}
                           >
@@ -466,10 +677,7 @@ export default function Admin() {
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <button
-                            onClick={() => {
-                              setEditingStarId(star.id);
-                              setEditStarData({ name: star.name, position: star.position, club: star.club, bio: star.bio, image: star.image });
-                            }}
+                            onClick={() => { setEditingStarId(star.id); setEditStarData({ name: star.name, position: star.position, club: star.club, bio: star.bio, image: star.image }); }}
                             className="bg-amber-500/10 text-amber-500 p-2 hover:bg-amber-500/20 transition-colors"
                             data-testid={`button-edit-star-${star.id}`}
                           >
@@ -491,6 +699,7 @@ export default function Admin() {
             </motion.div>
           )}
 
+          {/* ── MEDIA ────────────────────────────────────────────────────────────── */}
           {activeTab === "media" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-media-heading">MEDIA MANAGER</h2>
@@ -507,7 +716,7 @@ export default function Admin() {
                     <select
                       value={newMediaItem.category}
                       onChange={(e) => setNewMediaItem({ ...newMediaItem, category: e.target.value as any })}
-                      className={inputClass}
+                      className={selectClass}
                       data-testid="select-media-category"
                     >
                       <option value="Training">Training</option>
@@ -522,7 +731,7 @@ export default function Admin() {
                     <select
                       value={newMediaItem.type}
                       onChange={(e) => setNewMediaItem({ ...newMediaItem, type: e.target.value as "image" | "video" })}
-                      className={inputClass}
+                      className={selectClass}
                       data-testid="select-media-type"
                     >
                       <option value="image">Image</option>
@@ -573,6 +782,7 @@ export default function Admin() {
             </motion.div>
           )}
 
+          {/* ── NEWS ─────────────────────────────────────────────────────────────── */}
           {activeTab === "news" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2 className="text-2xl font-black text-white uppercase tracking-tight font-display mb-8" data-testid="text-news-heading">NEWS MANAGER</h2>

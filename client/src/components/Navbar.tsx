@@ -71,14 +71,23 @@ export default function Navbar() {
             </Link>
           ))}
           {isAuthenticated ? (
-            <button
-              onClick={() => logout.mutate()}
-              className="flex items-center gap-2 px-6 py-2.5 border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase hover:border-amber-500 hover:text-amber-500 transition-all duration-300"
-              data-testid="button-logout"
-            >
-              <User size={14} />
-              LOGOUT
-            </button>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 px-5 py-2.5 border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase hover:border-amber-500 hover:text-amber-500 transition-all duration-300"
+                data-testid="link-profile"
+              >
+                <User size={14} />
+                MY ACCOUNT
+              </Link>
+              <button
+                onClick={() => logout.mutate()}
+                className="px-4 py-2.5 border border-white/10 text-neutral-500 text-xs font-bold tracking-[0.2em] uppercase hover:border-red-500/40 hover:text-red-400 transition-all duration-300"
+                data-testid="button-logout"
+              >
+                LOGOUT
+              </button>
+            </div>
           ) : (
             <Link
               href="/login"
@@ -132,17 +141,24 @@ export default function Navbar() {
               transition={{ delay: 0.4 }}
             >
               {isAuthenticated ? (
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    logout.mutate();
-                  }}
-                  className="mt-8 inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold uppercase tracking-widest text-sm"
-                  data-testid="button-mobile-logout"
-                >
-                  <User size={16} />
-                  LOGOUT
-                </button>
+                <div className="mt-8 flex flex-col gap-3">
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold uppercase tracking-widest text-sm"
+                    data-testid="link-mobile-profile"
+                  >
+                    <User size={16} />
+                    MY ACCOUNT
+                  </Link>
+                  <button
+                    onClick={() => { setIsOpen(false); logout.mutate(); }}
+                    className="inline-flex items-center gap-2 px-8 py-3 border border-white/20 text-neutral-400 font-bold uppercase tracking-widest text-sm hover:text-red-400 hover:border-red-400/30 transition-colors"
+                    data-testid="button-mobile-logout"
+                  >
+                    LOGOUT
+                  </button>
+                </div>
               ) : (
                 <Link
                   href="/login"
