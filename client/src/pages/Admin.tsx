@@ -286,7 +286,11 @@ export default function Admin() {
                         <button
                           onClick={() => {
                             updateContentBlock(block.key, draft);
-                            setSavedKeys((prev) => new Set([...prev, block.key]));
+                            setSavedKeys((prev) => {
+                              const next = new Set(prev);
+                              next.add(block.key);
+                              return next;
+                            });
                           }}
                           disabled={!isDirty && !isSaved}
                           className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] transition-all duration-200 ${

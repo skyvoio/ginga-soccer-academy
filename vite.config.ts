@@ -21,6 +21,7 @@ export default defineConfig({
   ],
   base: "/", // <--- THIS IS THE ONLY NEW LINE ADDED
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
