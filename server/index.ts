@@ -2,6 +2,11 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { clerkMiddleware } from "@clerk/express";
+import {
+  CLERK_PROXY_PATH,
+  clerkProxyMiddleware,
+} from "./middlewares/clerkProxyMiddleware";
 
 const app = express();
 const httpServer = createServer(app);
@@ -11,6 +16,9 @@ declare module "http" {
     rawBody: unknown;
   }
 }
+
+app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
+app.use(clerkMiddleware());
 
 app.use(
   express.json({

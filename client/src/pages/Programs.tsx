@@ -6,11 +6,11 @@ import groupImg from "@assets/Ginga_Group_1773867449495.JPG";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
-import summerCampImg from "@assets/Ginga_Soccer_Summer_Camp_1772628543655.jpg";
 import turfRentalImg from "@assets/Turf_Rental_Photo_1778007494522.png";
 import turfRental2Img from "@assets/Turf_Rental_Photo_1778009335912.png";
 
 type ProgramCategory = "TRAINING" | "CAMPS" | "RENTALS";
+const summerCampImg = "/summer-camp.jpg";
 
 interface Program {
   id: string;

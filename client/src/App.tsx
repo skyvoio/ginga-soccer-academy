@@ -18,6 +18,14 @@ import Media from "@/pages/Media";
 import Contact from "@/pages/Contact";
 import BookingSuccess from "@/pages/BookingSuccess";
 import NewsArticle from "@/pages/NewsArticle";
+import { ClerkProvider } from "@clerk/react";
+import { publishableKeyFromHost } from "@clerk/react/internal";
+
+const clerkPubKey = publishableKeyFromHost(
+  window.location.hostname,
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
+);
+const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 
 function Router() {
   return (
@@ -66,14 +74,30 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={basePath}>
-          <AppContent />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ClerkProvider
+      publishableKey={clerkPubKey}
+      proxyUrl={clerkProxyUrl}
+      signInUrl="/login"
+      signUpUrl="/login"
+      appearance={{
+        variables: {
+          colorPrimary: "#f59e0b",
+          colorBackground: "#171717",
+          colorForeground: "#ffffff",
+          colorMutedForeground: "#a3a3a3",
+          fontFamily: "Inter, sans-serif",
+        },
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={basePath}>
+            <AppContent />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }
 

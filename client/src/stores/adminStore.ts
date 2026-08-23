@@ -4,7 +4,6 @@ import newsDiagoImg from "@assets/Ginga_Diago_1782776302853.jpeg";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
-import newsSummerImg from "@assets/Ginga_News_Soccer_Summer_Camp_1773867574216.jpg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
 import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
 import diagoImg from "@assets/Diago_Delgado_1773607422404.jpeg";
@@ -164,7 +163,7 @@ export const useAdminStore = create<AdminState>((set) => ({
       date: "Mar 1, 2026",
       excerpt: "Secure your spot for the most intensive summer training experience in the region.",
       content: "Secure your spot for the most intensive summer training experience in the region. Our summer camps run weekly throughout August with professional coaching staff.",
-      image: newsSummerImg,
+       image: "/summer-camp.jpg",
     },
     {
       id: "n2",

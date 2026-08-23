@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { User, Lock, ChevronRight, AlertCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useClerk, useAuth as useClerkAuth } from "@clerk/react";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login, register, isAuthenticated } = useAuth();
+  const { openSignIn, openSignUp } = useClerk();
+  const { isSignedIn } = useClerkAuth();
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isSignedIn || isAuthenticated) return;
+    apiRequest("POST", "/api/auth/google/session")
+      .then(() => setLocation("/booking"))
+      .catch(() => setError("Google sign-in could not create your account. Please try again."));
+  }, [isSignedIn, isAuthenticated, setLocation]);
 
   if (isAuthenticated) {
     setLocation("/booking");
@@ -34,11 +45,10 @@ export default function Login() {
       }
       setLocation("/booking");
     } catch (err: any) {
-      setError(
-        isRegister
-          ? "Registration failed. Username may already be taken."
-          : "Invalid username or password."
-      );
+      const message = err?.message?.match(/:\s*(.*)$/)?.[1];
+      setError(message || (isRegister
+        ? "Registration failed. Please check your details and try again."
+        : "Invalid username or password."));
     }
   };
 
@@ -149,6 +159,22 @@ export default function Login() {
                   <ChevronRight size={16} />
                 </>
               )}
+            </button>
+
+            <div className="my-7 flex items-center gap-4">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-[10px] font-bold tracking-[0.2em] text-neutral-600 font-display">OR</span>
+              <div className="h-px flex-1 bg-white/10" />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => (isRegister ? openSignUp() : openSignIn())}
+              className="w-full border border-neutral-700 bg-[#0a0a0a] text-white py-3.5 font-bold text-sm hover:border-amber-500 hover:text-amber-400 transition-colors flex items-center justify-center gap-3"
+              data-testid="button-google-auth"
+            >
+              <span className="text-base font-bold">G</span>
+              {isRegister ? "SIGN UP WITH GOOGLE" : "SIGN IN WITH GOOGLE"}
             </button>
           </div>
         </form>

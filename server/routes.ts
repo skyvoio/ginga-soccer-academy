@@ -6,6 +6,7 @@ import session from "express-session";
 import MemoryStore from "memorystore";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { getAuth } from "@clerk/express";
 import crypto from "crypto";
 import { isStripeConnected, getUncachableStripeClient } from "./stripeClient";
 import { WebhookHandlers } from "./webhookHandlers";
@@ -119,15 +120,28 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ message: "Username and password are required" });
       }
-      const { username, password, email } = parsed.data;
+      const username = parsed.data.username.trim();
+      const password = parsed.data.password;
+      const email = parsed.data.email?.trim() || undefined;
 
+      if (username.length < 3 || username.length > 40) {
+        return res.status(400).json({ message: "Username must be 3–40 characters" });
+      }
+      if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
       if (username.toLowerCase() === "admin") {
         return res.status(400).json({ message: "Username not available" });
       }
 
-      const existing = await storage.getUserByUsername(username);
+      const existing = await storage.getUserByUsername(username) ||
+        (email ? await storage.getUserByEmail(email) : undefined);
       if (existing) {
-        return res.status(400).json({ message: "Username already taken" });
+        return res.status(400).json({
+          message: existing.email?.toLowerCase() === email?.toLowerCase()
+            ? "An account with that email already exists"
+            : "Username already taken",
+        });
       }
 
       const hashedPassword = hashPassword(password);
@@ -140,6 +154,32 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Registration error:", error);
       return res.status(500).json({ message: "Registration failed" });
+    }
+  });
+
+  app.post("/api/auth/google/session", async (req, res) => {
+    try {
+      const auth = getAuth(req);
+      if (!auth.userId) {
+        return res.status(401).json({ message: "Google sign-in is incomplete" });
+      }
+
+      const username = `google_${auth.userId.slice(-16)}`;
+      let user = await storage.getUserByUsername(username);
+      if (!user) {
+        user = await storage.createUser({
+          username,
+          password: hashPassword(crypto.randomBytes(32).toString("hex")),
+        });
+      }
+
+      req.login(user, (err) => {
+        if (err) return res.status(500).json({ message: "Could not create your session" });
+        return res.json({ id: user.id, username: user.username });
+      });
+    } catch (error) {
+      console.error("Google session error:", error);
+      return res.status(500).json({ message: "Google sign-in failed" });
     }
   });
 
