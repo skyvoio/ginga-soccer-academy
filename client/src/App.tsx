@@ -77,8 +77,6 @@ function App() {
     <ClerkProvider
       publishableKey={clerkPubKey}
       proxyUrl={clerkProxyUrl}
-      signInUrl="/login"
-      signUpUrl="/login"
       appearance={{
         variables: {
           colorPrimary: "#f59e0b",

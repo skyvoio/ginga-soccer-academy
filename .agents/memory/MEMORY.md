@@ -1,0 +1,1 @@
+- [Clerk custom-host setup](clerk-custom-host.md) — Clerk browser and Express keys must resolve from the request hostname for Google auth to avoid session redirect loops.
