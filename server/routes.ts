@@ -9,7 +9,6 @@ import {
   contactMessageSchema,
 } from "@shared/schema";
 import session from "express-session";
-import MemoryStore from "memorystore";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { getAuth } from "@clerk/express";
@@ -17,8 +16,8 @@ import crypto from "crypto";
 import { isStripeConnected, getUncachableStripeClient } from "./stripeClient";
 import { WebhookHandlers } from "./webhookHandlers";
 import { logEmailFailure, sendNotificationEmail } from "./email";
-
-const MemoryStoreSession = MemoryStore(session);
+import { pool } from "./db";
+import connectPgSimple from "connect-pg-simple";
 
 function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -90,7 +89,10 @@ export async function registerRoutes(
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-      store: new MemoryStoreSession({ checkPeriod: 86400000 }),
+      store: new PgStore({
+        pool,
+        createTableIfMissing: true,
+      }),
       cookie: { maxAge: 24 * 60 * 60 * 1000 },
     })
   );
@@ -588,3 +590,5 @@ export async function registerRoutes(
 
   return httpServer;
 }
+
+const PgStore = connectPgSimple(session);

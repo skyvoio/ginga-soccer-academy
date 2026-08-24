@@ -8,7 +8,8 @@ import {
   users,
   registrations as registrationsTable,
 } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { asc, desc, eq, ilike } from "drizzle-orm";
+import { db } from "./db";
 
 export interface IStorage {
   // Users
@@ -31,129 +32,100 @@ export interface IStorage {
   deleteRegistration(id: string): Promise<void>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private registrations: Map<string, Registration>;
-
-  constructor() {
-    this.users = new Map();
-    this.registrations = new Map();
-    this._seedRegistrations();
-  }
-
-  private _seedRegistrations() {
-    const seeds: Registration[] = [
-      { id: "r1", name: "Petra Bandula",   program: "Group Session",     status: "Confirmed", payment: "Paid",   date: "2026-02-15", notes: null, userId: null },
-      { id: "r2", name: "Viktoria Brodar", program: "Private Session",   status: "Confirmed", payment: "Paid",   date: "2026-02-18", notes: null, userId: null },
-      { id: "r3", name: "Diago Delgado",   program: "March Break Camp",  status: "Pending",   payment: "Unpaid", date: "2026-02-20", notes: null, userId: null },
-      { id: "r4", name: "Lucas Martinez",  program: "Group Session",     status: "Pending",   payment: "Unpaid", date: "2026-02-22", notes: null, userId: null },
-      { id: "r5", name: "Sofia Chen",      program: "Justplay",          status: "Confirmed", payment: "Paid",   date: "2026-02-25", notes: null, userId: null },
-      { id: "r6", name: "Amir Hassan",     program: "Summer Camp",       status: "Pending",   payment: "Unpaid", date: "2026-02-28", notes: null, userId: null },
-      { id: "r7", name: "Emma Wilson",     program: "Private Session",   status: "Confirmed", payment: "Unpaid", date: "2026-03-01", notes: null, userId: null },
-      { id: "r8", name: "Kai Nakamura",    program: "GingaFit",          status: "Pending",   payment: "Unpaid", date: "2026-03-02", notes: null, userId: null },
-    ];
-    for (const r of seeds) this.registrations.set(r.id, r);
-  }
-
-  // ── Users ──────────────────────────────────────────────────────────────────
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find((u) => u.username === username);
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return user;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (u) => u.email?.toLowerCase() === email.toLowerCase()
-    );
+    const [user] = await db.select().from(users).where(ilike(users.email, email)).limit(1);
+    return user;
   }
 
   async getUsers(): Promise<User[]> {
-    return Array.from(this.users.values());
+    return db.select().from(users).orderBy(asc(users.username));
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = {
-      ...insertUser,
-      id,
+    const [user] = await db.insert(users).values({
+      username: insertUser.username,
+      password: insertUser.password,
       isAdmin: insertUser.isAdmin ?? false,
       email: insertUser.email ?? null,
-      name: null,
-      phone: null,
-      emergencyContact: null,
-      stripeCustomerId: null,
-      enrolledProgram: null,
-      enrolledAt: null,
-    };
-    this.users.set(id, user);
+    }).returning();
     return user;
   }
 
   async deleteUser(userId: string): Promise<void> {
-    if (!this.users.delete(userId)) throw new Error("User not found");
+    const deleted = await db.delete(users)
+      .where(eq(users.id, userId))
+      .returning({ id: users.id });
+    if (deleted.length === 0) throw new Error("User not found");
   }
 
   async updateUserProfile(userId: string, data: UpdateProfile): Promise<User> {
-    const user = this.users.get(userId);
-    if (!user) throw new Error("User not found");
-    const updated: User = {
-      ...user,
-      name: data.name !== undefined ? (data.name || null) : user.name,
-      email: data.email !== undefined ? (data.email || null) : user.email,
-      phone: data.phone !== undefined ? (data.phone || null) : user.phone,
-      emergencyContact:
-        data.emergencyContact !== undefined
-          ? data.emergencyContact || null
-          : user.emergencyContact,
-    };
-    this.users.set(userId, updated);
+    const [updated] = await db.update(users)
+      .set({
+        name: data.name === undefined ? undefined : data.name || null,
+        email: data.email === undefined ? undefined : data.email || null,
+        phone: data.phone === undefined ? undefined : data.phone || null,
+        emergencyContact: data.emergencyContact === undefined
+          ? undefined
+          : data.emergencyContact || null,
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    if (!updated) throw new Error("User not found");
     return updated;
   }
 
   async updateUserPassword(userId: string, password: string): Promise<User> {
-    const user = this.users.get(userId);
-    if (!user) throw new Error("User not found");
-    const updated = { ...user, password };
-    this.users.set(userId, updated);
+    const [updated] = await db.update(users)
+      .set({ password })
+      .where(eq(users.id, userId))
+      .returning();
+    if (!updated) throw new Error("User not found");
     return updated;
   }
 
   async updateUserStripeCustomerId(userId: string, stripeCustomerId: string): Promise<User> {
-    const user = this.users.get(userId);
-    if (!user) throw new Error("User not found");
-    const updated = { ...user, stripeCustomerId };
-    this.users.set(userId, updated);
+    const [updated] = await db.update(users)
+      .set({ stripeCustomerId })
+      .where(eq(users.id, userId))
+      .returning();
+    if (!updated) throw new Error("User not found");
     return updated;
   }
 
   async updateUserEnrollment(userId: string, programName: string): Promise<User> {
-    const user = this.users.get(userId);
-    if (!user) throw new Error("User not found");
-    const updated = { ...user, enrolledProgram: programName, enrolledAt: new Date() };
-    this.users.set(userId, updated);
+    const [updated] = await db.update(users)
+      .set({ enrolledProgram: programName, enrolledAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
+    if (!updated) throw new Error("User not found");
     return updated;
   }
 
-  // ── Registrations ──────────────────────────────────────────────────────────
-
   async getRegistrations(): Promise<Registration[]> {
-    return Array.from(this.registrations.values()).sort(
-      (a, b) => b.date.localeCompare(a.date)
-    );
+    return db.select().from(registrationsTable).orderBy(desc(registrationsTable.date));
   }
 
   async getRegistration(id: string): Promise<Registration | undefined> {
-    return this.registrations.get(id);
+    const [registration] = await db.select()
+      .from(registrationsTable)
+      .where(eq(registrationsTable.id, id))
+      .limit(1);
+    return registration;
   }
 
   async createRegistration(data: InsertRegistration): Promise<Registration> {
-    const id = randomUUID();
-    const reg: Registration = {
-      id,
+    const [registration] = await db.insert(registrationsTable).values({
       name: data.name,
       program: data.program,
       status: data.status ?? "Pending",
@@ -161,31 +133,33 @@ export class MemStorage implements IStorage {
       date: data.date,
       notes: data.notes ?? null,
       userId: data.userId ?? null,
-    };
-    this.registrations.set(id, reg);
-    return reg;
+    }).returning();
+    return registration;
   }
 
   async updateRegistration(id: string, data: UpdateRegistration): Promise<Registration> {
-    const reg = this.registrations.get(id);
-    if (!reg) throw new Error("Registration not found");
-    const updated: Registration = {
-      ...reg,
-      ...(data.name !== undefined && { name: data.name }),
-      ...(data.program !== undefined && { program: data.program }),
-      ...(data.status !== undefined && { status: data.status }),
-      ...(data.payment !== undefined && { payment: data.payment }),
-      ...(data.date !== undefined && { date: data.date }),
-      ...(data.notes !== undefined && { notes: data.notes ?? null }),
-      ...(data.userId !== undefined && { userId: data.userId ?? null }),
-    };
-    this.registrations.set(id, updated);
+    const [updated] = await db.update(registrationsTable)
+      .set({
+        name: data.name,
+        program: data.program,
+        status: data.status,
+        payment: data.payment,
+        date: data.date,
+        notes: data.notes === undefined ? undefined : data.notes || null,
+        userId: data.userId === undefined ? undefined : data.userId || null,
+      })
+      .where(eq(registrationsTable.id, id))
+      .returning();
+    if (!updated) throw new Error("Registration not found");
     return updated;
   }
 
   async deleteRegistration(id: string): Promise<void> {
-    if (!this.registrations.delete(id)) throw new Error("Registration not found");
+    const deleted = await db.delete(registrationsTable)
+      .where(eq(registrationsTable.id, id))
+      .returning({ id: registrationsTable.id });
+    if (deleted.length === 0) throw new Error("Registration not found");
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
