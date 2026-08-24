@@ -20,6 +20,7 @@ import Contact from "@/pages/Contact";
 import BookingSuccess from "@/pages/BookingSuccess";
 import NewsArticle from "@/pages/NewsArticle";
 import { ClerkProvider } from "@clerk/react";
+import { SignIn, SignUp } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 
 const clerkPubKey = publishableKeyFromHost(
@@ -42,6 +43,8 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/news/:id" component={NewsArticle} />
       <Route path="/login" component={Login} />
+      <Route path="/sign-in/*?" component={ClerkSignInPage} />
+      <Route path="/sign-up/*?" component={ClerkSignUpPage} />
       <Route path="/profile" component={Profile} />
       <Route path="/admin" component={Admin} />
       <Route>
@@ -55,6 +58,32 @@ function Router() {
         </div>
       </Route>
     </Switch>
+  );
+}
+
+function ClerkSignInPage() {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
+      <SignIn
+        routing="path"
+        path={`${basePath}/sign-in`}
+        signUpUrl={`${basePath}/sign-up`}
+        fallbackRedirectUrl={`${basePath}/login`}
+      />
+    </div>
+  );
+}
+
+function ClerkSignUpPage() {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
+      <SignUp
+        routing="path"
+        path={`${basePath}/sign-up`}
+        signInUrl={`${basePath}/sign-in`}
+        fallbackRedirectUrl={`${basePath}/login`}
+      />
+    </div>
   );
 }
 
@@ -79,6 +108,8 @@ function App() {
     <ClerkProvider
       publishableKey={clerkPubKey}
       proxyUrl={clerkProxyUrl}
+      signInUrl={`${basePath}/sign-in`}
+      signUpUrl={`${basePath}/sign-up`}
       appearance={{
         variables: {
           colorPrimary: "#f59e0b",

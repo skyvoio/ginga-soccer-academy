@@ -1,27 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { User, Lock, ChevronRight, AlertCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useClerk, useAuth as useClerkAuth } from "@clerk/react";
 import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
+
+const basePath = import.meta.env.VITE_BASE_PATH ?? "";
 
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login, register, isAuthenticated } = useAuth();
   const { openSignIn, openSignUp } = useClerk();
-  const { isSignedIn } = useClerkAuth();
+  const { isLoaded: isClerkLoaded, isSignedIn } = useClerkAuth();
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const bridgeInFlight = useRef(false);
 
   useEffect(() => {
-    if (!isSignedIn || isAuthenticated) return;
+    if (!isClerkLoaded || !isSignedIn || isAuthenticated || bridgeInFlight.current) return;
+
+    let cancelled = false;
+    bridgeInFlight.current = true;
+    setError("");
+
     apiRequest("POST", "/api/auth/google/session")
-      .then(() => setLocation("/booking"))
-      .catch(() => setError("Google sign-in could not create your account. Please try again."));
-  }, [isSignedIn, isAuthenticated, setLocation]);
+      .then(async (response) => {
+        if (cancelled) return;
+        console.info("[auth] Clerk Google session bridged successfully");
+        await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+        setLocation("/booking");
+      })
+      .catch(async (err: any) => {
+        if (cancelled) return;
+        bridgeInFlight.current = false;
+        console.error("[auth] Clerk Google session bridge failed:", err);
+        setError("Google sign-in could not create your account. Please try again.");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isClerkLoaded, isSignedIn, isAuthenticated, setLocation]);
 
   if (isAuthenticated) {
     setLocation("/booking");
@@ -169,7 +192,23 @@ export default function Login() {
 
             <button
               type="button"
-              onClick={() => (isRegister ? openSignUp() : openSignIn())}
+              onClick={async () => {
+                setError("");
+                try {
+                  if (isRegister) {
+                    await openSignUp({
+                      fallbackRedirectUrl: `${window.location.origin}${basePath}/login`,
+                    });
+                  } else {
+                    await openSignIn({
+                      fallbackRedirectUrl: `${window.location.origin}${basePath}/login`,
+                    });
+                  }
+                } catch (err) {
+                  console.error("[auth] Could not open Clerk Google sign-in:", err);
+                  setError("Google sign-in could not be started. Please try again.");
+                }
+              }}
               className="w-full border border-neutral-700 bg-[#0a0a0a] text-white py-3.5 font-bold text-sm hover:border-amber-500 hover:text-amber-400 transition-colors flex items-center justify-center gap-3"
               data-testid="button-google-auth"
             >

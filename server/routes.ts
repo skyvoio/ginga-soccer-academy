@@ -175,26 +175,55 @@ export async function registerRoutes(
   app.post("/api/auth/google/session", async (req, res) => {
     try {
       const auth = getAuth(req);
+      console.error("[auth] Google bridge request", {
+        clerkUserId: auth.userId || null,
+        hasSessionClaims: Boolean(auth.sessionClaims),
+        host: req.get("host"),
+      });
       if (!auth.userId) {
+        console.error("[auth] Google bridge rejected: Clerk did not provide a userId", {
+          sessionClaims: auth.sessionClaims || null,
+        });
         return res.status(401).json({ message: "Google sign-in is incomplete" });
       }
 
       const username = `google_${auth.userId.slice(-16)}`;
       let user = await storage.getUserByUsername(username);
       if (!user) {
+        console.error("[auth] Google bridge creating local user", {
+          clerkUserId: auth.userId,
+          username,
+        });
         user = await storage.createUser({
           username,
           password: hashPassword(crypto.randomBytes(32).toString("hex")),
           isAdmin: false,
         });
+      } else {
+        console.error("[auth] Google bridge found existing local user", {
+          clerkUserId: auth.userId,
+          localUserId: user.id,
+          username,
+        });
       }
 
       req.login(user, (err) => {
-        if (err) return res.status(500).json({ message: "Could not create your session" });
+        if (err) {
+          console.error("[auth] Google bridge Passport login failed", {
+            clerkUserId: auth.userId,
+            localUserId: user?.id,
+            error: err,
+          });
+          return res.status(500).json({ message: "Could not create your session" });
+        }
+        console.error("[auth] Google bridge completed", {
+          clerkUserId: auth.userId,
+          localUserId: user?.id,
+        });
         return res.json({ id: user.id, username: user.username });
       });
     } catch (error) {
-      console.error("Google session error:", error);
+      console.error("[auth] Google session bridge crashed:", error);
       return res.status(500).json({ message: "Google sign-in failed" });
     }
   });
