@@ -6,6 +6,7 @@ import {
   updateProfileSchema,
   insertRegistrationSchema,
   updateRegistrationSchema,
+  digitalRegistrationSchema,
   contactMessageSchema,
 } from "@shared/schema";
 import session from "express-session";
@@ -267,11 +268,7 @@ export async function registerRoutes(
 
   app.post("/api/registrations", requireAuth, async (req: any, res) => {
     try {
-      const parsed = insertRegistrationSchema.safeParse({
-        ...req.body,
-        userId: (req.user as any).id,
-        date: req.body?.date || new Date().toISOString().slice(0, 10),
-      });
+      const parsed = digitalRegistrationSchema.safeParse(req.body);
       if (!parsed.success) {
         return res.status(400).json({
           message: "Invalid registration data",
@@ -279,24 +276,56 @@ export async function registerRoutes(
         });
       }
 
-      const registration = await storage.createRegistration(parsed.data);
+      const d = parsed.data;
+      const playerName = `${d.playerFirstName} ${d.playerLastName}`.trim();
+      const today = new Date().toISOString().slice(0, 10);
+
+      const registration = await storage.createRegistration({
+        name: playerName,
+        program: d.program,
+        status: "Pending",
+        payment: "Unpaid",
+        date: today,
+        userId: (req.user as any).id,
+        playerFirstName: d.playerFirstName,
+        playerLastName: d.playerLastName,
+        playerDob: d.playerDob,
+        playerGender: d.playerGender,
+        medicalNotes: d.medicalNotes || undefined,
+        parentFirstName: d.parentFirstName,
+        parentLastName: d.parentLastName,
+        parentEmail: d.parentEmail,
+        parentPhone: d.parentPhone,
+        parentAddress: d.parentAddress,
+      });
+
       const user = req.user as any;
 
       try {
         await sendNotificationEmail({
-          subject: `New registration: ${registration.program}`,
-          replyTo: user.email || undefined,
+          subject: `New registration: ${registration.program} — ${playerName}`,
+          replyTo: d.parentEmail || user.email || undefined,
           text: [
             "A new registration was submitted through gingasoccer.ca.",
             "",
-            `Player name: ${registration.name}`,
-            `Program: ${registration.program}`,
-            `Date submitted: ${registration.date}`,
-            `Parent/account name: ${user.name || user.username}`,
-            `Parent email: ${user.email || "Not provided"}`,
-            `Parent phone: ${user.phone || "Not provided"}`,
-            `Emergency contact: ${user.emergencyContact || "Not provided"}`,
-            `Notes: ${registration.notes || "None"}`,
+            "── PLAYER ─────────────────────────────",
+            `Name:           ${playerName}`,
+            `Date of birth:  ${d.playerDob}`,
+            `Gender:         ${d.playerGender}`,
+            "",
+            "── MEDICAL ────────────────────────────",
+            `Notes:          ${d.medicalNotes || "None"}`,
+            "",
+            "── PARENT / GUARDIAN ──────────────────",
+            `Name:           ${d.parentFirstName} ${d.parentLastName}`,
+            `Email:          ${d.parentEmail}`,
+            `Phone:          ${d.parentPhone}`,
+            `Address:        ${d.parentAddress}`,
+            "",
+            "── BOOKING ────────────────────────────",
+            `Program:        ${d.program}`,
+            `Date submitted: ${today}`,
+            `Account:        ${user.username}`,
           ].join("\n"),
         });
       } catch (error) {

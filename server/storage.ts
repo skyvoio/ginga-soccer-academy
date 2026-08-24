@@ -133,6 +133,16 @@ export class DatabaseStorage implements IStorage {
       date: data.date,
       notes: data.notes ?? null,
       userId: data.userId ?? null,
+      playerFirstName: data.playerFirstName ?? null,
+      playerLastName: data.playerLastName ?? null,
+      playerDob: data.playerDob ?? null,
+      playerGender: data.playerGender ?? null,
+      medicalNotes: data.medicalNotes ?? null,
+      parentFirstName: data.parentFirstName ?? null,
+      parentLastName: data.parentLastName ?? null,
+      parentEmail: data.parentEmail ?? null,
+      parentPhone: data.parentPhone ?? null,
+      parentAddress: data.parentAddress ?? null,
     }).returning();
     return registration;
   }
@@ -147,6 +157,16 @@ export class DatabaseStorage implements IStorage {
         date: data.date,
         notes: data.notes === undefined ? undefined : data.notes || null,
         userId: data.userId === undefined ? undefined : data.userId || null,
+        playerFirstName: data.playerFirstName === undefined ? undefined : data.playerFirstName || null,
+        playerLastName: data.playerLastName === undefined ? undefined : data.playerLastName || null,
+        playerDob: data.playerDob === undefined ? undefined : data.playerDob || null,
+        playerGender: data.playerGender === undefined ? undefined : data.playerGender || null,
+        medicalNotes: data.medicalNotes === undefined ? undefined : data.medicalNotes || null,
+        parentFirstName: data.parentFirstName === undefined ? undefined : data.parentFirstName || null,
+        parentLastName: data.parentLastName === undefined ? undefined : data.parentLastName || null,
+        parentEmail: data.parentEmail === undefined ? undefined : data.parentEmail || null,
+        parentPhone: data.parentPhone === undefined ? undefined : data.parentPhone || null,
+        parentAddress: data.parentAddress === undefined ? undefined : data.parentAddress || null,
       })
       .where(eq(registrationsTable.id, id))
       .returning();

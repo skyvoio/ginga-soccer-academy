@@ -20,6 +20,7 @@ import {
   FileText,
   Save,
   Pencil,
+  Activity,
 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -45,10 +46,30 @@ const PROGRAMS = [
   "Full Turf Rental", "3/4 Turf Rental", "Mini Turf Rental",
 ];
 
+function csvCell(val: string | null | undefined) {
+  const s = val ?? "";
+  return s.includes(",") || s.includes('"') || s.includes("\n")
+    ? `"${s.replace(/"/g, '""')}"`
+    : s;
+}
+
 function exportToCSV(registrations: Registration[]) {
   const confirmed = registrations.filter((r) => r.status === "Confirmed");
-  const headers = ["Name", "Program", "Status", "Payment", "Date"];
-  const rows = confirmed.map((r) => [r.name, r.program, r.status, r.payment, r.date]);
+  const headers = ["Name", "Program", "Status", "Payment", "Date", "DOB", "Gender", "Parent Name", "Parent Email", "Parent Phone", "Address", "Medical Notes"];
+  const rows = confirmed.map((r) => [
+    csvCell(r.name),
+    csvCell(r.program),
+    csvCell(r.status),
+    csvCell(r.payment),
+    csvCell(r.date),
+    csvCell(r.playerDob),
+    csvCell(r.playerGender),
+    csvCell([r.parentFirstName, r.parentLastName].filter(Boolean).join(" ")),
+    csvCell(r.parentEmail),
+    csvCell(r.parentPhone),
+    csvCell(r.parentAddress),
+    csvCell(r.medicalNotes),
+  ]);
   const csv = [headers, ...rows].map((row) => row.join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
@@ -61,7 +82,7 @@ function exportToCSV(registrations: Registration[]) {
   URL.revokeObjectURL(url);
 }
 
-const blankRegForm = { name: "", program: PROGRAMS[0], status: "Pending" as "Pending" | "Confirmed", payment: "Unpaid" as "Unpaid" | "Paid", date: new Date().toISOString().slice(0, 10), notes: "" };
+const blankRegForm = { name: "", program: PROGRAMS[0], status: "Pending" as "Pending" | "Confirmed", payment: "Unpaid" as "Unpaid" | "Paid", date: new Date().toISOString().slice(0, 10), notes: "", medicalNotes: "" };
 
 export default function Admin() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -436,6 +457,12 @@ export default function Admin() {
                       <input value={newReg.notes} onChange={(e) => setNewReg({ ...newReg, notes: e.target.value })} className={inputClass} placeholder="Optional notes" data-testid="input-new-reg-notes" />
                     </div>
                   </div>
+                  <div className="mb-4">
+                    <label className={`${labelClass} flex items-center gap-1`}>
+                      <Activity size={10} className="text-red-400" /> MEDICAL NOTES / ALLERGIES <span className="text-neutral-600 normal-case tracking-normal font-normal font-mono">(optional)</span>
+                    </label>
+                    <textarea value={newReg.medicalNotes ?? ""} onChange={(e) => setNewReg({ ...newReg, medicalNotes: e.target.value })} rows={2} className={`${inputClass} resize-none`} placeholder="Allergies, medical conditions, or special requirements…" data-testid="textarea-new-reg-medical" />
+                  </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => createReg.mutate(newReg)}
@@ -507,6 +534,12 @@ export default function Admin() {
                                     <input value={editRegData.notes} onChange={(e) => setEditRegData({ ...editRegData, notes: e.target.value })} className={inputClass} data-testid={`input-edit-reg-notes-${r.id}`} />
                                   </div>
                                 </div>
+                                <div className="mb-3">
+                                  <label className={`${labelClass} flex items-center gap-1`}>
+                                    <Activity size={10} className="text-red-400" /> MEDICAL NOTES / ALLERGIES
+                                  </label>
+                                  <textarea value={editRegData.medicalNotes ?? ""} onChange={(e) => setEditRegData({ ...editRegData, medicalNotes: e.target.value })} rows={2} className={`${inputClass} resize-none`} placeholder="Allergies, medical conditions, or special requirements…" data-testid={`textarea-edit-reg-medical-${r.id}`} />
+                                </div>
                                 <div className="flex items-center gap-3">
                                   <button
                                     onClick={() => updateReg.mutate({ id: r.id, data: editRegData })}
@@ -527,6 +560,14 @@ export default function Admin() {
                               <td className="px-6 py-4 text-white text-sm font-bold">
                                 {r.name}
                                 {r.notes && <p className="text-neutral-600 text-[11px] font-normal font-mono mt-0.5 truncate max-w-[160px]">{r.notes}</p>}
+                                {r.medicalNotes && (
+                                  <div className="flex items-start gap-1 mt-1.5 max-w-[200px]">
+                                    <Activity size={10} className="text-red-400 flex-shrink-0 mt-0.5" />
+                                    <p className="text-red-400 text-[11px] font-normal font-mono leading-snug line-clamp-2" title={r.medicalNotes}>
+                                      {r.medicalNotes}
+                                    </p>
+                                  </div>
+                                )}
                               </td>
                               <td className="px-6 py-4 text-neutral-400 text-sm font-mono">{r.program}</td>
                               <td className="px-6 py-4">
@@ -557,7 +598,7 @@ export default function Admin() {
                                     {r.payment === "Paid" ? "UNPAY" : "MARK PAID"}
                                   </button>
                                   <button
-                                    onClick={() => { setEditingRegId(r.id); setEditRegData({ name: r.name, program: r.program, status: r.status as "Pending" | "Confirmed", payment: r.payment as "Unpaid" | "Paid", date: r.date, notes: r.notes ?? "" }); setRegError(null); }}
+                                    onClick={() => { setEditingRegId(r.id); setEditRegData({ name: r.name, program: r.program, status: r.status as "Pending" | "Confirmed", payment: r.payment as "Unpaid" | "Paid", date: r.date, notes: r.notes ?? "", medicalNotes: r.medicalNotes ?? "" }); setRegError(null); }}
                                     className="bg-amber-500/10 text-amber-500 p-1.5 hover:bg-amber-500/20 transition-colors"
                                     data-testid={`button-edit-reg-${r.id}`}
                                   >
