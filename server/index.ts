@@ -12,6 +12,26 @@ import {
 
 const app = express();
 const httpServer = createServer(app);
+app.set("trust proxy", 1);
+
+const allowedCorsOrigins = new Set([
+  "https://gingasoccer.ca",
+  "https://www.gingasoccer.ca",
+]);
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedCorsOrigins.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Vary", "Origin");
+  }
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 declare module "http" {
   interface IncomingMessage {
