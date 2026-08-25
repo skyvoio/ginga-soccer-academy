@@ -16,6 +16,7 @@ import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
 import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
+import pedroucosImg from "@assets/image_1787635291651.png";
 
 const summerCampImg = "/summer-camp.jpg";
 
@@ -496,6 +497,20 @@ export default function Home() {
                 src={brazucaImg}
                 alt="Brazuca Soccer Sports and Events"
                 className="h-20 md:h-28 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="group"
+              data-testid="partner-pedroucos"
+            >
+              <img
+                src={pedroucosImg}
+                alt="Pedrouços Atlético Clube"
+                className="h-28 md:h-36 w-auto max-w-[300px] object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
               />
             </motion.div>
           </div>
