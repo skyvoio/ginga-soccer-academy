@@ -61,32 +61,31 @@ function Router() {
   );
 }
 
-function ClerkSignInPage() {
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
-      <SignIn
-        routing="path"
-        path={`${basePath}/sign-in`}
-        signUpUrl={`${basePath}/sign-up`}
-        fallbackRedirectUrl={`${basePath}/login`}
-      />
-    </div>
-  );
-}
+  function ClerkSignInPage() {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
+        <SignIn 
+          routing="path" 
+          path={`${basePath}/sign-in`} 
+          signUpUrl={`${basePath}/sign-up`} 
+          fallbackRedirectUrl={`${basePath}/login`} 
+        />
+      </div>
+    );
+  }
 
-function ClerkSignUpPage() {
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
-      <SignUp
-        routing="path"
-        path={`${basePath}/sign-up`}
-        signInUrl={`${basePath}/sign-in`}
-        fallbackRedirectUrl={`${basePath}/login`}
-      />
-    </div>
-  );
-}
-
+  function ClerkSignUpPage() {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] pt-24 pb-20 px-6 flex items-start justify-center">
+        <SignUp 
+          routing="path" 
+          path={`${basePath}/sign-up`} 
+          signInUrl={`${basePath}/sign-in`} 
+          fallbackRedirectUrl={`${basePath}/login`} 
+        />
+      </div>
+    );
+  }
 const basePath = import.meta.env.VITE_BASE_PATH ?? "";
 
 function AppContent() {
@@ -105,6 +104,7 @@ function AppContent() {
 
 function App() {
   return (
+<<<<<<< HEAD
     <ClerkProvider
       publishableKey={clerkPubKey}
       proxyUrl={clerkProxyUrl}
@@ -129,6 +129,16 @@ function App() {
         </TooltipProvider>
       </QueryClientProvider>
     </ClerkProvider>
+=======
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={basePath}>
+          <AppContent />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+>>>>>>> 85360701716fb284dcde4db4a704d230cdc82608
   );
 }
 
