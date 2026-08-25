@@ -24,14 +24,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
 
       - name: Build frontend
-        run: npx vite build --base=/ginga-soccer-academy/
+        run: npm exec -- vite build --base=/ginga-soccer-academy/
         env:
           NODE_ENV: production
           VITE_BASE_PATH: /ginga-soccer-academy/
