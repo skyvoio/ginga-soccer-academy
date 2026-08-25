@@ -104,7 +104,6 @@ function AppContent() {
 
 function App() {
   return (
-<<<<<<< HEAD
     <ClerkProvider
       publishableKey={clerkPubKey}
       proxyUrl={clerkProxyUrl}
@@ -129,16 +128,6 @@ function App() {
         </TooltipProvider>
       </QueryClientProvider>
     </ClerkProvider>
-=======
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={basePath}>
-          <AppContent />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
->>>>>>> 85360701716fb284dcde4db4a704d230cdc82608
   );
 }
 
