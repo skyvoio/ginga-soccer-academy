@@ -88,16 +88,7 @@ export default function Navbar() {
                 LOGOUT
               </button>
             </div>
-          ) : (
-            <Link
-              href="/login"
-              className="flex items-center gap-2 px-6 py-2.5 border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase hover:border-amber-500 hover:text-amber-500 transition-all duration-300"
-              data-testid="link-login"
-            >
-              <User size={14} />
-              LOGIN
-            </Link>
-          )}
+          ) : null}
         </div>
 
         <button
@@ -159,17 +150,7 @@ export default function Navbar() {
                     LOGOUT
                   </button>
                 </div>
-              ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="mt-8 inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold uppercase tracking-widest text-sm"
-                  data-testid="link-mobile-login"
-                >
-                  <User size={16} />
-                  LOGIN
-                </Link>
-              )}
+              ) : null}
             </motion.div>
           </motion.div>
         )}
