@@ -8,6 +8,7 @@ type DiagnosticResult = {
   configured: Record<string, boolean>;
   error?: string;
   recommendation?: string;
+  note?: string;
 };
 
 function sanitizeError(error: unknown): string {
@@ -19,6 +20,8 @@ function sanitizeError(error: unknown): string {
     process.env.SESSION_SECRET,
     process.env.CLERK_SECRET_KEY,
     process.env.SMTP_PASS,
+    process.env.SMTP_USER,
+    process.env.SMTP_FROM,
     process.env.RESEND_API_KEY,
   ].filter((value): value is string => Boolean(value));
 
@@ -30,10 +33,6 @@ function sanitizeError(error: unknown): string {
     .replace(/\b(postgres(?:ql)?:\/\/)[^@\s]+@/gi, "$1[REDACTED]@")
     .replace(/\b(smtps?:\/\/)[^@\s]+@/gi, "$1[REDACTED]@")
     .replace(/((?:password|passwd|token|secret)\s*[=:]\s*)[^,\s;]+/gi, "$1[REDACTED]");
-}
-
-async function connectToDatabase(): Promise<PoolClient> {
-  return pool.connect();
 }
 
 export async function diagnoseDatabase(): Promise<DiagnosticResult> {
@@ -50,7 +49,7 @@ export async function diagnoseDatabase(): Promise<DiagnosticResult> {
 
   let client: PoolClient | undefined;
   try {
-    client = await connectToDatabase();
+    client = await pool.connect();
     await client.query("SELECT 1");
     return {
       status: "PASS",
@@ -103,9 +102,8 @@ export function diagnoseAuthentication(): DiagnosticResult {
     status: issues.length === 0 ? "PASS" : "FAIL",
     provider: "Passport local sessions + Clerk",
     configured,
+    note: "Configuration only; this does not test browser session persistence or Clerk sign-in. This project does not use NextAuth, so NEXTAUTH_SECRET and NEXTAUTH_URL are optional.",
   };
-  (result as DiagnosticResult & { note?: string }).note =
-    "This project does not use NextAuth; NEXTAUTH_SECRET and NEXTAUTH_URL are reported for visibility but are not required.";
   if (issues.length > 0) {
     result.error = issues.join(" ");
     result.recommendation =
