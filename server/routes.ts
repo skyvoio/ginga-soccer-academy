@@ -20,6 +20,7 @@ import { logEmailFailure, sendNotificationEmail } from "./email";
 import { pool } from "./db";
 import connectPgSimple from "connect-pg-simple";
 import { buildDiagnosticReport, diagnoseAuthentication } from "./diagnostics";
+import { ONLINE_REGISTRATION_PAUSED, PUBLIC_SIGNUPS_PAUSED } from "@shared/maintenance";
 
 function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -138,6 +139,9 @@ export async function registerRoutes(
   // ── Auth Routes ──────────────────────────────────────────────────────────────
 
   app.post("/api/auth/register", async (req, res) => {
+    if (PUBLIC_SIGNUPS_PAUSED) {
+      return res.status(503).json({ message: "New account creation is temporarily paused. Download the 2026 Programs Registration Form from the Members page." });
+    }
     try {
       const parsed = insertUserSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -198,6 +202,9 @@ export async function registerRoutes(
       const username = `google_${auth.userId.slice(-16)}`;
       let user = await storage.getUserByUsername(username);
       if (!user) {
+        if (PUBLIC_SIGNUPS_PAUSED) {
+          return res.status(503).json({ message: "New account creation is temporarily paused. Download the 2026 Programs Registration Form from the Members page." });
+        }
         console.error("[auth] Google bridge creating local user", {
           clerkUserId: auth.userId,
           username,
@@ -296,6 +303,9 @@ export async function registerRoutes(
   // ── User Registration and Contact Notifications ─────────────────────────────
 
   app.post("/api/registrations", requireAuth, async (req: any, res) => {
+    if (ONLINE_REGISTRATION_PAUSED) {
+      return res.status(503).json({ message: "Online registration is temporarily paused. Download the 2026 Programs Registration Form from the Members page." });
+    }
     try {
       const parsed = digitalRegistrationSchema.safeParse(req.body);
       if (!parsed.success) {

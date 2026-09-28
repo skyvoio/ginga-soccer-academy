@@ -11,6 +11,7 @@ import Programs from "@/pages/Programs";
 import GingaFit from "@/pages/GingaFit";
 import Schedule from "@/pages/Schedule";
 import Booking from "@/pages/Booking";
+import RegistrationMaintenance from "@/pages/RegistrationMaintenance";
 import Login from "@/pages/Login";
 import Profile from "@/pages/Profile";
 import Admin from "@/pages/Admin";
@@ -22,6 +23,7 @@ import NewsArticle from "@/pages/NewsArticle";
 import { ClerkProvider } from "@clerk/react";
 import { SignIn, SignUp } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
+import { ONLINE_REGISTRATION_PAUSED, PUBLIC_SIGNUPS_PAUSED } from "@shared/maintenance";
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -36,15 +38,15 @@ function Router() {
       <Route path="/programs" component={Programs} />
       <Route path="/gingafit" component={GingaFit} />
       <Route path="/schedule" component={Schedule} />
-      <Route path="/booking" component={Booking} />
+      <Route path="/booking" component={ONLINE_REGISTRATION_PAUSED ? RegistrationMaintenance : Booking} />
       <Route path="/booking/success" component={BookingSuccess} />
       <Route path="/about" component={About} />
       <Route path="/media" component={Media} />
       <Route path="/contact" component={Contact} />
       <Route path="/news/:id" component={NewsArticle} />
       <Route path="/login" component={Login} />
-      <Route path="/sign-in/*?" component={ClerkSignInPage} />
-      <Route path="/sign-up/*?" component={ClerkSignUpPage} />
+      <Route path="/sign-in/*?" component={PUBLIC_SIGNUPS_PAUSED ? Login : ClerkSignInPage} />
+      <Route path="/sign-up/*?" component={PUBLIC_SIGNUPS_PAUSED ? RegistrationMaintenance : ClerkSignUpPage} />
       <Route path="/profile" component={Profile} />
       <Route path="/admin" component={Admin} />
       <Route>

@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useClerk, useAuth as useClerkAuth } from "@clerk/react";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
+import { PUBLIC_SIGNUPS_PAUSED } from "@shared/maintenance";
 
 const basePath = import.meta.env.VITE_BASE_PATH ?? "";
 
@@ -54,6 +55,11 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (PUBLIC_SIGNUPS_PAUSED && isRegister) {
+      setError("New account creation is temporarily paused. Please use the registration form PDF on the Members page.");
+      return;
+    }
 
     if (!username.trim() || !password.trim()) {
       setError("Please fill in all fields.");
@@ -184,13 +190,13 @@ export default function Login() {
               )}
             </button>
 
-            <div className="my-7 flex items-center gap-4">
+            {!PUBLIC_SIGNUPS_PAUSED && <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/10" />
               <span className="text-[10px] font-bold tracking-[0.2em] text-neutral-600 font-display">OR</span>
               <div className="h-px flex-1 bg-white/10" />
-            </div>
+            </div>}
 
-            <button
+            {!PUBLIC_SIGNUPS_PAUSED && <button
               type="button"
               onClick={async () => {
                 setError("");
@@ -214,11 +220,11 @@ export default function Login() {
             >
               <span className="text-base font-bold">G</span>
               {isRegister ? "SIGN UP WITH GOOGLE" : "SIGN IN WITH GOOGLE"}
-            </button>
+            </button>}
           </div>
         </form>
 
-        <div className="mt-6 text-center">
+        {!PUBLIC_SIGNUPS_PAUSED && <div className="mt-6 text-center">
           <button
             onClick={() => {
               setIsRegister(!isRegister);
@@ -231,7 +237,7 @@ export default function Login() {
               ? "Already have an account? Sign in"
               : "Don't have an account? Create one"}
           </button>
-        </div>
+        </div>}
       </motion.div>
     </div>
   );
