@@ -28,6 +28,9 @@ function getTransporter(): nodemailer.Transporter {
     host,
     port,
     secure: process.env.SMTP_SECURE === "true" || port === 465,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
     auth: { user, pass },
   });
 
@@ -51,6 +54,10 @@ export async function sendNotificationEmail(details: EmailDetails): Promise<void
     subject: details.subject,
     text: details.text,
   });
+}
+
+export async function verifyNotificationEmailTransport(): Promise<void> {
+  await getTransporter().verify();
 }
 
 export function logEmailFailure(context: string, error: unknown): void {

@@ -19,6 +19,7 @@ import { WebhookHandlers } from "./webhookHandlers";
 import { logEmailFailure, sendNotificationEmail } from "./email";
 import { pool } from "./db";
 import connectPgSimple from "connect-pg-simple";
+import { buildDiagnosticReport, diagnoseAuthentication } from "./diagnostics";
 
 function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -266,6 +267,30 @@ export async function registerRoutes(
       isAdmin: user.isAdmin,
       enrolledProgram: user.enrolledProgram ?? null,
     });
+  });
+
+  app.get("/api/diagnostic-health", requireAdmin, async (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    try {
+      return res.json(await buildDiagnosticReport());
+    } catch (error) {
+      console.error("[diagnostic] Health check failed unexpectedly:", error);
+      return res.status(500).json({
+        Database: {
+          status: "FAIL",
+          provider: "PostgreSQL (node-postgres / Drizzle)",
+          error: "Diagnostic check could not complete.",
+          recommendation: "Review application logs for the diagnostic error.",
+        },
+        Authentication: diagnoseAuthentication(),
+        Email: {
+          status: "FAIL",
+          provider: "Nodemailer SMTP",
+          error: "Diagnostic check could not complete.",
+          recommendation: "Review application logs for the diagnostic error.",
+        },
+      });
+    }
   });
 
   // ── User Registration and Contact Notifications ─────────────────────────────
