@@ -23,6 +23,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { digitalRegistrationSchema, type DigitalRegistration } from "@shared/schema";
+import { trackEvent } from "@/lib/analytics";
 
 type ProgramCategory = "TRAINING" | "CAMPS" | "RENTALS";
 
@@ -186,9 +187,12 @@ export default function Booking() {
       }
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setFormSubmitted(true);
       setSubmitError("");
+      trackEvent("online_registration_submitted", {
+        program: data.program,
+      });
     },
     onError: (err: any) => {
       setSubmitError(err.message || "Registration failed. Please try again.");
@@ -204,8 +208,13 @@ export default function Booking() {
       });
       return res.json();
     },
-    onSuccess: (data) => {
-      if (data.url) window.location.href = data.url;
+    onSuccess: (data, program) => {
+      if (data.url) {
+        trackEvent("checkout_started", {
+          program_id: program.id,
+        });
+        window.location.href = data.url;
+      }
     },
     onError: (err: any) => {
       setCheckoutError(err.message || "Failed to start checkout. Please try again.");
@@ -220,6 +229,10 @@ export default function Booking() {
   };
 
   const handleProgramSelect = (program: Program) => {
+    trackEvent("program_selected", {
+      program_id: program.id,
+      category: program.category.toLowerCase(),
+    });
     setSelectedProgram(program);
     setFormSubmitted(false);
     setSubmitError("");

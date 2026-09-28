@@ -7,6 +7,7 @@ import { useClerk, useAuth as useClerkAuth } from "@clerk/react";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { PUBLIC_SIGNUPS_PAUSED } from "@shared/maintenance";
+import { trackEvent } from "@/lib/analytics";
 
 const basePath = import.meta.env.VITE_BASE_PATH ?? "";
 
@@ -31,6 +32,7 @@ export default function Login() {
     apiRequest("POST", "/api/auth/google/session")
       .then(async (response) => {
         if (cancelled) return;
+        trackEvent("google_session_bridged");
         console.info("[auth] Clerk Google session bridged successfully");
         await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
         setLocation("/booking");
@@ -69,8 +71,10 @@ export default function Login() {
     try {
       if (isRegister) {
         await register.mutateAsync({ username: username.trim(), password });
+        trackEvent("account_signup_succeeded", { method: "password" });
       } else {
         await login.mutateAsync({ username: username.trim(), password });
+        trackEvent("account_login_succeeded", { method: "password" });
       }
       setLocation("/booking");
     } catch (err: any) {

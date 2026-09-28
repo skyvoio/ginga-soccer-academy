@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronRight, Zap, Timer, Target, TrendingUp, Activity, BarChart3 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const stats = [
   {
@@ -232,6 +233,7 @@ export default function GingaMax() {
             </p>
             <Link
               href="/booking"
+              onClick={() => trackEvent("booking_cta_clicked", { location: "gingamax_footer_cta", program_id: "gingamax" })}
               className="mt-10 inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black px-12 py-5 font-bold uppercase tracking-[0.15em] text-sm hover:from-amber-400 hover:to-amber-500 transition-all duration-300"
               data-testid="link-gingamax-cta"
             >

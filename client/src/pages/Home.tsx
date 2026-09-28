@@ -11,6 +11,7 @@ import {
   Dumbbell,
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
+import { trackEvent } from "@/lib/analytics";
 import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
@@ -243,6 +244,7 @@ export default function Home() {
             </Link>
             <Link
               href="/booking"
+              onClick={() => trackEvent("booking_cta_clicked", { location: "home_hero" })}
               className="inline-flex items-center gap-3 border border-white/20 text-white px-10 py-4 font-bold uppercase tracking-[0.15em] text-sm hover:border-amber-500 hover:text-amber-500 transition-all duration-300"
               data-testid="link-hero-book"
             >
@@ -575,6 +577,7 @@ export default function Home() {
             </p>
             <Link
               href="/booking"
+              onClick={() => trackEvent("booking_cta_clicked", { location: "home_footer_cta" })}
               className="mt-10 inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black px-12 py-5 font-bold uppercase tracking-[0.15em] text-sm hover:from-amber-400 hover:to-amber-500 transition-all duration-300"
               data-testid="link-cta-book"
             >

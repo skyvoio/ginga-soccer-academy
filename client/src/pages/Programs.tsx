@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
@@ -228,6 +229,10 @@ export default function Programs() {
                           </p>
                           <Link
                             href="/booking"
+                            onClick={() => trackEvent("booking_cta_clicked", {
+                              location: "program_card",
+                              program_id: program.id,
+                            })}
                             className="text-xs font-bold tracking-[0.15em] text-amber-500 uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 flex-shrink-0"
                             data-testid={`link-book-${program.id}`}
                           >
@@ -256,6 +261,7 @@ export default function Programs() {
             </div>
             <Link
               href="/booking"
+              onClick={() => trackEvent("booking_cta_clicked", { location: "programs_footer_cta" })}
               className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black px-10 py-4 font-bold uppercase tracking-[0.15em] text-sm hover:from-amber-400 hover:to-amber-500 transition-all duration-300 flex-shrink-0"
               data-testid="link-programs-cta"
             >

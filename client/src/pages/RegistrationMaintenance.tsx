@@ -1,4 +1,5 @@
 import { FileDown, Mail, MapPin } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function RegistrationMaintenance() {
   return (
@@ -17,6 +18,10 @@ export default function RegistrationMaintenance() {
           <a
             href="/Ginga_2026_Programs_Registration_Form.pdf"
             download="Ginga_2026_Programs_Registration_Form.pdf"
+            onClick={() => trackEvent("registration_form_pdf_download_clicked", {
+              form: "programs_2026",
+              location: "registration_maintenance",
+            })}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black px-6 sm:px-10 py-4 font-bold uppercase tracking-wide text-sm hover:from-amber-400 hover:to-amber-500 transition-all duration-300 text-center"
             data-testid="download-registration-pdf"
           >

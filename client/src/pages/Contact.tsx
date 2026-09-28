@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Clock, Send, Check } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import { trackEvent } from "@/lib/analytics";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -17,7 +18,9 @@ export default function Contact() {
     try {
       await apiRequest("POST", "/api/contact", formData);
       setSubmitted(true);
+      trackEvent("contact_message_sent", { location: "contact_page" });
     } catch (err: any) {
+      trackEvent("contact_message_failed", { location: "contact_page" });
       setError(err.message || "Unable to send your message. Please try again.");
     } finally {
       setSending(false);
