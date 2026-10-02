@@ -70,6 +70,62 @@ const playerProfiles = [
   },
 ];
 
+const tournamentExperience = [
+  { name: "IberCup Estoril", location: "Portugal", appearances: 2 },
+  { name: "Barcelona", location: "Spain", appearances: 1 },
+  { name: "Footvia Barcelona", location: "Spain", appearances: 1 },
+  { name: "Challenge Cup", location: "International", appearances: 4 },
+];
+
+const internationalClubs = [
+  { country: "Portugal", clubs: ["SL Benfica U18", "Lusitânia", "FC Penafiel"] },
+  { country: "Scotland", clubs: ["Livingston FC U18 / Reserves"] },
+  { country: "Brazil", clubs: ["EC Comercial"] },
+  { country: "Spain", clubs: ["Real Avilés"] },
+  {
+    country: "Norway",
+    clubs: ["FK Haugesund", "FK Vard", "Stord/Moster FK", "Mandalskameratene FK"],
+  },
+];
+
+const canadianClubs = [
+  "Kitchener Minor Soccer",
+  "South West United",
+  "Dixie Soccer Club",
+  "Cambridge Oriental",
+  "Kitchener Hrvat",
+  "Cambridge Supersonics",
+  "Hamilton Thunder",
+  "Toronto Lynx",
+];
+
+const coachingPillars = [
+  {
+    title: "Player development",
+    text: "Build technical ability, decision-making, confidence and understanding of the game.",
+  },
+  {
+    title: "Tactical understanding",
+    text: "Teach positioning, movement, transitions, spacing and team structure.",
+  },
+  {
+    title: "Competitive mentality",
+    text: "Create an environment built around preparation, commitment, discipline and resilience.",
+  },
+  {
+    title: "Team culture",
+    text: "Build a positive, unified environment where players understand their roles and responsibilities.",
+  },
+  {
+    title: "International exposure",
+    text: "Draw on Canadian, European and Brazilian football environments and playing styles.",
+  },
+  {
+    title: "Player pathway",
+    text: "Help players understand what it takes to progress from grassroots football to higher levels of competition.",
+  },
+];
+
 export default function About() {
   return (
     <div className="bg-[#0a0a0a] min-h-screen pt-20">
@@ -142,7 +198,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
-                CEO & HEAD TRAINER
+                CEO · HEAD COACH · INTERNATIONAL SOCCER PROFESSIONAL
               </p>
               <h2
                 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter font-display mb-4"
@@ -151,7 +207,7 @@ export default function About() {
                 KEVIN DE SERPA
               </h2>
               <p className="text-neutral-400 text-lg mb-8">
-                10-year International Pro Career | Canadian National Team | FC Penafiel · FK Haugesund · Benfica U18
+                A Canadian coach and former professional player with experience across Canada, Europe and Brazil. Kevin has represented Ontario and Canada at youth levels and coached at international youth tournaments in Portugal and Spain.
               </p>
 
               <div className="space-y-5">
@@ -226,6 +282,181 @@ export default function About() {
                 </a>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-6 bg-[#0d0d0d]" data-testid="section-kevin-international-profile">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-12"
+          >
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+              COACHING & PLAYER DEVELOPMENT
+            </p>
+            <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter font-display">
+              A CAREER WITHOUT BORDERS
+            </h2>
+            <p className="mt-5 text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+              From Canadian national-team pathways to professional clubs in Europe and Brazil, Kevin brings a broad range of football experience to player development at Ginga.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-2 bg-[#171717] border border-white/5 p-7 md:p-8"
+              data-testid="card-kevin-national-pathway"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Award className="text-amber-500" size={20} />
+                <h3 className="text-lg font-black text-white uppercase tracking-tight font-display">
+                  National & Provincial Pathway
+                </h3>
+              </div>
+              <p className="text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase mb-3">
+                Canada Men’s National Team pathway
+              </p>
+              <div className="flex flex-wrap gap-2 mb-7">
+                {["U17", "U19", "U20", "U23"].map((level) => (
+                  <span key={level} className="bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 text-amber-400 text-xs font-bold font-mono">
+                    CANADA {level}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase mb-3">
+                Provincial team
+              </p>
+              <span className="inline-flex items-center gap-2 border border-white/10 px-3 py-2 text-sm text-neutral-300">
+                <MapPin size={13} className="text-amber-500" />
+                Ontario U18 Provincial Team
+              </span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.08 }}
+              className="lg:col-span-3 bg-[#171717] border border-white/5 p-7 md:p-8"
+              data-testid="card-kevin-tournament-experience"
+            >
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <Trophy className="text-amber-500" size={20} />
+                  <h3 className="text-lg font-black text-white uppercase tracking-tight font-display">
+                    International Coaching
+                  </h3>
+                </div>
+                <span className="text-amber-500 text-xs font-bold font-mono whitespace-nowrap">
+                  8 APPEARANCES
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {tournamentExperience.map((event) => (
+                  <div key={event.name} className="border border-white/5 bg-black/20 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-white text-sm font-bold">{event.name}</h4>
+                      <span className="text-amber-500 text-xs font-mono">{event.appearances}×</span>
+                    </div>
+                    <p className="text-neutral-500 text-xs mt-1">{event.location}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-neutral-500 text-xs mt-4 leading-relaxed">
+                Youth tournament coaching experience in Portugal and Spain, including IberCup Estoril, Barcelona, Footvia Barcelona and Challenge Cup tournaments.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-[#171717] border border-white/5 p-7 md:p-8"
+              data-testid="card-kevin-international-clubs"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <MapPin className="text-amber-500" size={19} />
+                <h3 className="text-lg font-black text-white uppercase tracking-tight font-display">
+                  International Playing Career
+                </h3>
+              </div>
+              <div className="space-y-4">
+                {internationalClubs.map((group) => (
+                  <div key={group.country} className="grid grid-cols-[6rem_1fr] gap-4 border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                    <p className="text-amber-500 text-xs font-bold uppercase tracking-wide">{group.country}</p>
+                    <p className="text-neutral-300 text-sm leading-relaxed">{group.clubs.join(" · ")}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.08 }}
+              className="bg-[#171717] border border-white/5 p-7 md:p-8"
+              data-testid="card-kevin-canadian-clubs"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Zap className="text-amber-500" size={19} />
+                <h3 className="text-lg font-black text-white uppercase tracking-tight font-display">
+                  Canadian Club Career
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {canadianClubs.map((club) => (
+                  <span key={club} className="border border-white/10 bg-black/20 px-3 py-2 text-xs text-neutral-300">
+                    {club}
+                  </span>
+                ))}
+              </div>
+              <p className="text-neutral-500 text-xs mt-6 leading-relaxed">
+                Kevin’s playing and coaching career spans Canada, Portugal, Scotland, Brazil, Spain and Norway.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-6" data-testid="section-kevin-coaching-philosophy">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-amber-500 text-xs font-bold tracking-[0.3em] mb-4 font-display">
+              HOW WE DEVELOP PLAYERS
+            </p>
+            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter font-display">
+              COACHING PHILOSOPHY
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {coachingPillars.map((pillar, index) => (
+              <motion.div
+                key={pillar.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.05 }}
+                className="bg-[#171717] border border-white/5 p-6"
+              >
+                <div className="w-8 h-1 bg-amber-500 mb-5" />
+                <h3 className="text-white text-sm font-bold uppercase tracking-wide mb-3">
+                  {pillar.title}
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">{pillar.text}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
