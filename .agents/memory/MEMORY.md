@@ -1,2 +1,3 @@
 - [Clerk custom-host setup](clerk-custom-host.md) — Clerk browser and Express keys must resolve from the request hostname for Google auth to avoid session redirect loops.
 - [Public-domain sessions](public-domain-sessions.md) — a successful login response does not prove the GitHub Pages frontend retained its cross-site Replit API session.
+- [Post-merge safety](post-merge-safety.md) — automatic setup must not force-push database schemas during unrelated merges.
