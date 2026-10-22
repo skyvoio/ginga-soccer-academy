@@ -2,11 +2,11 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
+import privateSessionImg from "@assets/optimized/private-session.webp";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
-import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
-import turfRentalImg from "@assets/Turf_Rental_Photo_1778007494522.png";
-import turfRental2Img from "@assets/Turf_Rental_Photo_1778009335912.png";
+import agilityImg from "@assets/optimized/ginga-agility.webp";
+import turfRentalImg from "@assets/optimized/turf-rental.webp";
+import turfRental2Img from "@assets/optimized/turf-rental-wide.webp";
 
 type ProgramCategory = "TRAINING" | "CAMPS" | "RENTALS";
 const summerCampImg = "/summer-camp.jpg";

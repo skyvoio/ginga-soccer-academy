@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
 import { trackEvent } from "@/lib/analytics";
-import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
-import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
+import agilityImg from "@assets/optimized/ginga-agility.webp";
+import privateSessionImg from "@assets/optimized/private-session.webp";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
 import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
 import pedroucosImg from "@assets/image_1787635291651.png";

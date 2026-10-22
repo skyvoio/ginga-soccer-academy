@@ -1,4 +1,5 @@
 import { Switch, Route, useLocation, Router as WouterRouter } from "wouter";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,24 +7,25 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingAdminButton from "@/components/FloatingAdminButton";
-import Home from "@/pages/Home";
-import Programs from "@/pages/Programs";
-import GingaFit from "@/pages/GingaFit";
-import Schedule from "@/pages/Schedule";
-import Booking from "@/pages/Booking";
-import RegistrationMaintenance from "@/pages/RegistrationMaintenance";
-import Login from "@/pages/Login";
-import Profile from "@/pages/Profile";
-import Admin from "@/pages/Admin";
-import About from "@/pages/About";
-import Media from "@/pages/Media";
-import Contact from "@/pages/Contact";
-import BookingSuccess from "@/pages/BookingSuccess";
-import NewsArticle from "@/pages/NewsArticle";
 import { ClerkProvider } from "@clerk/react";
 import { SignIn, SignUp } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { ONLINE_REGISTRATION_PAUSED, PUBLIC_SIGNUPS_PAUSED } from "@shared/maintenance";
+
+const Home = lazy(() => import("@/pages/Home"));
+const Programs = lazy(() => import("@/pages/Programs"));
+const GingaFit = lazy(() => import("@/pages/GingaFit"));
+const Schedule = lazy(() => import("@/pages/Schedule"));
+const Booking = lazy(() => import("@/pages/Booking"));
+const RegistrationMaintenance = lazy(() => import("@/pages/RegistrationMaintenance"));
+const Login = lazy(() => import("@/pages/Login"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const About = lazy(() => import("@/pages/About"));
+const Media = lazy(() => import("@/pages/Media"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const BookingSuccess = lazy(() => import("@/pages/BookingSuccess"));
+const NewsArticle = lazy(() => import("@/pages/NewsArticle"));
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -97,7 +99,15 @@ function AppContent() {
   return (
     <div className="bg-[#0a0a0a] min-h-screen text-white font-sans selection:bg-amber-500 selection:text-black">
       {!isAdmin && <Navbar />}
-      <Router />
+      <Suspense
+        fallback={
+          <div className="min-h-screen pt-32 text-center text-neutral-400" role="status">
+            Loading page…
+          </div>
+        }
+      >
+        <Router />
+      </Suspense>
       {!isAdmin && <Footer />}
       {!isAdmin && <FloatingAdminButton />}
     </div>

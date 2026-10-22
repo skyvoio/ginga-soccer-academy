@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import newsPDCampImg from "@assets/PHOTO-2026-05-20-09-14-27_1779396092879.jpg";
+import newsPDCampImg from "@assets/optimized/pd-camp.webp";
 import newsDiagoImg from "@assets/Ginga_Diago_1782776302853.jpeg";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
-import turfNewsImg from "@assets/Turf_Rental_Photo_1778009335912.png";
+import turfNewsImg from "@assets/optimized/turf-rental-wide.webp";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
 import viktoriaImg from "@assets/Viktoria_Brodar_1773607422405.jpeg";
