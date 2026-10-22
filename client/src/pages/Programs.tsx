@@ -2,7 +2,6 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
@@ -25,17 +24,6 @@ interface Program {
 }
 
 const programs: Program[] = [
-  {
-    id: "justplay",
-    category: "TRAINING",
-    title: "Justplay",
-    price: "$50 + Tax",
-    details: "120m Session",
-    description:
-      "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.",
-    icon: Clock,
-    image: justplayImg,
-  },
   {
     id: "group",
     category: "TRAINING",

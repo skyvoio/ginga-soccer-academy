@@ -4,7 +4,7 @@ import { Clock, MapPin, AlertCircle } from "lucide-react";
 interface ScheduleSlot {
   time: string;
   program: string;
-  type: "private" | "group" | "justplay" | "gingafit" | "camp" | "open";
+  type: "private" | "group" | "gingafit" | "camp" | "open";
   notes?: string;
 }
 
@@ -76,7 +76,6 @@ const schedule: DaySchedule[] = [
     slots: [
       { time: "11:00 AM - 1:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
       { time: "1:00 PM - 3:00 PM", program: "Private Session", type: "private", notes: "By appointment" },
-      { time: "3:00 PM - 5:00 PM", program: "Just Play", type: "justplay" },
     ],
   },
 ];
@@ -84,7 +83,6 @@ const schedule: DaySchedule[] = [
 const typeColors: Record<string, string> = {
   private: "border-amber-500/50 bg-amber-500/5 text-amber-500",
   group: "border-blue-500/50 bg-blue-500/5 text-blue-400",
-  justplay: "border-green-500/50 bg-green-500/5 text-green-400",
   gingafit: "border-[#C5A059]/50 bg-[#C5A059]/5 text-[#C5A059]",
   camp: "border-purple-500/50 bg-purple-500/5 text-purple-400",
   open: "border-neutral-500/50 bg-neutral-500/5 text-neutral-400",
@@ -93,7 +91,6 @@ const typeColors: Record<string, string> = {
 const typeDots: Record<string, string> = {
   private: "bg-amber-500",
   group: "bg-blue-500",
-  justplay: "bg-green-500",
   gingafit: "bg-[#C5A059]",
   camp: "bg-purple-500",
   open: "bg-neutral-500",
@@ -133,7 +130,6 @@ export default function Schedule() {
             {[
               { type: "private", label: "Private" },
               { type: "group", label: "Group" },
-              { type: "justplay", label: "Just Play" },
             ].map((item) => (
               <div key={item.type} className="flex items-center gap-2 text-xs text-neutral-400">
                 <div className={`w-2 h-2 rounded-full ${typeDots[item.type]}`} />

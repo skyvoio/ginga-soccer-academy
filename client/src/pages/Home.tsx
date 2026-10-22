@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   ChevronRight,
-  Clock,
   Users,
   MapPin,
   User as UserIcon,
@@ -12,7 +11,6 @@ import {
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
 import { trackEvent } from "@/lib/analytics";
-import justplayImg from "@assets/Ginga_Just_Play_1773867452909.png";
 import agilityImg from "@assets/Ginga_Agility_1772628248650.png";
 import privateSessionImg from "@assets/Ginga_Private_Session_1773926791540.jpg";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
@@ -22,16 +20,6 @@ import pedroucosImg from "@assets/image_1787635291651.png";
 const summerCampImg = "/summer-camp.jpg";
 
 const programCards = [
-  {
-    icon: Clock,
-    title: "JUSTPLAY",
-    price: "$50 + Tax",
-    label: "120m Session",
-    description:
-      "120 minute Specialized conditioning to enhance Soccer I.Q. speed, stamina, and on-field agility.",
-    link: "/programs",
-    image: justplayImg,
-  },
   {
     icon: Users,
     title: "GINGA SUMMER CAMP",
@@ -323,7 +311,7 @@ export default function Home() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {programCards.map((program, i) => (
               <motion.div
                 key={program.title}

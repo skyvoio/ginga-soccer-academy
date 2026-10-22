@@ -38,7 +38,6 @@ interface Program {
 }
 
 const PROGRAMS: Program[] = [
-  { id: "p1", category: "TRAINING", title: "Justplay",        price: "$50 + Tax",     unitAmount: 5650,  details: "120m Session",              isCamp: false },
   { id: "p2", category: "TRAINING", title: "Group Session",   price: "$50 + Tax",     unitAmount: 5650,  details: "90m Session",               isCamp: false },
   { id: "p3", category: "TRAINING", title: "Private Session", price: "$175 + Tax",    unitAmount: 19775, details: "2h Session",                 isCamp: false },
   { id: "p4", category: "TRAINING", title: "GingaFit",        price: "$40 + Tax",     unitAmount: 4520,  details: "Tuesdays · 7–8 PM",          isCamp: false },

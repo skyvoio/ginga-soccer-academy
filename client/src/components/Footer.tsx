@@ -53,7 +53,6 @@ export default function Footer() {
               {[
                 "Private Sessions",
                 "Group Training",
-                "Just Play",
                 "Camps",
                 "Turf Rentals",
               ].map((item) => (
