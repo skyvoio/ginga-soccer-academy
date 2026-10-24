@@ -28,7 +28,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm ci --no-audit --no-fund --replace-registry-host=always --registry=https://registry.npmjs.org
 
       - name: Build frontend
         run: npm exec -- vite build --base=/
