@@ -381,7 +381,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              href="/media"
+              href="/news"
               className="hidden md:flex items-center gap-2 text-amber-500 text-xs font-bold tracking-[0.15em] uppercase hover:text-amber-400 transition-colors"
               data-testid="link-view-all-news"
             >

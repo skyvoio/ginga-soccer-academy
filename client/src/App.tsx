@@ -23,6 +23,7 @@ const Profile = lazy(() => import("@/pages/Profile"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const About = lazy(() => import("@/pages/About"));
 const Media = lazy(() => import("@/pages/Media"));
+const News = lazy(() => import("@/pages/News"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const BookingSuccess = lazy(() => import("@/pages/BookingSuccess"));
 const NewsArticle = lazy(() => import("@/pages/NewsArticle"));
@@ -45,6 +46,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/media" component={Media} />
       <Route path="/contact" component={Contact} />
+      <Route path="/news" component={News} />
       <Route path="/news/:id" component={NewsArticle} />
       <Route path="/login" component={Login} />
       <Route path="/sign-in/*?" component={PUBLIC_SIGNUPS_PAUSED ? Login : ClerkSignInPage} />

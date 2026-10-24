@@ -119,10 +119,10 @@ export default function NewsArticle() {
         </h1>
         <p className="text-neutral-400 mt-4">This article may have been removed.</p>
         <Link
-          href="/"
+          href="/news"
           className="mt-8 inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 transition-colors font-mono text-sm"
         >
-          <ArrowLeft size={14} /> Back to Home
+          <ArrowLeft size={14} /> Back to All News
         </Link>
       </div>
     );
@@ -211,7 +211,7 @@ export default function NewsArticle() {
               Contact Us for More Info
             </a>
             <Link
-              href="/"
+              href="/news"
               className="text-neutral-500 hover:text-white text-sm font-mono transition-colors"
             >
               ← Back to all news
