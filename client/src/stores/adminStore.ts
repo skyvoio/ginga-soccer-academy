@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import newsPDCampImg from "@assets/optimized/pd-camp.webp";
+import octoberPdDayCampImg from "@assets/optimized/pd-day-camp-oct-26.webp";
 import newsDiagoImg from "@assets/Ginga_Diago_1782776302853.jpeg";
 import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/optimized/turf-rental-wide.webp";
@@ -116,6 +117,14 @@ export const useAdminStore = create<AdminState>((set) => ({
     { id: "m5", title: "Diago Delgado Returns Home to Train with Ginga", category: "Interviews", type: "photo", image: newsDiagoImg },
   ],
   news: [
+    {
+      id: "n10",
+      title: "Ginga PD Day Camp — October 26: Sign Up Now",
+      date: "Oct 23, 2026",
+      excerpt: "Spend the PD day on the pitch. Join us October 26, 9 a.m.–3 p.m., for dribbling, first touch, and 1v1 training. Member and non-member rates available.",
+      content: "Make the most of the upcoming PD day with Ginga Soccer. Our one-day camp runs Monday, October 26, from 9:00 a.m. to 3:00 p.m.\n\n### Camp Details\n\n• **Date** — Monday, October 26\n• **Time** — 9:00 a.m.–3:00 p.m.\n• **Member price** — $113\n• **Non-member price** — $169.50\n\n### Skills You'll Work On\n\n• Dribbling\n• Ball control and first touch\n• 1v1 play\n\nBuild confidence on the ball, sharpen your technique, and put your skills to work in 1v1 situations. For sign-up information, contact us at info@gingasoccer.ca.",
+      image: octoberPdDayCampImg,
+    },
     {
       id: "n9",
       title: "Historic Opportunity: Ginga Soccer Academy Announces Exclusive Partnership with European Football Club",
