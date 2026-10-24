@@ -27,21 +27,26 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Normalize package URLs for GitHub Actions
+      - name: Normalize Replit package URLs for GitHub Actions
         run: |
           node --input-type=module <<'NODE'
           import { readFileSync, writeFileSync } from "node:fs";
 
           const lockPath = "package-lock.json";
           const lock = JSON.parse(readFileSync(lockPath, "utf8"));
-          const privatePrefix = "http://package-firewall.replit.local/npm/";
           let replaced = 0;
 
           for (const pkg of Object.values(lock.packages ?? {})) {
-            if (typeof pkg.resolved === "string" && pkg.resolved.startsWith(privatePrefix)) {
-              pkg.resolved = `https://registry.npmjs.org/${pkg.resolved.slice(privatePrefix.length)}`;
-              replaced += 1;
+            if (typeof pkg.resolved !== "string") continue;
+
+            const url = new URL(pkg.resolved);
+            if (!url.hostname.startsWith("package-firewall.replit.")) continue;
+            if (!url.pathname.startsWith("/npm/")) {
+              throw new Error(`Unexpected Replit package URL path: ${url.pathname}`);
             }
+
+            pkg.resolved = `https://registry.npmjs.org/${url.pathname.slice("/npm/".length)}`;
+            replaced += 1;
           }
 
           if (replaced > 0) {
