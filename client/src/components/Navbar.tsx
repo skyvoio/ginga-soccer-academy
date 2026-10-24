@@ -8,7 +8,6 @@ import logoSrc from "@assets/Ginga_Soccer_Logo_1772593615133.png";
 const navLinks = [
   { name: "HOME", path: "/" },
   { name: "PROGRAMS", path: "/programs" },
-  { name: "GINGAFIT", path: "/gingafit" },
   { name: "SCHEDULE", path: "/schedule" },
   { name: "ABOUT", path: "/about" },
   { name: "MEDIA", path: "/media" },

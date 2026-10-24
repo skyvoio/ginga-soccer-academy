@@ -7,11 +7,9 @@ import {
   MapPin,
   User as UserIcon,
   ArrowRight,
-  Dumbbell,
 } from "lucide-react";
 import { useAdminStore } from "@/stores/adminStore";
 import { trackEvent } from "@/lib/analytics";
-import agilityImg from "@assets/optimized/ginga-agility.webp";
 import privateSessionImg from "@assets/optimized/private-session.webp";
 import challengeCupImg from "@assets/CHALLENGE_CT_Id_01-300x133_1772628285717.jpg";
 import brazucaImg from "@assets/brazilian_Sports_Events_1772628280844.jpg";
@@ -29,16 +27,6 @@ const programCards = [
       "Full-week intensive summer training camp with professional coaching and competitive match play.",
     link: "/programs",
     image: summerCampImg,
-  },
-  {
-    icon: Dumbbell,
-    title: "GINGAFIT — YOUTH ATHLETIC CONDITIONING",
-    price: "$40 + Tax",
-    label: "Per Session",
-    description:
-      "Build speed, power & agility. Tuesdays 7–8 PM, July 28 – Dec 15. Limited to 24 athletes.",
-    link: "/gingafit",
-    image: agilityImg,
   },
   {
     icon: MapPin,

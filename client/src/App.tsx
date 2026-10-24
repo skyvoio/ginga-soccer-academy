@@ -14,7 +14,6 @@ import { ONLINE_REGISTRATION_PAUSED, PUBLIC_SIGNUPS_PAUSED } from "@shared/maint
 
 const Home = lazy(() => import("@/pages/Home"));
 const Programs = lazy(() => import("@/pages/Programs"));
-const GingaFit = lazy(() => import("@/pages/GingaFit"));
 const Schedule = lazy(() => import("@/pages/Schedule"));
 const Booking = lazy(() => import("@/pages/Booking"));
 const RegistrationMaintenance = lazy(() => import("@/pages/RegistrationMaintenance"));
@@ -39,7 +38,6 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/programs" component={Programs} />
-      <Route path="/gingafit" component={GingaFit} />
       <Route path="/schedule" component={Schedule} />
       <Route path="/booking" component={ONLINE_REGISTRATION_PAUSED ? RegistrationMaintenance : Booking} />
       <Route path="/booking/success" component={BookingSuccess} />

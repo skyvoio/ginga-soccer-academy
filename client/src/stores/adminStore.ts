@@ -2,7 +2,6 @@ import { create } from "zustand";
 import newsPDCampImg from "@assets/optimized/pd-camp.webp";
 import octoberPdDayCampImg from "@assets/optimized/pd-day-camp-oct-26.webp";
 import newsDiagoImg from "@assets/Ginga_Diago_1782776302853.jpeg";
-import newsHolidayImg from "@assets/Ginga_News_Holiday_Hustle_3v3_Champs_1773867574215.jpg";
 import turfNewsImg from "@assets/optimized/turf-rental-wide.webp";
 import newsCoachImg from "@assets/Ginga_News_ND_with_Coach_Raf_Amora_FC_1773867574215.jpeg";
 import petraImg from "@assets/Petra_Bandula_1773607422405.jpeg";
@@ -173,14 +172,6 @@ export const useAdminStore = create<AdminState>((set) => ({
       excerpt: "Secure your spot for the most intensive summer training experience in the region.",
       content: "Secure your spot for the most intensive summer training experience in the region. Our summer camps run weekly throughout August with professional coaching staff.",
        image: "/summer-camp.jpg",
-    },
-    {
-      id: "n2",
-      title: "GingaFit Is Here: Youth Athletic Conditioning Every Tuesday",
-      date: "Feb 20, 2026",
-      excerpt: "Build speed, power & agility with GingaFit — our new youth athletic conditioning program starting July 28.",
-      content: "GingaFit is the newest addition to the Ginga Soccer Academy program lineup. Designed to elevate every player's athleticism, overall fitness, and confidence on and off the pitch, GingaFit runs every Tuesday from 7:00 PM to 8:00 PM. Sessions start July 28 and run through December 15 (August excluded). Spots are strictly limited to 24 athletes — contact info@gingasoccer.ca to register.",
-      image: newsHolidayImg,
     },
     {
       id: "n3",

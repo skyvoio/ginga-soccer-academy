@@ -544,7 +544,6 @@ export async function registerRoutes(
     p1: { name: "Justplay", unitAmount: 5650 },
     p2: { name: "Group Session", unitAmount: 5650 },
     p3: { name: "Private Session", unitAmount: 19775 },
-    p4: { name: "GingaFit", unitAmount: 4520 },
     c1: { name: "PD Day Camp", unitAmount: 16950 },
     c2: { name: "Summer Camp", unitAmount: 56500 },
     c3: { name: "Christmas Camp", unitAmount: 33900 },

@@ -4,7 +4,6 @@ import { ChevronRight, Clock, Users, Dumbbell, MapPin, Calendar } from "lucide-r
 import { trackEvent } from "@/lib/analytics";
 import privateSessionImg from "@assets/optimized/private-session.webp";
 import marchCampImg from "@assets/Ginga_March_Break_Camp_3_1773782160547.jpeg";
-import agilityImg from "@assets/optimized/ginga-agility.webp";
 import turfRentalImg from "@assets/optimized/turf-rental.webp";
 import turfRental2Img from "@assets/optimized/turf-rental-wide.webp";
 
@@ -45,17 +44,6 @@ const programs: Program[] = [
       "One-on-one intensive training focused on individual technique and tactical understanding.",
     icon: Dumbbell,
     image: privateSessionImg,
-  },
-  {
-    id: "gingafit",
-    category: "TRAINING",
-    title: "GingaFit",
-    price: "$40 + Tax",
-    details: "Tuesdays · 7–8 PM",
-    description:
-      "Youth athletic conditioning designed to build speed, power & agility. Starts Jul 28 — Dec 15. Max 24 athletes.",
-    icon: Dumbbell,
-    image: agilityImg,
   },
   {
     id: "march-camp",

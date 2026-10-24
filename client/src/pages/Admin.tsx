@@ -41,7 +41,7 @@ const sidebarItems: { key: Tab; label: string; icon: typeof LayoutDashboard }[] 
 ];
 
 const PROGRAMS = [
-  "Justplay", "Group Session", "Private Session", "GingaFit",
+  "Justplay", "Group Session", "Private Session",
   "PD Day Camp", "Summer Camp", "Christmas Camp",
   "Full Turf Rental", "3/4 Turf Rental", "Mini Turf Rental",
 ];

@@ -29,7 +29,6 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               {[
                 { label: "Programs", path: "/programs" },
-                { label: "GingaFit", path: "/gingafit" },
                 { label: "Schedule", path: "/schedule" },
                 { label: "Members", path: "/booking" },
               ].map((link) => (
