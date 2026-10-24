@@ -27,8 +27,31 @@ jobs:
           node-version: 24
           cache: npm
 
+      - name: Normalize package URLs for GitHub Actions
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from "node:fs";
+
+          const lockPath = "package-lock.json";
+          const lock = JSON.parse(readFileSync(lockPath, "utf8"));
+          const privatePrefix = "http://package-firewall.replit.local/npm/";
+          let replaced = 0;
+
+          for (const pkg of Object.values(lock.packages ?? {})) {
+            if (typeof pkg.resolved === "string" && pkg.resolved.startsWith(privatePrefix)) {
+              pkg.resolved = `https://registry.npmjs.org/${pkg.resolved.slice(privatePrefix.length)}`;
+              replaced += 1;
+            }
+          }
+
+          if (replaced > 0) {
+            writeFileSync(lockPath, `${JSON.stringify(lock, null, 2)}\n`);
+          }
+          console.log(`Normalized ${replaced} package URLs for GitHub Actions.`);
+          NODE
+
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund --replace-registry-host=always --registry=https://registry.npmjs.org
+        run: npm ci --no-audit --no-fund
 
       - name: Build frontend
         run: npm exec -- vite build --base=/
